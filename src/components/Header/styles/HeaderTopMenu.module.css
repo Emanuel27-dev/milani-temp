@@ -1,0 +1,19 @@
+.topMenuContainer {
+   /* border: 1px solid green; */
+   display: flex;
+   gap: 15px;
+}
+
+.lupa {
+   width: 20px;
+}
+
+.link {
+   color: var(--color-white);
+   text-decoration: none;
+   /* font-size: ; */
+}
+
+.active {
+   color: var(--color-yellow-milani );
+}         

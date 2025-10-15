@@ -1,0 +1,107 @@
+/* Definicion de fuentes */
+/* ------------------------------
+   Archivo - self-hosted font
+   ------------------------------ */
+
+/* Regular */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/Archivo/static/Archivo-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Italic */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/Archivo/static/Archivo-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Medium */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/Archivo/static/Archivo-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Medium Italic */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/Archivo/static/Archivo-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bold */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/Archivo/static/Archivo-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold Italic */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/Archivo/static/Archivo-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+
+:root {
+   /* font */
+   --font-primary: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+   /* colors*/
+   --color-white: #fff;
+   --color-black: #000;
+   --color-red: #CE2229;
+   --color-grey1: #808080;
+   --color-yellow-milani: #FFC527;
+}
+
+
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+
+
+
+html,body {
+   background-color: var(--color-grey1);
+   font-family: var(--font-primary);
+}
+
+.outlet {
+   /* border: 1px solid red; */
+}
+
+.container {
+   max-width: 1425px;
+   margin: 0 auto;
+   /* border: 1px solid white; */
+   display: flex;
+   justify-content: center;
+}
+
+
+/* CLASES DE PRUEBA */
+.tituloPrueba {
+   font-size: 5rem;
+}
+
+.contentPrueba {
+   font-size: 3rem;
+}
