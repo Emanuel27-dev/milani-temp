@@ -94,6 +94,7 @@ html,body {
    /* border: 1px solid white; */
    display: flex;
    justify-content: center;
+   min-height: 300px;
 }
 
 
