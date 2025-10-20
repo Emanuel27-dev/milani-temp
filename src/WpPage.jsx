@@ -11,9 +11,9 @@ query NodeByPath($uri: ID!) {
     uri
     slug
 
-    ... on Page { title contentRendered }
-    ... on Post { title contentRendered }
-    ... on Service { title contentRendered }
+    ... on Page { title contentRendered wpbCss }
+    ... on Post { title contentRendered wpbCss }
+    ... on Service { title contentRendered wpbCss }
     # Agrega aquí tus CPT expuestos:
     # ... on Service { title content(format: RENDERED) }
     # ... on Property { title content(format: RENDERED) }
@@ -50,7 +50,19 @@ export function WpPage() {
     const safe = DOMPurify.sanitize(node.contentRendered || "");
     return (
       <article>
+ {/* 1) CSS inline de WPBakery para ESTA página/post */}
+        {node.wpbCss && (
+          <style
+            data-source="wpbakery"
+            // es CSS, no lo sanitices con DOMPurify
+            dangerouslySetInnerHTML={{ __html: node.wpbCss }}
+          />
+        )}
+
+        {/* 2) Título si existe */}
         {node.title && <h1 className="tituloPrueba">{node.title}</h1>}
+
+        {/* 3) HTML renderizado (shortcodes ya procesados) */}
         <div
           className="contentPrueba"
           dangerouslySetInnerHTML={{ __html: safe }}
