@@ -1,7 +1,3 @@
-// export function Home () {
-//    return (<div>HOME</div>)
-// }
-
 import { gql } from "@apollo/client"
 import { useQuery } from "@apollo/client/react"
 import DOMPurify from "dompurify";

@@ -13,8 +13,8 @@ function App() {
         <Route index element={ <Home /> } />
 
         {/* Esta ruta captura /plumbing, /offers, /heating, etc */}
-        <Route path=':slug' element={<WpPage />} />
-        <Route path='*' element={ <Navigate replace to={"/"} /> } />
+        <Route path='*' element={<WpPage />} />
+        {/* <Route path='*' element={ <Navigate replace to={"/"} /> } /> */}
       </Route>
     </Routes>
     </>

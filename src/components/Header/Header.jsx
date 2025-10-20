@@ -12,10 +12,18 @@ const GET_HEADER_DATA = gql`
     topMenu {
       label
       url
+      target
+      kind
+      objectType
+      objectId
     }
     mainMenu {
       label
       url
+      target
+      kind
+      objectType
+      objectId
     }
   }
 `;
