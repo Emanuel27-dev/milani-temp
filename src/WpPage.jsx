@@ -60,7 +60,7 @@ export function WpPage() {
         )}
 
         {/* 2) Título si existe */}
-        {node.title && <h1 className="tituloPrueba">{node.title}</h1>}
+        {/* {node.title && <h1 className="tituloPrueba">{node.title}</h1>} */}
 
         {/* 3) HTML renderizado (shortcodes ya procesados) */}
         <div

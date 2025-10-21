@@ -1,21 +1,49 @@
+// import { Outlet } from "react-router-dom";
+// import { Footer } from "./components/Footer/Footer";
+// import { Header } from "./components/Header/Header";
+// import { useWpAssets } from "./hooks/useWpAssets";
+
+
+// export function Layout() {
+//   useWpAssets(); 
+
+//   return (
+//     <main>
+//       <Header />
+//       <section className="outlet">
+//         <div className="container">
+//           <Outlet />
+//         </div>
+//       </section>
+//       <Footer />
+//     </main>
+//   );
+// }
+
+
+// Layout.jsx
 import { Outlet } from "react-router-dom";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { useWpAssets } from "./hooks/useWpAssets";
 
-
 export function Layout() {
-  useWpAssets(); // hook para añadir estilos
+  useWpAssets(); // carga CSS/JS del theme + WPBakery
 
   return (
-    <main>
+    <div id="ajax-content-wrap">
       <Header />
-      <section className="outlet">
-        <div className="container">
-          <Outlet />
+
+      <div className="container-wrap">
+        <div className="container main-content" role="main">
+          <div className="row">
+            {/* El contenido de la página debe vivir dentro de .row */}
+            <Outlet />
+          </div>
         </div>
-      </section>
+      </div>
+
       <Footer />
-    </main>
+    </div>
   );
 }
