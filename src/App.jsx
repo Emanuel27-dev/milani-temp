@@ -10,9 +10,9 @@ function App() {
     <>
     <Routes>
       <Route path='/' element={<Layout />}>
-        <Route index element={ <Home /> } />
+        <Route index element={ <WpPage fixedSlug={"home"} />} />
 
-        {/* Esta ruta captura /plumbing, /offers, /heating, etc */}
+        {/* Esta ruta captura /drainage /plumbing, /offers, /heating, etc */}
         <Route path='*' element={<WpPage />} />
         {/* <Route path='*' element={ <Navigate replace to={"/"} /> } /> */}
       </Route>
