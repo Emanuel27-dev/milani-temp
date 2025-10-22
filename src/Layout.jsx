@@ -43,7 +43,7 @@ export function Layout() {
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
