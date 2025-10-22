@@ -44,7 +44,6 @@
 //   if (loading) return null;
 //   if (error) return <p>Error cargando el contenidooo</p>;
 
-
 //   const node = data?.contentNode;
 //   if (node) {
 //     const safe = DOMPurify.sanitize(node.contentRendered || "");
@@ -88,9 +87,112 @@
 //   return <p>Página no encontrada</p>;
 // }
 
+// // WpPage.jsx
+// import { gql } from "@apollo/client";
+// import { useQuery } from "@apollo/client/react";
+// import { useLocation } from "react-router-dom";
+// import DOMPurify from "dompurify";
+
+// const NODE_BY_PATH = gql`
+//   query NodeByPath($uri: ID!) {
+//     contentNode(id: $uri, idType: URI) {
+//       __typename
+//       id
+//       uri
+//       slug
+//       ... on Page {
+//         title
+//         contentRendered
+//         wpbCss
+//         vcCustomCss
+//       }
+//       ... on Post {
+//         title
+//         contentRendered
+//         wpbCss
+//         vcCustomCss
+        
+//       }
+//       ... on Service {
+//         title
+//         contentRendered
+//         wpbCss
+//         vcCustomCss
+//       }
+//     }
+//     termNode(id: $uri, idType: URI) {
+//       __typename
+//       id
+//       uri
+//       slug
+//       name
+//       description
+//     }
+//   }
+// `;
+
+// export function WpPage({ fixedUri, fixedSlug }) {
+//   // 1) Normaliza la URI:
+//   // - prioridad a fixedUri
+//   // - si hay fixedSlug, construye "/slug/"
+//   // - si no, usa la ruta del navegador
+//   const { pathname } = useLocation();
+//   const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
+//   const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : autoUri);
+
+//   const { data, loading, error } = useQuery(NODE_BY_PATH, {
+//     variables: { uri },
+//     fetchPolicy: "network-only",
+//   });
+
+//   console.log(data);
+
+//   if (loading) return null;
+//   if (error) return <p>Error cargando el contenido</p>;
+
+//   const node = data?.contentNode;
+//   if (node) {
+//     const safe = DOMPurify.sanitize(node.contentRendered || "");
+//     return (
+//       <article>
+//         {node.wpbCss && (
+//           <style
+//             data-source="wpbakery"
+//             dangerouslySetInnerHTML={{ __html: node.wpbCss }}
+//           />
+//         )}
+
+//         {/* 2) CSS de Page Settings → Custom CSS (vc_custom_css) */}
+//         {node.vcCustomCss && (
+//           <style
+//             data-type="vc_custom-css"
+//             dangerouslySetInnerHTML={{ __html: node.vcCustomCss }}
+//           />
+//         )}
+
+//         {/* <h1 dangerouslySetInnerHTML={{ __html: node.title }} /> */}
+//         <div dangerouslySetInnerHTML={{ __html: safe }} />
+//       </article>
+//     );
+//   }
+
+//   const term = data?.termNode;
+//   if (term) {
+//     const safe = DOMPurify.sanitize(term.description || "");
+//     return (
+//       <section>
+//         <h1 className="tituloPrueba">{term.name}</h1>
+//         <div dangerouslySetInnerHTML={{ __html: safe }} />
+//       </section>
+//     );
+//   }
+
+//   return <p>Página no encontrada</p>;
+// }
 
 
-// WpPage.jsx
+
+// src/pages/WpPage.jsx
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { useLocation } from "react-router-dom";
@@ -98,15 +200,34 @@ import DOMPurify from "dompurify";
 
 const NODE_BY_PATH = gql`
   query NodeByPath($uri: ID!) {
+    # ---- Página/Entrada/CPT por URI ----
     contentNode(id: $uri, idType: URI) {
       __typename
       id
       uri
       slug
-      ... on Page { title contentRendered wpbCss }
-      ... on Post { title contentRendered wpbCss }
-      ... on Service { title contentRendered wpbCss }
+
+      ... on Page {
+        title
+        contentRendered
+        wpbCss          # CSS inline generado por WPBakery (Design Options)
+        vcCustomCss     # CSS de Page Settings → Custom CSS
+      }
+      ... on Post {
+        title
+        contentRendered
+        wpbCss
+        vcCustomCss
+      }
+      ... on Service {
+        title
+        contentRendered
+        wpbCss
+        vcCustomCss
+      }
     }
+
+    # ---- Terminos (si la URI es de taxonomía) ----
     termNode(id: $uri, idType: URI) {
       __typename
       id
@@ -115,14 +236,15 @@ const NODE_BY_PATH = gql`
       name
       description
     }
+
+    # ---- Extras globales del theme ----
+    salientDynamicCss   # URL a /uploads/salient/menu-dynamic.css si existe
+    salientCustomCss    # CSS global escrito en Options Panel → Custom CSS Code
   }
 `;
 
 export function WpPage({ fixedUri, fixedSlug }) {
-  // 1) Normaliza la URI:
-  // - prioridad a fixedUri
-  // - si hay fixedSlug, construye "/slug/"
-  // - si no, usa la ruta del navegador
+  // Normaliza la URI a consultar
   const { pathname } = useLocation();
   const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
   const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : autoUri);
@@ -132,34 +254,69 @@ export function WpPage({ fixedUri, fixedSlug }) {
     fetchPolicy: "network-only",
   });
 
-  console.log(data);
-
   if (loading) return null;
   if (error) return <p>Error cargando el contenido</p>;
 
+  // ---- Inyección de CSS global del theme (si existe) ----
+  // 1) Custom CSS global (Options Panel → Custom CSS Code)
+  if (data?.salientCustomCss) {
+    const id = "salient-custom-css-inline";
+    if (!document.getElementById(id)) {
+      const tag = document.createElement("style");
+      tag.id = id;
+      tag.setAttribute("data-source", "salient-custom-css");
+      tag.textContent = data.salientCustomCss;
+      document.head.appendChild(tag);
+    }
+  }
+  // 2) menu-dynamic.css (si decidieras cargarlo aquí también)
+  if (data?.salientDynamicCss) {
+    const id = "salient-menu-dynamic";
+    if (!document.getElementById(id)) {
+      const link = document.createElement("link");
+      link.id = id;
+      link.rel = "stylesheet";
+      link.href = data.salientDynamicCss;
+      document.head.appendChild(link);
+    }
+  }
+
+  // ---- Página/Entrada/CPT ----
   const node = data?.contentNode;
   if (node) {
-    const safe = DOMPurify.sanitize(node.contentRendered || "");
+    const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
+
     return (
       <article>
+        {/* 1) CSS inline generado por WPBakery (Design Options) */}
         {node.wpbCss && (
           <style
-            data-source="wpbakery"
+            data-source="wpbakery-wpbCss"
             dangerouslySetInnerHTML={{ __html: node.wpbCss }}
           />
         )}
-        {/* <h1 dangerouslySetInnerHTML={{ __html: node.title }} /> */}
-        <div dangerouslySetInnerHTML={{ __html: safe }} />
+
+        {/* 2) CSS de Page Settings → Custom CSS */}
+        {node.vcCustomCss && (
+          <style
+            data-type="vc_custom-css"
+            dangerouslySetInnerHTML={{ __html: node.vcCustomCss }}
+          />
+        )}
+
+        {/* 3) Contenido renderizado */}
+        <div dangerouslySetInnerHTML={{ __html: safeHtml }} />
       </article>
     );
   }
 
+  // ---- Término de taxonomía ----
   const term = data?.termNode;
   if (term) {
     const safe = DOMPurify.sanitize(term.description || "");
     return (
       <section>
-        <h1 className="tituloPrueba">{term.name}</h1>
+        <h1>{term.name}</h1>
         <div dangerouslySetInnerHTML={{ __html: safe }} />
       </section>
     );
