@@ -3,9 +3,8 @@
 // import { Header } from "./components/Header/Header";
 // import { useWpAssets } from "./hooks/useWpAssets";
 
-
 // export function Layout() {
-//   useWpAssets(); 
+//   useWpAssets();
 
 //   return (
 //     <main>
@@ -20,7 +19,6 @@
 //   );
 // }
 
-
 // Layout.jsx
 import { Outlet } from "react-router-dom";
 import { Footer } from "./components/Footer/Footer";
@@ -31,19 +29,28 @@ export function Layout() {
   useWpAssets(); // carga CSS/JS del theme + WPBakery
 
   return (
-    <div id="ajax-content-wrap">
+    // <div>
+    //   <Header />
+    //   <div id="ajax-content-wrap">
+    //     <div className="container main-content" role="main">
+    //       <div className="row">
+    //         {/* El contenido de la página debe vivir dentro de .row */}
+    //         <Outlet />
+    //       </div>
+    //     </div>
+
+    //     <Footer />
+    //   </div>
+    // </div>
+    <>
       <Header />
-
-      <div className="container-wrap">
-        <div className="container main-content" role="main">
-          <div className="row">
-            {/* El contenido de la página debe vivir dentro de .row */}
-            <Outlet />
-          </div>
+      {/* className="container-wrap" ponerlo en main */}
+      <main id="ajax-content-wrap"  role="main">
+        <div className="container main-content">
+          <Outlet /> {/* <WpPage /> u otros componentes */}
         </div>
-      </div>
-
+      </main>
       <Footer />
-    </div>
+    </>
   );
 }
