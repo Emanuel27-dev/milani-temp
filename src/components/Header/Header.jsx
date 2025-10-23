@@ -109,17 +109,16 @@ function useCountry() {
     let alive = true;
     (async () => {
       try {
-        // Si estás en producción (Vercel), llama a /api/country
-        // Si estás en local, llama directamente a ipapi
-        const url =
-          import.meta.env.DEV
-            ? "https://ipapi.co/json/"
-            : "/api/country";
-
+        // Llama SIEMPRE al servicio público (detecta la IP del visitante)
+        const url = "https://ipapi.co/json/?__t=" + Date.now(); // cache-buster
         const r = await fetch(url, { cache: "no-store" });
         const j = await r.json();
-        if (alive) setCountry(j.country_code || j.country || "US");
-      } catch {
+
+        const code = j.country_code || j.country || "US";
+        console.log("🌎 País detectado:", code, j); // <-- DEBUG visible en consola
+        if (alive) setCountry(code);
+      } catch (e) {
+        console.error("❌ Error detectando país:", e);
         if (alive) setCountry("US");
       } finally {
         if (alive) setLoading(false);
@@ -130,6 +129,7 @@ function useCountry() {
 
   return { country, loading };
 }
+
 
 const GET_HEADER = gql`
   query {
