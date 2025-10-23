@@ -61,7 +61,7 @@ export function useWpAssets() {
 
       // Dinámicos del sitio
       injectIfExists(`${base}/wp-content/uploads/salient/menu-dynamic.css`),
-      injectIfExists(`${base}/wp-content/themes/salient/css/salient-dynamic-styles.css`),
+      injectIfExists(`${base}/wp-content/themes/salient/css/salient-dynamic-styles.css?ver=${Math.round(Math.random() * 100000)}`),
 
       // Opcionales (por si existen)
       injectIfExists(`${base}/wp-content/themes/salient/style.css`),
