@@ -1,58 +1,58 @@
-// import { gql } from "@apollo/client";
-// import { useQuery } from "@apollo/client/react"; 
-// import { HeaderLogo } from "./HeaderLogo";
-// import { HeaderMenus } from "./HeaderMenus";
-// import styles from "./styles/Header.module.css";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react"; 
+import { HeaderLogo } from "./HeaderLogo";
+import { HeaderMenus } from "./HeaderMenus";
+import styles from "./styles/Header.module.css";
 
 
-// // query para obtener el logo y los items del topMenu y mainMenu
-// const GET_HEADER_DATA = gql`
-//   query {
-//     salientLogo
-//     topMenu {
-//       label
-//       url
-//       target
-//       kind
-//       objectType
-//       objectId
-//     }
-//     mainMenu {
-//       label
-//       url
-//       target
-//       kind
-//       objectType
-//       objectId
-//     }
+// query para obtener el logo y los items del topMenu y mainMenu
+const GET_HEADER_DATA = gql`
+  query {
+    salientLogo
+    topMenu {
+      label
+      url
+      target
+      kind
+      objectType
+      objectId
+    }
+    mainMenu {
+      label
+      url
+      target
+      kind
+      objectType
+      objectId
+    }
 
-//     menuKelowa: menuBySlug(slug: "main-menu-kelowa") {
-//       label url target kind objectType objectId
-//     }
-//     menuVancouver: menuBySlug(slug: "main-menu-vancouver") {
-//       label url target kind objectType objectId
-//     }
-//   }
-// `;
+    menuKelowa: menuBySlug(slug: "main-menu-kelowa") {
+      label url target kind objectType objectId
+    }
+    menuVancouver: menuBySlug(slug: "main-menu-vancouver") {
+      label url target kind objectType objectId
+    }
+  }
+`;
 
 
-// export function Header() {
-//   const { data, loading } = useQuery(GET_HEADER_DATA);
-//   if (loading) return null;
-//   console.log(data);
+export function Header() {
+  const { data, loading } = useQuery(GET_HEADER_DATA);
+  if (loading) return null;
+  console.log(data);
   
   
-//   // Mostramos el Header completo una vez se haya cargado todos los datos traidos por GQL
+  // Mostramos el Header completo una vez se haya cargado todos los datos traidos por GQL
 
-//   return (
-//     <header className={styles.header}>
-//       <div className={styles.container}>
-//         <HeaderLogo logo={data.salientLogo} />
-//         <HeaderMenus topMenu={data.topMenu} mainMenu={data.mainMenu} />
-//       </div>
-//     </header>
-//   );
-// }
+  return (
+    <header className={styles.header}>
+      <div className={styles.container}>
+        <HeaderLogo logo={data.salientLogo} />
+        <HeaderMenus topMenu={data.topMenu} mainMenu={data.mainMenu} />
+      </div>
+    </header>
+  );
+}
 
 
 // src/components/Header.jsx
@@ -157,111 +157,106 @@
 
 
 
-// src/components/Header.jsx
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client/react";
-import { HeaderLogo } from "./HeaderLogo";
-import { HeaderMenus } from "./HeaderMenus";
-import styles from "./styles/Header.module.css";
-import { useEffect, useState } from "react";
+// import { gql } from "@apollo/client";
+// import { useQuery } from "@apollo/client/react";
+// import { HeaderLogo } from "./HeaderLogo";
+// import { HeaderMenus } from "./HeaderMenus";
+// import styles from "./styles/Header.module.css";
 
-/* ---------- Hook robusto para país ---------- */
-function useCountry() {
-  const [country, setCountry] = useState(null);
-  const [loading, setLoading] = useState(true);
+// /* ---------------------------------------------------------
+//  * 1) Hook para obtener país desde backend (API + cookie)
+//  * --------------------------------------------------------- */
+// // function getCookie(name) {
+// //   const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+// //   return match ? decodeURIComponent(match[2]) : null;
+// // }
 
-  // 0) Override por query param (QA): ?country=US
-  useEffect(() => {
-    const qp = new URLSearchParams(window.location.search).get("country");
-    if (qp && /^[A-Z]{2}$/.test(qp)) {
-      console.log("🌎 País forzado por query param:", qp);
-      setCountry(qp);
-      setLoading(false);
-    }
-  }, []);
+// // function useCountry() {
+// //   const [country, setCountry] = useState(null);
+// //   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (country) return; // ya forzado por query param
-    let alive = true;
+// //   useEffect(() => {
+// //     let alive = true;
+// //     (async () => {
+// //       try {
+// //         // 1️⃣ intenta leer cookie primero
+// //         const cookieCountry = getCookie("country");
+// //         if (cookieCountry) {
+// //           setCountry(cookieCountry.toUpperCase());
+// //           setLoading(false);
+// //           fetch("/api/country").catch(() => {}); // refresca cookie en background
+// //           return;
+// //         }
 
-    async function tryFetch(url, picker) {
-      const r = await fetch(url + (url.includes("?") ? "&" : "?") + "__t=" + Date.now(), { cache: "no-store" });
-      if (!r.ok) throw new Error("bad status " + r.status);
-      const j = await r.json();
-      const code = picker(j);
-      if (!code) throw new Error("no code");
-      return code.toUpperCase();
-    }
+// //         // 2️⃣ si no hay cookie, consulta al backend
+// //         const r = await fetch("/api/country", { cache: "no-store" });
+// //         const j = await r.json();
+// //         if (alive) setCountry((j.country || "US").toUpperCase());
+// //       } catch {
+// //         if (alive) setCountry("US");
+// //       } finally {
+// //         if (alive) setLoading(false);
+// //       }
+// //     })();
+// //     return () => { alive = false; };
+// //   }, []);
 
-    (async () => {
-      try {
-        // 1) ipapi
-        const c1 = await tryFetch("https://ipapi.co/json/", j => j.country_code || j.country);
-        if (alive) { console.log("🌎 ipapi:", c1); setCountry(c1); return; }
-      } catch (e){ console.log(e)}
+// //   return { country, loading };
+// // }
 
-      try {
-        // 2) ipwho.is
-        const c2 = await tryFetch("https://ipwho.is/", j => j.country_code);
-        if (alive) { console.log("🌎 ipwho.is:", c2); setCountry(c2); return; }
-      } catch (e){ console.log(e)}
+// /* ---------------------------------------------------------
+//  * 2) Query GraphQL para traer menús desde WordPress
+//  * --------------------------------------------------------- */
+// const GET_HEADER = gql`
+//   query {
+//     salientLogo
+//     topMenu {
+//       label
+//       url
+//       target
+//       kind
+//       objectType
+//       objectId
+//     }
+//     menuKelowa {
+//       label
+//       url
+//       target
+//       kind
+//       objectType
+//       objectId
+//     }
+//     menuVancouver {
+//       label
+//       url
+//       target
+//       kind
+//       objectType
+//       objectId
+//     }
+//   }
+// `;
+
+// /* ---------------------------------------------------------
+//  * 3) Componente principal del Header
+//  * --------------------------------------------------------- */
+// export function Header() {
+//   // const { country, loading: loadingCountry } = useCountry();
+//   const { data } = useQuery(GET_HEADER);
 
 
-      try {
-        // 3) geojs
-        const c3 = await tryFetch("https://get.geojs.io/v1/ip/country.json", j => j.country);
-        if (alive) { console.log("🌎 geojs:", c3); setCountry(c3); return; }
-      } catch (e){ console.log(e)}
+//   // 👇 regla automática:
+//   // Si el país es US → muestra menuVancouver
+//   // En cualquier otro → muestra menuKelowa
+//   // const mainItems = country === "US" ? data.menuVancouver : data.menuKelowa;
+//   // console.log(mainItems);
 
-
-      try {
-        // 4) ipinfo (limitado gratis)
-        const c4 = await tryFetch("https://ipinfo.io/json", j => j.country);
-        if (alive) { console.log("🌎 ipinfo:", c4); setCountry(c4); return; }
-      } catch (e){ console.log(e)}
-
-
-      if (alive) {
-        console.warn("🌎 fallback: US");
-        setCountry("US");
-      }
-    })().finally(() => { if (alive) setLoading(false); });
-
-    return () => { alive = false; };
-  }, [country]);
-
-  return { country, loading };
-}
-
-/* ---------- GraphQL ---------- */
-const GET_HEADER = gql`
-  query {
-    salientLogo
-    topMenu { label url target kind objectType objectId }
-    menuKelowa { label url target kind objectType objectId }
-    menuVancouver { label url target kind objectType objectId }
-  }
-`;
-
-export function Header() {
-  const { country, loading: loadingCountry } = useCountry();
-  const { data, loading } = useQuery(GET_HEADER);
-
-  if (loading || loadingCountry || !data || !country) return null;
-
-  // Regla: US => Vancouver, el resto => Kelowa
-  const mainItems = country === "US" ? data.menuVancouver : data.menuKelowa;
-
-  return (
-    <header className={styles.header}>
-      <div className={styles.container}>
-        <HeaderLogo logo={data.salientLogo} />
-        <HeaderMenus topMenu={data.topMenu} mainMenu={mainItems} />
-      </div>
-      {/* badge de debug (quítalo cuando termines) */}
-      <div style={{position:'fixed',right:8,top:8,fontSize:12,opacity:.6,background:'#000',color:'#fff',padding:'4px 6px',borderRadius:4}}>
-        country: {country}
-      </div>
-    </header>
-  );
-}
+//   return (
+//     <header className={styles.header}>
+//       <div className={styles.container}>
+//         <HeaderLogo logo={data.salientLogo} />
+//         <HeaderMenus topMenu={data.topMenu} mainMenu={data.menuVancouver} />
+//       </div>
+//     </header>
+//   );
+// }
