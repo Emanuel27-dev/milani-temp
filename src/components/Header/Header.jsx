@@ -109,13 +109,11 @@ function useCountry() {
     let alive = true;
     (async () => {
       try {
-        // Llama SIEMPRE al servicio público (detecta la IP del visitante)
-        const url = "https://ipapi.co/json/?__t=" + Date.now(); // cache-buster
+        const url = "https://ipapi.co/json/?__t=" + Date.now(); // <-- evita cache
         const r = await fetch(url, { cache: "no-store" });
         const j = await r.json();
-
         const code = j.country_code || j.country || "US";
-        console.log("🌎 País detectado:", code, j); // <-- DEBUG visible en consola
+        console.log("🌎 País detectado:", code, j);
         if (alive) setCountry(code);
       } catch (e) {
         console.error("❌ Error detectando país:", e);
