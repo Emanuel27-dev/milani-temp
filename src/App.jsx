@@ -3,11 +3,12 @@ import './App.css'
 import { Layout } from './Layout';
 import { Home } from './Home';
 import { WpPage } from './WpPage';
-import { useGeolocation } from './hooks/useGeolocation';
+// import { useGeolocation } from './hooks/useGeolocation';
+import { useIPLocation } from './hooks/useIPLocation';
 
 function App() {
 
-  const { coords, location, error } = useGeolocation();
+  const { location, error } = useIPLocation();
 
   return (
     // <>
@@ -22,19 +23,18 @@ function App() {
     // </Routes>
     // </>
 
-        <div style={{ padding: 20, fontFamily: "Arial" }}>
-      <h2>🌍 Detector de ubicación</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
+    <div style={{ padding: 20 }}>
+      <h2>🌐 Ubicación según IP / VPN</h2>
+      {error && <p>{error}</p>}
       {location ? (
         <>
+          <p><strong>IP:</strong> {location.ip}</p>
           <p><strong>Ciudad:</strong> {location.ciudad}</p>
+          <p><strong>Región:</strong> {location.region}</p>
           <p><strong>País:</strong> {location.pais}</p>
-          <p><strong>Latitud:</strong> {coords?.latitude.toFixed(4)}</p>
-          <p><strong>Longitud:</strong> {coords?.longitude.toFixed(4)}</p>
         </>
       ) : (
-        <p>Obteniendo ubicación...</p>
+        <p>Detectando ubicación por IP...</p>
       )}
     </div>
   )
