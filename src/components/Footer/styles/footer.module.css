@@ -1,6 +1,7 @@
 .footer {
    background-color: var(--color-black);
    color: var(--color-white);
+
 }
 
 .container {
@@ -75,8 +76,9 @@
 }
 
 .tailTitle {
-   font-size: 36px;
-   font-weight: 700;
+       font-size: 36px;
+    font-weight: 700 !important;
+    color: #fff;
 }
 
 .tailCont {
@@ -88,12 +90,22 @@
 .firstBlock {
    display: flex;
    gap: 64px;
+   font-family: 'Archivo SemiCondensed';
 }
-
+.firstBlock  div{
+   color: #fff;
+   color: #949494;
+   font-family: 'Archivo SemiCondensed';
+   line-height: 1;
+    margin-bottom: 4px;
+}
 .categoryTitle {
-    font-size: 17px;
-    font-weight: 500;
-    margin-bottom: 12px;
+   font-size: 17px;
+   margin-bottom: 12px;
+   font-family: "Archivo SemiCondensed" !important;
+   font-weight: bold !important;
+   color: #E1E1E1;
+   margin-bottom: 18px !important;
 }
 
 .childCategory {
@@ -132,14 +144,21 @@
 }
 
 .empresa {
-
+font-family: 'Archivo SemiCondensed';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 26px;
+color: #FFFFFF;
 }
 
 .number {
-   font-size: 24px;
-   font-weight: bold;
    color: var(--color-grey1);
-
+   font-family: 'Archivo SemiCondensed' !important;
+   font-style: normal;
+   font-weight: 700 !important;
+   font-size: 24px;
+   line-height: 26px !important;
 }
 
 .email {
@@ -152,17 +171,27 @@
    align-items: center;
    /* border: 1px solid white; */
 }
-
+.secondBlock2 h2{
+       font-size: 28px;
+    color: #fff;
+}
 
 .tuerquita {
    display: flex;
    justify-content: center;
    align-items: center;
+ 
+font-family: 'Archivo';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 17px;
 
+color: #949494;
 }
 
-.turquitaImg {
-
+.tuerquita img {
+margin-right: 10px !important;
 }
 
 .tuerquitaText {
