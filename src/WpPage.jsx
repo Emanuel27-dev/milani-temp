@@ -448,7 +448,7 @@
 
 
 
-// src/pages/WpPage.jsx
+// // src/pages/WpPage.jsx
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { useLocation } from "react-router-dom";
@@ -592,3 +592,128 @@ export function WpPage({ fixedUri, fixedSlug }) {
 
   return <p>Página no encontrada</p>;
 }
+
+
+
+// src/pages/WpPage.jsx
+// import { gql } from "@apollo/client";
+// import { useQuery } from "@apollo/client/react";
+// import { useLocation } from "react-router-dom";
+// import { useEffect } from "react";
+// import DOMPurify from "dompurify";
+// import { useWpAssets } from "../src/hooks/useWpAssets.jsx";
+
+// const NODE_BY_PATH = gql`
+//   query NodeByPath($uri: ID!) {
+//     contentNode(id: $uri, idType: URI) {
+//       __typename
+//       id
+//       uri
+//       slug
+//       ... on Page {
+//         title
+//         contentRendered
+//         wpbCss
+//         vcCustomCss
+//         dynamicCss
+//         wpbShortcodeCss
+//       }
+//       ... on Post {
+//         title
+//         contentRendered
+//         wpbCss
+//         vcCustomCss
+//         dynamicCss
+//       }
+//       ... on Service {
+//         title
+//         contentRendered
+//         wpbCss
+//         vcCustomCss
+//         dynamicCss
+//       }
+//     }
+//     salientDynamicCss
+//     salientCustomCss
+//   }
+// `;
+
+// export function WpPage({ fixedUri, fixedSlug }) {
+//   // Cargar assets globales del theme (solo una vez)
+//   useWpAssets();
+
+//   const { pathname } = useLocation();
+//   const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
+//   const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : autoUri);
+
+//   const { data, loading, error } = useQuery(NODE_BY_PATH, {
+//     variables: { uri },
+//     fetchPolicy: "network-only",
+//   });
+
+//   // CSS global de Salient
+//   useEffect(() => {
+//     if (!data) return;
+//     const css = data.salientCustomCss;
+//     const href = data.salientDynamicCss;
+
+//     if (css && !document.getElementById("salient-custom-css-inline")) {
+//       const tag = document.createElement("style");
+//       tag.id = "salient-custom-css-inline";
+//       tag.textContent = css;
+//       document.head.appendChild(tag);
+//     }
+
+//     if (href && !document.getElementById("salient-menu-dynamic")) {
+//       const link = document.createElement("link");
+//       link.id = "salient-menu-dynamic";
+//       link.rel = "stylesheet";
+//       link.href = href;
+//       document.head.appendChild(link);
+//     }
+//   }, [data?.salientCustomCss, data?.salientDynamicCss]);
+
+//   // CSS dinámico del nodo actual (WPBakery, shortcode, etc.)
+//   useEffect(() => {
+//     if (!data?.contentNode) return;
+//     const node = data.contentNode;
+
+//     const injectStyle = (id, css) => {
+//       if (!css) return;
+//       let tag = document.getElementById(id);
+//       if (!tag) {
+//         tag = document.createElement("style");
+//         tag.id = id;
+//         document.head.appendChild(tag);
+//       }
+//       tag.textContent = css;
+//     };
+
+//     injectStyle("wpbCss", node.wpbCss);
+//     injectStyle("vcCustomCss", node.vcCustomCss);
+//     injectStyle("wpbShortcodeCss", node.wpbShortcodeCss);
+//     injectStyle("wp-dynamic-css", node.dynamicCss);
+
+//     return () => {
+//       ["wpbCss", "vcCustomCss", "wpbShortcodeCss", "wp-dynamic-css"].forEach((id) =>
+//         document.getElementById(id)?.remove()
+//       );
+//     };
+//   }, [data?.contentNode?.id]);
+
+//   // Render
+//   if (loading) return null;
+//   if (error) return <p>Error cargando el contenido</p>;
+
+//   const node = data?.contentNode;
+//   if (node) {
+//     const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
+//     return (
+//       <article>
+//         <div dangerouslySetInnerHTML={{ __html: safeHtml }} />
+//       </article>
+//     );
+//   }
+
+//   return <p>Página no encontrada</p>;
+// }
