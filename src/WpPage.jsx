@@ -25,7 +25,13 @@ const NODE_BY_PATH = gql`
         wpbCss
         vcCustomCss
         dynamicCss
-        inlineDynamicCss   # ✅ nuevo campo: CSS dinámico por página
+        inlineDynamicCssGrouped {
+          emoji
+          global
+          main
+          dynamic
+          file
+        }
       }
       ... on Post {
         title
@@ -33,7 +39,13 @@ const NODE_BY_PATH = gql`
         wpbCss
         vcCustomCss
         dynamicCss
-        inlineDynamicCss   # ✅ también para posts
+        inlineDynamicCssGrouped {
+          emoji
+          global
+          main
+          dynamic
+          file
+        }
       }
     }
     bodyAttributes
@@ -103,7 +115,7 @@ export function WpPage({ fixedUri, fixedSlug }) {
     <article
       key={node?.id}
       className="wpb-content-wrapper"
-      dangerouslySetInnerHTML={{ __html: safeHtml }}
+      dangerouslySetInnerHTML={{ __html: node?.contentRendered || "" }}
     />
   );
 }

@@ -5,25 +5,29 @@ import { useEffect } from "react";
  * en el <head> del frontend React.
  *
  * Recibe:
- * - node: objeto con los campos wpbCss, vcCustomCss, dynamicCss, inlineDynamicCss
+ * - node: objeto con los campos wpbCss, vcCustomCss, dynamicCss, inlineDynamicCssGrouped
  * - inlineStyles: string CSS adicional (wpbInlineStyles)
  */
 export function usePageCss(node, inlineStyles) {
   useEffect(() => {
     if (!node) return;
 
-    // 🔹 Combina todos los CSS relevantes en un solo bloque
-    const combinedCss = [
+    // 🧩 Combina todos los CSS relevantes de la página + Salient en un solo bloque
+    const cssParts = [
       node.wpbCss,
       node.vcCustomCss,
       node.dynamicCss,
-      node.inlineDynamicCss, // ✅ nuevo campo: CSS dinámico específico por página
       inlineStyles,
-    ]
-      .filter(Boolean)
-      .join("\n\n");
+      node.inlineDynamicCssGrouped?.emoji,
+      node.inlineDynamicCssGrouped?.global,
+      node.inlineDynamicCssGrouped?.main,
+      node.inlineDynamicCssGrouped?.dynamic,
+      node.inlineDynamicCssGrouped?.file,
+    ].filter(Boolean);
 
-    if (!combinedCss) return;
+    if (!cssParts.length) return;
+
+    const combinedCss = cssParts.join("\n\n");
 
     // 🔹 ID único por página para evitar conflictos o duplicados
     const styleId = `wp-page-css-${node.databaseId || node.id || "unknown"}`;
@@ -50,7 +54,7 @@ export function usePageCss(node, inlineStyles) {
     node?.wpbCss,
     node?.vcCustomCss,
     node?.dynamicCss,
-    node?.inlineDynamicCss, // ✅ dependencia agregada
+    node?.inlineDynamicCssGrouped,
     inlineStyles,
   ]);
 }
