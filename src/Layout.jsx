@@ -4,6 +4,7 @@ import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { useWpAssets } from "./hooks/useWpAssets";
 import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";
+import { HeaderTemp } from "./components/Header/HeaderTemp";
 
 export function Layout() {
   useWpAssets();
@@ -11,7 +12,8 @@ export function Layout() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
+      <HeaderTemp />
 
       {/* Estructura idéntica a Salient */}
       <div className="ocm-effect-wrap">

@@ -6,7 +6,7 @@
    gap: 19px;
 }
 
-.link {
+.link-main {
    position: relative;
    color: var(--color-white);
    text-decoration: none;
@@ -16,19 +16,19 @@
 }
 
 /* agrega el “pipe” a todos menos al último */
-.link:not(:last-child)::after {
+.link-main:not(:last-child)::after {
   content: "|";
   margin-left: 19px;      /* espacio entre texto y pipe */
   color: var(--color-white); /* evita heredar el color del enlace activo */
 }
 
-.active {
+.active-main {
    color: var(--color-yellow-milani );
 
 }
 
 /* Subrayado debajo del texto activo */
-.active::before {
+.active-main::before {
   content: "";
   position: absolute;
   bottom: -10px;             /* ajusta según el tamaño de fuente */
@@ -42,5 +42,5 @@
 
 /* Opcional: ocultar pipes en móvil */
 @media (max-width: 640px) {
-  .link:not(:last-child)::after { content: none; }
+  .link-main:not(:last-child)::after { content: none; }
 }

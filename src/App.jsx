@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import './App.css'
+import './milaniStyles.css';
 import { Layout } from './Layout';
 import { Home } from './Home';
 import { WpPage } from './WpPage';

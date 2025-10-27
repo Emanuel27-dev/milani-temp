@@ -45,6 +45,7 @@
    --color-black: #000;
    --color-red: #CE2229;
    --color-grey1: #808080;
+   --color-grey2: #949494;
    --color-yellow-milani: #FFC527;
 }
 
@@ -91,7 +92,7 @@ strong {
 .outlet {
    /* border: 1px solid red; */
 }
-
+/* 
 .container {
    max-width: 1425px;
    margin: 0 auto;
@@ -99,4 +100,4 @@ strong {
    justify-content: center;
    min-height: 300px;
    padding: 0 20px;
-}
+} */
