@@ -3,20 +3,31 @@ import { Outlet } from "react-router-dom";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { useWpAssets } from "./hooks/useWpAssets";
-import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets"; // ✅ nuevo
+import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";
 
 export function Layout() {
-  useWpAssets(); // Archivos CSS/JS físicos (tema, plugins)
-  useWpGlobalAssets(); // Estilos y bodyAttributes desde GraphQL
+  useWpAssets();
+  useWpGlobalAssets();
 
   return (
     <>
       <Header />
-      <main id="ajax-content-wrap" role="main">
-        <div className="container main-content">
-          <Outlet />
+
+      {/* Estructura idéntica a Salient */}
+      <div className="ocm-effect-wrap">
+        <div className="ocm-effect-wrap-inner">
+          <div id="ajax-content-wrap">
+            <div className="container-wrap">
+              <div className="container main-content" role="main">
+                <div className="row">
+                  <Outlet /> {/* aquí entra <WpPage /> */}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
+      </div>
+
       <Footer />
     </>
   );

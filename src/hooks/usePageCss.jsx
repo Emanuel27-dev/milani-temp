@@ -5,7 +5,7 @@ import { useEffect } from "react";
  * en el <head> del frontend React.
  *
  * Recibe:
- * - node: objeto con los campos wpbCss, vcCustomCss, dynamicCss
+ * - node: objeto con los campos wpbCss, vcCustomCss, dynamicCss, inlineDynamicCss
  * - inlineStyles: string CSS adicional (wpbInlineStyles)
  */
 export function usePageCss(node, inlineStyles) {
@@ -17,6 +17,7 @@ export function usePageCss(node, inlineStyles) {
       node.wpbCss,
       node.vcCustomCss,
       node.dynamicCss,
+      node.inlineDynamicCss, // ✅ nuevo campo: CSS dinámico específico por página
       inlineStyles,
     ]
       .filter(Boolean)
@@ -24,10 +25,11 @@ export function usePageCss(node, inlineStyles) {
 
     if (!combinedCss) return;
 
-    // 🔹 Crea o reemplaza un <style> único por página
+    // 🔹 ID único por página para evitar conflictos o duplicados
     const styleId = `wp-page-css-${node.databaseId || node.id || "unknown"}`;
     let styleEl = document.getElementById(styleId);
 
+    // 🔹 Crea el <style> si no existe
     if (!styleEl) {
       styleEl = document.createElement("style");
       styleEl.id = styleId;
@@ -48,6 +50,7 @@ export function usePageCss(node, inlineStyles) {
     node?.wpbCss,
     node?.vcCustomCss,
     node?.dynamicCss,
+    node?.inlineDynamicCss, // ✅ dependencia agregada
     inlineStyles,
   ]);
 }
