@@ -1,206 +1,133 @@
-// useWpAssets.js
+// src/hooks/useWpAssets.js
 import { useEffect } from "react";
 
-const inject = (tag) => { document.head.appendChild(tag); return () => tag.remove(); };
-const mkLink = (href) => Object.assign(document.createElement("link"), { rel: "stylesheet", href });
-const mkScript = (src, { defer = true } = {}) =>
-  Object.assign(document.createElement("script"), { src, defer });
+export function useWpAssets() {
+  useEffect(() => {
+    const base = "https://milani.xpress.ws";
 
-/** Inyecta un <link> y lo borra si la URL no existe (onerror). */
-function injectIfExists(href) {
-  const el = mkLink(href);
-  el.onerror = () => el.remove();
-  return inject(el);
-}
+    // === Helpers ===
+    const inject = (el) => {
+      document.head.appendChild(el);
+      return () => el.remove();
+    };
 
-/** Carga el primer script que exista (en orden). */
-async function loadSeq(urls, { defer = true } = {}) {
-  for (const u of urls) {
-    try {
-      await new Promise((res, rej) => {
-        const s = mkScript(u, { defer });
-        s.onload = () => res();
-        s.onerror = () => { s.remove(); rej(new Error(u)); };
+    const mkLink = (href) =>
+      Object.assign(document.createElement("link"), {
+        rel: "stylesheet",
+        href,
+      });
+
+    const mkScript = (src, opts = { defer: true }) =>
+      Object.assign(document.createElement("script"), { src, ...opts });
+
+    const loadScript = (src, opts = { defer: true }) =>
+      new Promise((resolve, reject) => {
+        const s = mkScript(src, opts);
+        s.onload = resolve;
+        s.onerror = reject;
         document.head.appendChild(s);
       });
-      return; // cargó uno, paramos
-    } catch { /* intenta siguiente */ }
-  }
-}
 
-export function useWpAssets() {
-  // Clases que el tema necesita en <body>
-  useEffect(() => {
-    const cls = ["material", "wpb-js-composer", "vc_responsive"];
-    document.body.classList.add(...cls);
-    return () => document.body.classList.remove(...cls);
-  }, []);
+    // === CSS global (TODOS los originales) ===
+    const cssFiles = [
+      // --- SALIENT (tema principal + hijo) ---
+      `${base}/wp-content/themes/salient/style.css`,
+      `${base}/wp-content/themes/salient-child/style.css`,
 
-  // CSS + JS del theme
-  useEffect(() => {
-    const base = import.meta.env.VITE_WP_BASE_URL?.replace(/\/+$/, "");
-    if (!base) return;
+      // --- Core del tema y layout ---
+      `${base}/wp-content/themes/salient/css/build/grid-system.css`,
+      `${base}/wp-content/themes/salient/css/build/style.css`,
+      `${base}/wp-content/themes/salient/css/build/style-non-critical.css`,
+      `${base}/wp-content/themes/salient/css/build/responsive.css`,
+      `${base}/wp-content/themes/salient/css/build/skin-material.css`,
 
-    // ===== CSS =====
-    const cleanCss = [
-      // Salient core
-      inject(mkLink(`${base}/wp-content/themes/salient/css/build/grid-system.css`)),
-      inject(mkLink(`${base}/wp-content/themes/salient/css/build/style.css`)),
-      injectIfExists(`${base}/wp-content/themes/salient/css/build/style-non-critical.css`),
-      inject(mkLink(`${base}/wp-content/themes/salient/css/build/responsive.css`)),
-      inject(mkLink(`${base}/wp-content/themes/salient/css/build/skin-material.css`)),
+      // --- Estilos dinámicos generados por el panel ---
+      `${base}/wp-content/themes/salient/css/salient-dynamic-styles.css?ver=${Math.floor(
+        Math.random() * 99999
+      )}`,
+      `${base}/wp-content/uploads/salient/menu-dynamic.css`,
 
-      // Algunos elementos comunes (iwithtext, cf7)
-      injectIfExists(`${base}/wp-content/themes/salient/css/build/elements/element-icon-with-text.css`),
-      injectIfExists(`${base}/wp-content/themes/salient/css/build/third-party/cf7.css`),
+      // --- Fuentes e iconos ---
+      "https://fonts.googleapis.com/css?family=Archivo:400,700",
+      `${base}/wp-content/themes/salient/css/font-awesome-legacy.min.css`,
 
-      // WPBakery
-      inject(mkLink(`${base}/wp-content/themes/salient/css/build/plugins/js_composer.css`)),
-      inject(mkLink(`${base}/wp-content/themes/salient/css/font-awesome-legacy.min.css`)),
-      inject(mkLink(`${base}/wp-content/plugins/js_composer_salient/assets/css/js_composer.min.css`)),
+      // --- Componentes adicionales de Salient ---
+      `${base}/wp-content/themes/salient/css/build/plugins/jquery.fancybox.css`,
+      `${base}/wp-content/themes/salient/css/build/off-canvas/core.css`,
+      `${base}/wp-content/themes/salient/css/build/off-canvas/slide-out-right-material.css`,
+      `${base}/wp-content/themes/salient/css/build/off-canvas/slide-out-right-hover.css`,
 
-      // Dinámicos del sitio
-      injectIfExists(`${base}/wp-content/uploads/salient/menu-dynamic.css`),
-      injectIfExists(`${base}/wp-content/themes/salient/css/salient-dynamic-styles.css?ver=${Math.round(Math.random() * 100000)}`),
-
-      // Opcionales (por si existen)
-      injectIfExists(`${base}/wp-content/themes/salient/style.css`),
-      injectIfExists(`${base}/wp-content/themes/salient-child/style.css`),
+      // --- WPBakery (page builder) ---
+      `${base}/wp-content/themes/salient/css/build/plugins/js_composer.css`,
+      `${base}/wp-content/plugins/js_composer_salient/assets/css/js_composer.min.css`,
     ];
 
-    // ===== JS =====
+    const cssRemovers = cssFiles.map((href) => inject(mkLink(href)));
+
+    // === Carga JS secuencial ===
     (async () => {
-      // jQuery + migrate (sin defer)
-      await loadSeq([`${base}/wp-includes/js/jquery/jquery.min.js`], { defer: false });
-      await loadSeq([`${base}/wp-includes/js/jquery/jquery-migrate.min.js`], { defer: false });
+      try {
+        // 1️⃣ jQuery base primero (sin defer)
+        await loadScript(`${base}/wp-includes/js/jquery/jquery.min.js`, {
+          defer: false,
+        });
+        await loadScript(`${base}/wp-includes/js/jquery/jquery-migrate.min.js`, {
+          defer: false,
+        });
 
-      // dependencias base
-      await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/imagesLoaded.min.js`]);
-      await loadSeq([
-        `${base}/wp-content/themes/salient/js/build/third-party/waypoints.js`,
-        `${base}/wp-content/plugins/js_composer/assets/lib/waypoints/waypoints.min.js`,
-      ]);
+        // Forzar jQuery global
+        window.$ = window.jQuery = window.jQuery || window.$;
 
-      // utilidades del theme
-      await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/jquery.easing.min.js`]).catch(() => {});
-      await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/transit.min.js`]).catch(() => {});
-      await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/superfish.js`]).catch(() => {});
-      await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/jquery.fancybox.js`]).catch(() => {});
-      await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/anime.min.js`]).catch(() => {});
-      await loadSeq([
-        `${base}/wp-includes/js/hoverintent-js.min.js`,
-        `${base}/wp-content/themes/salient/js/build/third-party/hoverintent.min.js`,
-      ]).catch(() => {});
-      await loadSeq([`${base}/wp-content/plugins/salient-core/js/third-party/touchswipe.min.js`]).catch(() => {});
+        // 2️⃣ Librerías de terceros (todas las que tenías originalmente)
+        await loadScript(
+          `${base}/wp-content/themes/salient/js/build/third-party/jquery.easing.min.js`
+        );
+        await loadScript(
+          `${base}/wp-content/themes/salient/js/build/third-party/jquery.mousewheel.min.js`
+        );
+        await loadScript(
+          `${base}/wp-content/themes/salient/js/build/third-party/transit.min.js`
+        );
+        await loadScript(
+          `${base}/wp-content/themes/salient/js/build/third-party/waypoints.js`
+        );
+        await loadScript(
+          `${base}/wp-content/themes/salient/js/build/third-party/imagesLoaded.min.js`
+        );
+        await loadScript(
+          `${base}/wp-content/themes/salient/js/build/third-party/hoverintent.min.js`
+        );
+        await loadScript(
+          `${base}/wp-content/themes/salient/js/build/third-party/jquery.fancybox.js`
+        );
+        await loadScript(
+          `${base}/wp-content/themes/salient/js/build/third-party/anime.min.js`
+        );
+        await loadScript(
+          `${base}/wp-content/themes/salient/js/build/third-party/superfish.js`
+        );
 
-      // núcleo del theme
-      await loadSeq([`${base}/wp-content/themes/salient/js/build/priority.js`]).catch(() => {});
-      await loadSeq([`${base}/wp-content/themes/salient/js/build/init.js`]);
+        // 3️⃣ Núcleo del tema
+        await loadScript(`${base}/wp-content/themes/salient/js/build/priority.js`);
+        await loadScript(`${base}/wp-content/themes/salient/js/build/init.js`);
 
-      // frontend WPBakery
-      await loadSeq([
-        `${base}/wp-content/plugins/js_composer_salient/assets/js/dist/js_composer_front.min.js`,
-        `${base}/wp-content/plugins/js_composer/assets/js/dist/js_composer_front.min.js`,
-      ]);
+        // 4️⃣ WPBakery (interactividad del builder)
+        await loadScript(
+          `${base}/wp-content/plugins/js_composer_salient/assets/js/dist/js_composer_front.min.js?ver=7.8.1`
+        );
+      } catch (err) {
+        console.warn("Error cargando asset:", err);
+      }
     })();
 
-    // Limpieza si desmonta
-    return () => { cleanCss.forEach((fn) => fn && fn()); };
+    // === Clases necesarias para layout ===
+    const bodyCls = ["material", "wpb-js-composer", "vc_responsive"];
+    document.body.classList.add(...bodyCls);
+
+    // === Limpieza al desmontar ===
+    return () => {
+      cssRemovers.forEach((r) => r());
+      document.body.classList.remove(...bodyCls);
+    };
   }, []);
 }
-
-
-
-
-// src/hooks/useWpAssets.js
-// import { useEffect } from "react";
-
-// const inject = (tag) => {
-//   document.head.appendChild(tag);
-//   return () => tag.remove();
-// };
-
-// const mkLink = (href) => Object.assign(document.createElement("link"), { rel: "stylesheet", href });
-// const mkScript = (src, { defer = true } = {}) =>
-//   Object.assign(document.createElement("script"), { src, defer });
-
-// function injectIfExists(href) {
-//   const el = mkLink(href);
-//   el.onerror = () => el.remove();
-//   return inject(el);
-// }
-
-// async function loadSeq(urls, { defer = true } = {}) {
-//   for (const u of urls) {
-//     try {
-//       await new Promise((res, rej) => {
-//         const s = mkScript(u, { defer });
-//         s.onload = () => res();
-//         s.onerror = () => { s.remove(); rej(new Error(u)); };
-//         document.head.appendChild(s);
-//       });
-//       return;
-//     } catch (e){console.log(e)}
-//   }
-// }
-
-// export function useWpAssets() {
-//   // Clases necesarias del tema
-//   useEffect(() => {
-//     const cls = ["material", "wpb-js-composer", "vc_responsive"];
-//     document.body.classList.add(...cls);
-//     return () => document.body.classList.remove(...cls);
-//   }, []);
-
-//   // Inyectar assets globales del theme
-//   useEffect(() => {
-//     const base = import.meta.env.VITE_WP_BASE_URL?.replace(/\/+$/, "");
-//     if (!base) return;
-
-//     // ===== CSS base =====
-//     const cleanCss = [
-//       inject(mkLink(`${base}/wp-content/themes/salient/css/build/grid-system.css`)),
-//       inject(mkLink(`${base}/wp-content/themes/salient/css/build/style.css`)),
-//       injectIfExists(`${base}/wp-content/themes/salient/css/build/style-non-critical.css`),
-//       inject(mkLink(`${base}/wp-content/themes/salient/css/build/responsive.css`)),
-//       inject(mkLink(`${base}/wp-content/themes/salient/css/build/skin-material.css`)),
-//       injectIfExists(`${base}/wp-content/themes/salient/css/build/elements/element-icon-with-text.css`),
-//       injectIfExists(`${base}/wp-content/themes/salient/css/build/third-party/cf7.css`),
-//       inject(mkLink(`${base}/wp-content/themes/salient/css/build/plugins/js_composer.css`)),
-//       inject(mkLink(`${base}/wp-content/themes/salient/css/font-awesome-legacy.min.css`)),
-//       inject(mkLink(`${base}/wp-content/plugins/js_composer_salient/assets/css/js_composer.min.css`)),
-
-//       // Dinámicos globales (menú, estilos globales del theme)
-//       injectIfExists(`${base}/wp-content/uploads/salient/menu-dynamic.css`),
-//       injectIfExists(`${base}/wp-content/themes/salient/css/salient-dynamic-styles.css`),
-
-//       // Child theme opcional
-//       injectIfExists(`${base}/wp-content/themes/salient-child/style.css`),
-//     ];
-
-//     // ===== JS =====
-//     (async () => {
-//       await loadSeq([`${base}/wp-includes/js/jquery/jquery.min.js`], { defer: false });
-//       await loadSeq([`${base}/wp-includes/js/jquery/jquery-migrate.min.js`], { defer: false });
-
-//       await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/imagesLoaded.min.js`]);
-//       await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/waypoints.js`]);
-//       await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/jquery.easing.min.js`]).catch(() => {});
-//       await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/transit.min.js`]).catch(() => {});
-//       await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/superfish.js`]).catch(() => {});
-//       await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/jquery.fancybox.js`]).catch(() => {});
-//       await loadSeq([`${base}/wp-content/themes/salient/js/build/third-party/anime.min.js`]).catch(() => {});
-//       await loadSeq([`${base}/wp-content/plugins/salient-core/js/third-party/touchswipe.min.js`]).catch(() => {});
-
-//       await loadSeq([`${base}/wp-content/themes/salient/js/build/priority.js`]).catch(() => {});
-//       await loadSeq([`${base}/wp-content/themes/salient/js/build/init.js`]);
-
-//       await loadSeq([
-//         `${base}/wp-content/plugins/js_composer_salient/assets/js/dist/js_composer_front.min.js`,
-//         `${base}/wp-content/plugins/js_composer/assets/js/dist/js_composer_front.min.js`,
-//       ]);
-//     })();
-
-//     return () => { cleanCss.forEach((fn) => fn && fn()); };
-//   }, []);
-// }

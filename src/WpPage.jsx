@@ -449,159 +449,11 @@
 
 
 // // src/pages/WpPage.jsx
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client/react";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import DOMPurify from "dompurify";
-
-const NODE_BY_PATH = gql`
-  query NodeByPath($uri: ID!) {
-    contentNode(id: $uri, idType: URI) {
-      __typename
-      id
-      uri
-      slug
-      ... on Page {
-        title
-        contentRendered
-        wpbCss
-        vcCustomCss
-        dynamicCss
-      }
-      ... on Post {
-        title
-        contentRendered
-        wpbCss
-        vcCustomCss
-        dynamicCss
-      }
-      ... on Service {
-        title
-        contentRendered
-        wpbCss
-        vcCustomCss
-        dynamicCss
-      }
-    }
-    termNode(id: $uri, idType: URI) {
-      __typename
-      id
-      uri
-      slug
-      name
-      description
-    }
-    salientDynamicCss
-    salientCustomCss
-  }
-`;
-
-export function WpPage({ fixedUri, fixedSlug }) {
-  const { pathname } = useLocation();
-  const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
-  const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : autoUri);
-
-  const { data, loading, error } = useQuery(NODE_BY_PATH, {
-    variables: { uri },
-    fetchPolicy: "network-only",
-  });
-
-  /* -----------------------------------------------------
-   * 1️⃣ Inyectar CSS global de Salient (solo una vez)
-   * ----------------------------------------------------- */
-  useEffect(() => {
-    if (!data) return;
-
-    // Custom CSS global
-    const css = data.salientCustomCss;
-    if (css && !document.getElementById("salient-custom-css-inline")) {
-      const tag = document.createElement("style");
-      tag.id = "salient-custom-css-inline";
-      tag.textContent = css;
-      document.head.appendChild(tag);
-    }
-
-    // menu-dynamic.css
-    const href = data.salientDynamicCss;
-    if (href && !document.getElementById("salient-menu-dynamic")) {
-      const link = document.createElement("link");
-      link.id = "salient-menu-dynamic";
-      link.rel = "stylesheet";
-      link.href = href;
-      document.head.appendChild(link);
-    }
-  }, [data?.salientCustomCss, data?.salientDynamicCss]);
-
-  /* -----------------------------------------------------
-   * 2️⃣ Inyectar CSS dinámico específico de la página
-   * ----------------------------------------------------- */
-  useEffect(() => {
-    if (!data?.contentNode) return;
-    const node = data.contentNode;
-
-    // Helper para inyectar un <style> en <head>
-    const injectStyle = (id, css) => {
-      if (!css) return;
-      let tag = document.getElementById(id);
-      if (!tag) {
-        tag = document.createElement("style");
-        tag.id = id;
-        document.head.appendChild(tag);
-      }
-      tag.textContent = css;
-    };
-
-    injectStyle("wpbCss", node.wpbCss);
-    injectStyle("vcCustomCss", node.vcCustomCss);
-    injectStyle("wp-dynamic-css", node.dynamicCss);
-
-    return () => {
-      document.getElementById("wpbCss")?.remove();
-      document.getElementById("vcCustomCss")?.remove();
-      document.getElementById("wp-dynamic-css")?.remove();
-    };
-  }, [data?.contentNode?.id]);
-
-  /* -----------------------------------------------------
-   * 3️⃣ Render del contenido (HTML)
-   * ----------------------------------------------------- */
-  if (loading) return null;
-  if (error) return <p>Error cargando el contenido</p>;
-
-  const node = data?.contentNode;
-  if (node) {
-    const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
-    return (
-      <article>
-        <div dangerouslySetInnerHTML={{ __html: safeHtml }} />
-      </article>
-    );
-  }
-
-  const term = data?.termNode;
-  if (term) {
-    const safe = DOMPurify.sanitize(term.description || "");
-    return (
-      <section>
-        <h1>{term.name}</h1>
-        <div dangerouslySetInnerHTML={{ __html: safe }} />
-      </section>
-    );
-  }
-
-  return <p>Página no encontrada</p>;
-}
-
-
-
-// src/pages/WpPage.jsx
 // import { gql } from "@apollo/client";
 // import { useQuery } from "@apollo/client/react";
 // import { useLocation } from "react-router-dom";
 // import { useEffect } from "react";
 // import DOMPurify from "dompurify";
-// import { useWpAssets } from "../src/hooks/useWpAssets.jsx";
 
 // const NODE_BY_PATH = gql`
 //   query NodeByPath($uri: ID!) {
@@ -616,7 +468,6 @@ export function WpPage({ fixedUri, fixedSlug }) {
 //         wpbCss
 //         vcCustomCss
 //         dynamicCss
-//         wpbShortcodeCss
 //       }
 //       ... on Post {
 //         title
@@ -633,15 +484,20 @@ export function WpPage({ fixedUri, fixedSlug }) {
 //         dynamicCss
 //       }
 //     }
+//     termNode(id: $uri, idType: URI) {
+//       __typename
+//       id
+//       uri
+//       slug
+//       name
+//       description
+//     }
 //     salientDynamicCss
 //     salientCustomCss
 //   }
 // `;
 
 // export function WpPage({ fixedUri, fixedSlug }) {
-//   // Cargar assets globales del theme (solo una vez)
-//   useWpAssets();
-
 //   const { pathname } = useLocation();
 //   const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
 //   const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : autoUri);
@@ -651,12 +507,14 @@ export function WpPage({ fixedUri, fixedSlug }) {
 //     fetchPolicy: "network-only",
 //   });
 
-//   // CSS global de Salient
+//   /* -----------------------------------------------------
+//    * 1️⃣ Inyectar CSS global de Salient (solo una vez)
+//    * ----------------------------------------------------- */
 //   useEffect(() => {
 //     if (!data) return;
-//     const css = data.salientCustomCss;
-//     const href = data.salientDynamicCss;
 
+//     // Custom CSS global
+//     const css = data.salientCustomCss;
 //     if (css && !document.getElementById("salient-custom-css-inline")) {
 //       const tag = document.createElement("style");
 //       tag.id = "salient-custom-css-inline";
@@ -664,6 +522,8 @@ export function WpPage({ fixedUri, fixedSlug }) {
 //       document.head.appendChild(tag);
 //     }
 
+//     // menu-dynamic.css
+//     const href = data.salientDynamicCss;
 //     if (href && !document.getElementById("salient-menu-dynamic")) {
 //       const link = document.createElement("link");
 //       link.id = "salient-menu-dynamic";
@@ -673,11 +533,14 @@ export function WpPage({ fixedUri, fixedSlug }) {
 //     }
 //   }, [data?.salientCustomCss, data?.salientDynamicCss]);
 
-//   // CSS dinámico del nodo actual (WPBakery, shortcode, etc.)
+//   /* -----------------------------------------------------
+//    * 2️⃣ Inyectar CSS dinámico específico de la página
+//    * ----------------------------------------------------- */
 //   useEffect(() => {
 //     if (!data?.contentNode) return;
 //     const node = data.contentNode;
 
+//     // Helper para inyectar un <style> en <head>
 //     const injectStyle = (id, css) => {
 //       if (!css) return;
 //       let tag = document.getElementById(id);
@@ -691,17 +554,18 @@ export function WpPage({ fixedUri, fixedSlug }) {
 
 //     injectStyle("wpbCss", node.wpbCss);
 //     injectStyle("vcCustomCss", node.vcCustomCss);
-//     injectStyle("wpbShortcodeCss", node.wpbShortcodeCss);
 //     injectStyle("wp-dynamic-css", node.dynamicCss);
 
 //     return () => {
-//       ["wpbCss", "vcCustomCss", "wpbShortcodeCss", "wp-dynamic-css"].forEach((id) =>
-//         document.getElementById(id)?.remove()
-//       );
+//       document.getElementById("wpbCss")?.remove();
+//       document.getElementById("vcCustomCss")?.remove();
+//       document.getElementById("wp-dynamic-css")?.remove();
 //     };
 //   }, [data?.contentNode?.id]);
 
-//   // Render
+//   /* -----------------------------------------------------
+//    * 3️⃣ Render del contenido (HTML)
+//    * ----------------------------------------------------- */
 //   if (loading) return null;
 //   if (error) return <p>Error cargando el contenido</p>;
 
@@ -715,5 +579,182 @@ export function WpPage({ fixedUri, fixedSlug }) {
 //     );
 //   }
 
+//   const term = data?.termNode;
+//   if (term) {
+//     const safe = DOMPurify.sanitize(term.description || "");
+//     return (
+//       <section>
+//         <h1>{term.name}</h1>
+//         <div dangerouslySetInnerHTML={{ __html: safe }} />
+//       </section>
+//     );
+//   }
+
 //   return <p>Página no encontrada</p>;
 // }
+
+
+
+// src/pages/WpPage.jsx
+// import { gql } from "@apollo/client";
+// import { useQuery } from "@apollo/client/react";
+// import { useLocation } from "react-router-dom";
+// import DOMPurify from "dompurify";
+// import { usePageCss } from "./hooks/usePageCss";
+
+
+
+// const NODE_BY_PATH = gql`
+//   query NodeByPath($uri: ID!) {
+//     contentNode(id: $uri, idType: URI) {
+//       __typename
+//       id
+//       uri
+//       slug
+//       ... on Page {
+//         title
+//         contentRendered
+//         wpbCss
+//         vcCustomCss
+//         dynamicCss
+//       }
+//       ... on Post {
+//         title
+//         contentRendered
+//         wpbCss
+//         vcCustomCss
+//         dynamicCss
+//       }
+//     }
+//   }
+// `;
+
+// export function WpPage({ fixedUri, fixedSlug }) {
+//   const { pathname } = useLocation();
+//   const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
+//   const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : autoUri);
+
+//   const { data, loading, error } = useQuery(NODE_BY_PATH, {
+//     variables: { uri },
+//     fetchPolicy: "network-only",
+//   });
+
+//   const node = data?.contentNode;
+//   usePageCss(node); // ✅ SIEMPRE se llama, sin condicional
+
+
+//   if (loading) return null;
+//   if (error) return <p>Error cargando el contenido</p>;
+//   if (!node) return <p>Página no encontrada</p>;
+
+
+//   const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
+//   return <article dangerouslySetInnerHTML={{ __html: safeHtml }} />;
+// }
+
+
+
+
+// src/pages/WpPage.jsx
+// src/pages/WpPage.jsx
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
+import { useLocation } from "react-router-dom";
+import DOMPurify from "dompurify";
+
+// 🔹 Hooks personalizados
+import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";   // estilos globales + body inicial
+import { useWpBodyAttributesFromWp } from "./hooks/useWpBodyAttributesFromWp"; // body dinámico por página
+import { usePageCss } from "./hooks/usePageCss";                 // CSS dinámico (WPBakery + Salient)
+import { useWpReflow } from "./hooks/useWpReflow";               // reactivación de scripts y animaciones
+
+// 🔹 Query principal
+const NODE_BY_PATH = gql`
+  query NodeByPath($uri: ID!, $id: Int) {
+    contentNode(id: $uri, idType: URI) {
+      __typename
+      id
+      databaseId
+      uri
+      slug
+      ... on Page {
+        title
+        contentRendered
+        wpbCss
+        vcCustomCss
+        dynamicCss
+      }
+      ... on Post {
+        title
+        contentRendered
+        wpbCss
+        vcCustomCss
+        dynamicCss
+      }
+    }
+    bodyAttributes
+    wpbInlineStyles(id: $id)
+  }
+`;
+
+export function WpPage({ fixedUri, fixedSlug }) {
+  const { pathname } = useLocation();
+  const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
+  const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : autoUri);
+
+  /* -------------------------------------------------------------
+   * 1️⃣ Primera consulta: obtiene la página base (sin inlineStyles)
+   * ------------------------------------------------------------- */
+  const { data, loading, error } = useQuery(NODE_BY_PATH, {
+    variables: { uri, id: 0 },
+    fetchPolicy: "network-only",
+  });
+
+  const node = data?.contentNode;
+  const dbId = node?.databaseId ?? 0;
+
+  /* -------------------------------------------------------------
+   * 2️⃣ Segunda consulta: obtiene inlineStyles usando el databaseId
+   * ------------------------------------------------------------- */
+  const { data: inlineData } = useQuery(NODE_BY_PATH, {
+    variables: { uri, id: dbId },
+    skip: !dbId,
+    fetchPolicy: "network-only",
+  });
+
+  /* -------------------------------------------------------------
+   * 3️⃣ Hooks de sincronización visual
+   * ------------------------------------------------------------- */
+
+  // 🔹 Cargar estilos globales (solo una vez, theme Salient)
+  useWpGlobalAssets();
+
+  // 🔹 Actualizar body attributes específicos de la página
+  useWpBodyAttributesFromWp({ data: inlineData || data });
+
+  // 🔹 Inyectar CSS dinámico de WPBakery / Salient (por página)
+  usePageCss(node, inlineData?.wpbInlineStyles);
+
+  // 🔹 Reactivar scripts, animaciones y sliders de WPBakery / Salient
+  useWpReflow([node?.id]);
+
+  /* -------------------------------------------------------------
+   * 4️⃣ Renderizado seguro del contenido
+   * ------------------------------------------------------------- */
+
+  if (loading) return null;
+  if (error) return <p>Error cargando el contenido</p>;
+  if (!node) return <p>Página no encontrada</p>;
+
+  // Limpieza de contenido (seguridad)
+  const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
+
+  return (
+    <article
+      key={node?.id}
+      className="wpb-content-wrapper"
+      dangerouslySetInnerHTML={{ __html: safeHtml }}
+    />
+  );
+}
+
