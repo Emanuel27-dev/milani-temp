@@ -50,6 +50,8 @@ const NODE_BY_PATH = gql`
     }
     bodyAttributes
     wpbInlineStyles(id: $id)
+
+    
   }
 `;
 
