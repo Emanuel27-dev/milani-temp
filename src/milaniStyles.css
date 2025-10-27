@@ -1,0 +1,439 @@
+/* Estilos para header */
+/* === ESTILO BASE === */
+header {
+  background-color: #ce212a;
+  font-family: "Archivo SemiCondensed";
+  color: var(--color-white);
+}
+
+.header-container {
+  position: relative;
+  max-width: 1425px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+/* === LOGO === */
+.logo-block {
+   width: 542px;
+}
+
+.logo {
+   display: block;
+   width: 100%;
+   object-fit: cover;
+}
+
+/* === MENÚS === */
+.menus {
+   /* border: 1px solid white; */
+   display: flex;
+   flex-direction: column;
+   /* color: var(--color-white); */
+   gap: 33px;
+}
+
+.top-menu {
+   /* border: 1px solid green; */
+   display: flex;
+   gap: 15px;
+   align-items: center;
+}
+
+.top-menu a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.top-menu a:hover {
+  text-decoration: underline;
+}
+
+.link {
+   color: var(--color-white);
+   text-decoration: none;
+}
+
+.active {
+   color: var(--color-yellow-milani);
+}         
+
+.search-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.main-menu {
+   /* border: 1px solid blue; */
+   padding-bottom: .5rem;
+   display: flex;
+   justify-content: end;
+   gap: 19px;
+}
+
+.link-main {
+   position: relative;
+   color: var(--color-white);
+   text-decoration: none;
+   /* border: 1px solid white; */
+   display: flex;
+   align-items: center;
+}
+
+/* agrega el “pipe” a todos menos al último */
+.link-main:not(:last-child)::after {
+  content: "|";
+  margin-left: 19px;      /* espacio entre texto y pipe */
+  color: var(--color-white); /* evita heredar el color del enlace activo */
+}
+
+.active-main {
+   color: var(--color-yellow-milani );
+
+}
+
+/* Subrayado debajo del texto activo */
+.active-main::before {
+  content: "";
+  position: absolute;
+  bottom: -10px;             /* ajusta según el tamaño de fuente */
+  left: 0;
+  width: 70%;
+  height: 3px;              /* grosor de la línea */
+  background-color: var(--color-yellow-milani);
+  border-radius: 2px;
+}
+
+
+/* Opcional: ocultar pipes en móvil */
+@media (max-width: 640px) {
+  .link-main:not(:last-child)::after { content: none; }
+}
+
+
+
+
+/* === ICONO HAMBURGUESA (oculto en desktop) === */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 2px;
+}
+
+/* === PANEL MÓVIL (oculto por defecto) === */
+.mobile-menu {
+  display: none;
+}
+
+/* === RESPONSIVE: MOBILE (≤1300px) === */
+@media (max-width: 1365px) {
+  .menus {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 320px;
+    height: 100vh;
+    background-color: #c5181b;
+    color: #fff;
+    padding: 2rem 1.5rem;
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+
+  .mobile-menu.open {
+    display: flex;
+  }
+
+  .mobile-main a,
+  .mobile-top a {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .mobile-main a {
+    font-weight: 600;
+  }
+
+  .mobile-top a {
+    font-size: 1rem;
+  }
+
+  .mobile-menu hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 1rem 0;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* ESTILOS DEL FOOTER */
+.footer {
+  background-color: var(--color-black);
+  padding: 50px;
+}
+
+.container {
+  max-width: 1425px;
+  margin: 0 auto;
+}
+
+.footer-header {
+  margin-bottom: 44px;
+}
+
+.footer-header h4 {
+  color: var(--color-white);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 64px;
+  margin-bottom: 44px;
+}
+
+.service-column h3 {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 12px !important;
+  color: var(--color-white);
+}
+
+.service-column.with-border {
+  border-left: 1px solid #666666;
+  padding-left: 64px;
+}
+
+.service-column ul {
+  margin: 0;
+}
+
+.service-column ul li {
+  margin-bottom: 7px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-grey2);
+  line-height: 1.5;
+  list-style: none;
+}
+
+.contact-section {
+  display: flex;
+  flex-direction: row !important;
+  align-items: end !important;
+  gap: 30px;
+  margin-bottom: 44px;
+  /* border: 1px solid white; */
+}
+
+.contact-info {
+  padding-left: 0 !important;
+}
+
+.contact-info h3 {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--color-white);
+  margin-bottom: 3px;
+}
+
+.contact-info .phone {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #aeaeae;
+}
+
+.contact-info .email {
+  font-size: 16px;
+  font-weight: 500;
+  color: #ccc;
+}
+
+.bbb-figure {
+  width: 64px;
+}
+
+.bbb-figure img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.bbb-badge {
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #000;
+  font-size: 12px;
+}
+
+.tsbc-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.tsbc-info {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color-grey2);
+}
+
+.icon-gear {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #666;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.canadian-business {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  margin: 0;
+}
+
+.canadian-business span {
+  color: var(--color-white);
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.contact-box1 {
+  display: flex;
+  align-items: end;
+  gap: 43px;
+}
+
+.footer-bottom {
+  font-size: 16px;
+  color: var(--color-grey2);
+}
+
+.footer-bottom p {
+  margin-bottom: 10px;
+}
+
+.footer-bottom span {
+  color: var(--color-yellow-milani);
+}
+
+/* Mobile specific styles */
+@media (max-width: 768px) {
+  .footer {
+    padding: 30px 20px;
+  }
+
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+
+  .service-column:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .service-column.with-border {
+    border-left: none;
+    border-top: 1px solid #555;
+    padding-left: 0;
+    padding-top: 25px;
+    margin-top: 25px;
+  }
+
+  .contact-section {
+    flex-direction: column !important;
+    align-items: start !important;
+  }
+
+  .canadian-business {
+    margin-top: 20px;
+  }
+
+  .canadian-business span {
+    font-size: 16px;
+  }
+
+  .footer-bottom {
+    font-size: 14px;
+    color: var(--color-grey2);
+  }
+}
+
+@media (min-width: 769px) {
+  .services-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .contact-section {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .canadian-business {
+    margin-left: auto;
+  }
+}
