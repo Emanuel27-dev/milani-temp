@@ -209,6 +209,47 @@ header {
 
 
 /* ESTILOS DEL FOOTER */
+
+.headFooter {
+   background-color: var(--color-red);
+}
+
+.head {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.figureFooter {
+   width: 419px;
+}
+
+.imgFooter {
+   display: block;
+   width: 100%;
+   object-fit: cover;
+}
+
+.buttons {
+   display: flex;
+   gap: 15px;
+}
+
+.button {
+   background-color: var(--color-yellow-milani);
+   color: var(--color-black);
+   padding: 8px 16px;
+   border-radius: 6px;
+   font-size: 21px;
+   font-weight: bold;
+
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+
+
+
 .footer {
   background-color: var(--color-black);
   padding: 50px;

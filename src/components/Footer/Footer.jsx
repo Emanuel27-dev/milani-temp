@@ -1,33 +1,33 @@
-// import styles from "./styles/footer.module.css";
-// import logo from "./../../assets/LogoMilaniFooter.png";
-// import wsspIcon from "./../../assets/wassp.png";
-// import messageIcon from "./../../assets/message.png";
+import logo from "./../../assets/LogoMilaniFooter.png";
+import wsspIcon from "./../../assets/wassp.png";
+import messageIcon from "./../../assets/message.png";
 import tuerca from "./../../assets/tuerca.png";
 import bbb from "./../../assets/bbb.png";
 import hoja from "./../../assets/hoja.png";
 
 export function Footer() {
   return (
-    //   <div className={styles.headFooter}>
-    //     <div className={styles.container}>
-    //       <div className={styles.head}>
-    //         <figure className={styles.figureFooter}>
-    //           <img src={logo} alt="logo footer" className={styles.imgFooter} />
-    //         </figure>
-    //         <div className={styles.buttons}>
-    //           <div className={styles.button}>
-    //             <img src={wsspIcon} alt="whatsapp" />
-    //             <span>250.900.900</span>
-    //           </div>
-    //           <div className={styles.button}>BOOK NOW</div>
-    //           <div className={styles.button}>
-    //             <img src={messageIcon} alt="message" />
-    //             <span>CHAT WITH US</span>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
+    <>
+      {/* <div className="headFooter">
+        <div className="container">
+          <div className="head">
+            <figure className="figureFooter">
+              <img src={logo} alt="logo footer" className="imgFooter" />
+            </figure>
+            <div className="buttons">
+              <div className="button">
+                <img src={wsspIcon} alt="whatsapp" />
+                <span>250.900.900</span>
+              </div>
+              <div className="button">BOOK NOW</div>
+              <div className="button">
+                <img src={messageIcon} alt="message" />
+                <span>CHAT WITH US</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> */}
 
     <footer class="footer">
       <div class="container">
@@ -132,5 +132,6 @@ export function Footer() {
         </div>
       </div>
     </footer>
+    </>
   );
 }

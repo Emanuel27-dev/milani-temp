@@ -3,16 +3,18 @@ import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { useLocation } from "react-router-dom";
 import DOMPurify from "dompurify";
+import { useEffect } from "react";
 
 // 🔹 Hooks personalizados
 import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets"; // estilos globales + body inicial
 import { useWpBodyAttributesFromWp } from "./hooks/useWpBodyAttributesFromWp"; // body dinámico por página
 import { usePageCss } from "./hooks/usePageCss"; // CSS dinámico (WPBakery + Salient)
 import { useWpReflow } from "./hooks/useWpReflow"; // reactivación de scripts y animaciones
-import { Helmet } from "react-helmet-async";
-import { useEffect } from "react";
 
-// 🔹 Query principal
+
+// =========================================================
+// 🔹 QUERY PRINCIPAL UNIVERSAL (Page, Post, Service, Property…)
+// =========================================================
 const NODE_BY_PATH = gql`
   query NodeByPath($uri: ID!, $id: Int) {
     contentNode(id: $uri, idType: URI) {
@@ -21,6 +23,8 @@ const NODE_BY_PATH = gql`
       databaseId
       uri
       slug
+
+      # --- Page ---
       ... on Page {
         title
         contentRendered
@@ -35,6 +39,8 @@ const NODE_BY_PATH = gql`
           file
         }
       }
+
+      # --- Post ---
       ... on Post {
         title
         contentRendered
@@ -49,20 +55,40 @@ const NODE_BY_PATH = gql`
           file
         }
       }
+
+      # --- Service ---
+      ... on Service {
+        title
+        contentRendered
+        wpbCss
+        vcCustomCss
+        dynamicCss
+        inlineDynamicCssGrouped {
+          emoji
+          global
+          main
+          dynamic
+          file
+        }
+      }
     }
+
+    # Atributos y estilos inline del body
     bodyAttributes
     wpbInlineStyles(id: $id)
   }
 `;
 
+
+// =========================================================
+// 🔹 COMPONENTE PRINCIPAL
+// =========================================================
 export function WpPage({ fixedUri, fixedSlug }) {
   const { pathname } = useLocation();
   const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
   const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : autoUri);
 
-  /* -------------------------------------------------------------
-   * 1️⃣ Primera consulta: obtiene la página base (sin inlineStyles)
-   * ------------------------------------------------------------- */
+  // 1️⃣ Primera consulta (contenido base)
   const { data, loading, error } = useQuery(NODE_BY_PATH, {
     variables: { uri, id: 0 },
     fetchPolicy: "network-only",
@@ -71,37 +97,28 @@ export function WpPage({ fixedUri, fixedSlug }) {
   const node = data?.contentNode;
   const dbId = node?.databaseId ?? 0;
 
+  // 2️⃣ Actualizar el título de la pestaña según la página
   useEffect(() => {
-    // Detectar si la ruta es home
     const isHome =
       pathname === "/" || pathname === "/home/" || pathname === "/home";
 
     if (isHome) {
-      document.title = "Milani plumbing heating & air conditioning";
+      document.title = "Milani Plumbing Heating & Air Conditioning";
     } else if (node?.title) {
-      document.title = `${node.title} – milani`;
+      document.title = `${node.title} – Milani`;
     }
   }, [node?.title, pathname]);
-  /* -------------------------------------------------------------
-   * 2️⃣ Segunda consulta: obtiene inlineStyles usando el databaseId
-   * ------------------------------------------------------------- */
+
+  // 3️⃣ Segunda consulta: inline styles (por databaseId)
   const { data: inlineData } = useQuery(NODE_BY_PATH, {
     variables: { uri, id: dbId },
     skip: !dbId,
     fetchPolicy: "network-only",
   });
 
-  /* -------------------------------------------------------------
-   * 3️⃣ Hooks de sincronización visual
-   * ------------------------------------------------------------- */
-
-  // 🔹 Cargar estilos globales (solo una vez, theme Salient)
-  useWpGlobalAssets();
-
-  // 🔹 Actualizar body attributes específicos de la página
-  useWpBodyAttributesFromWp({ data: inlineData || data });
-
-  // 🔹 Inyectar CSS dinámico (WPBakery / Salient + CSS inline por página)
+  // 4️⃣ Hooks visuales sincronizados
+  useWpGlobalAssets(); // Carga global (Salient base)
+  useWpBodyAttributesFromWp({ data: inlineData || data }); // Actualiza <body>
   usePageCss(
     {
       ...node,
@@ -110,29 +127,20 @@ export function WpPage({ fixedUri, fixedSlug }) {
     },
     inlineData?.wpbInlineStyles
   );
+  useWpReflow([node?.id]); // Reactiva scripts, sliders, animaciones
 
-  // 🔹 Reactivar scripts, animaciones y sliders de WPBakery / Salient
-  useWpReflow([node?.id]);
-
-  /* -------------------------------------------------------------
-   * 4️⃣ Renderizado seguro del contenido
-   * ------------------------------------------------------------- */
-
+  // 5️⃣ Renderizado
   if (loading) return null;
-  if (error) return <p>Error cargando el contenido</p>;
-  if (!node) return <p>Página no encontrada</p>;
+  if (error) return <p>Error cargando el contenido.</p>;
+  if (!node) return <p>Página no encontrada.</p>;
 
-  // Limpieza de contenido (seguridad)
   const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
-  console.log("HELMET TITLE:", node?.title);
 
   return (
-    <>
-      <article
-        key={node?.id}
-        className="wpb-content-wrapper"
-        dangerouslySetInnerHTML={{ __html: node?.contentRendered || "" }}
-      />
-    </>
+    <article
+      key={node?.id}
+      className="wpb-content-wrapper"
+      dangerouslySetInnerHTML={{ __html: safeHtml }}
+    />
   );
 }
