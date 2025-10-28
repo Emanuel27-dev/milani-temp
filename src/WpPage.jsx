@@ -5,10 +5,12 @@ import { useLocation } from "react-router-dom";
 import DOMPurify from "dompurify";
 
 // 🔹 Hooks personalizados
-import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";   // estilos globales + body inicial
+import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets"; // estilos globales + body inicial
 import { useWpBodyAttributesFromWp } from "./hooks/useWpBodyAttributesFromWp"; // body dinámico por página
-import { usePageCss } from "./hooks/usePageCss";                 // CSS dinámico (WPBakery + Salient)
-import { useWpReflow } from "./hooks/useWpReflow";               // reactivación de scripts y animaciones
+import { usePageCss } from "./hooks/usePageCss"; // CSS dinámico (WPBakery + Salient)
+import { useWpReflow } from "./hooks/useWpReflow"; // reactivación de scripts y animaciones
+import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 
 // 🔹 Query principal
 const NODE_BY_PATH = gql`
@@ -50,8 +52,6 @@ const NODE_BY_PATH = gql`
     }
     bodyAttributes
     wpbInlineStyles(id: $id)
-
-    
   }
 `;
 
@@ -71,6 +71,19 @@ export function WpPage({ fixedUri, fixedSlug }) {
   const node = data?.contentNode;
   const dbId = node?.databaseId ?? 0;
 
+  useEffect(() => {
+    // Detectar si la ruta es home
+    const isHome =
+      pathname === "/" || pathname === "/home/" || pathname === "/home";
+
+    if (isHome) {
+      document.title = "Milani plumbing heating & air conditioning";
+    } else if (node?.title) {
+      document.title = `${node.title} – milani`;
+    } else {
+      document.title = "milani";
+    }
+  }, [node?.title, pathname]);
   /* -------------------------------------------------------------
    * 2️⃣ Segunda consulta: obtiene inlineStyles usando el databaseId
    * ------------------------------------------------------------- */
@@ -94,7 +107,8 @@ export function WpPage({ fixedUri, fixedSlug }) {
   usePageCss(
     {
       ...node,
-      inlineDynamicCss: node?.inlineDynamicCss || inlineData?.contentNode?.inlineDynamicCss,
+      inlineDynamicCss:
+        node?.inlineDynamicCss || inlineData?.contentNode?.inlineDynamicCss,
     },
     inlineData?.wpbInlineStyles
   );
@@ -112,12 +126,18 @@ export function WpPage({ fixedUri, fixedSlug }) {
 
   // Limpieza de contenido (seguridad)
   const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
+  console.log("Helmet title:", node?.title);
 
   return (
-    <article
-      key={node?.id}
-      className="wpb-content-wrapper"
-      dangerouslySetInnerHTML={{ __html: node?.contentRendered || "" }}
-    />
+    <>
+      <Helmet>
+        <title>{node?.title ? `${node.title} – milani` : "milani"}</title>
+      </Helmet>
+      <article
+        key={node?.id}
+        className="wpb-content-wrapper"
+        dangerouslySetInnerHTML={{ __html: node?.contentRendered || "" }}
+      />
+    </>
   );
 }

@@ -5,6 +5,7 @@ import { Header } from "./components/Header/Header";
 import { useWpAssets } from "./hooks/useWpAssets";
 import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";
 import { HeaderTemp } from "./components/Header/HeaderTemp";
+import { Helmet } from "react-helmet-async";
 
 export function Layout() {
   useWpAssets();
@@ -12,6 +13,10 @@ export function Layout() {
 
   return (
     <>
+
+      <Helmet>
+        <title>Milani plumbing heating & air conditioning</title>
+      </Helmet>
       {/* <Header /> */}
       <HeaderTemp />
 
