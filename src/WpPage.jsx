@@ -105,7 +105,7 @@ export function WpPage({ fixedUri, fixedSlug }) {
     if (isHome) {
       document.title = "Milani Plumbing Heating & Air Conditioning";
     } else if (node?.title) {
-      document.title = `${node.title} – Milani`;
+      document.title = `${node.title} – Milani Plumbing Heating & Air Conditioning`;
     }
   }, [node?.title, pathname]);
 
@@ -140,7 +140,7 @@ export function WpPage({ fixedUri, fixedSlug }) {
     <article
       key={node?.id}
       className="wpb-content-wrapper"
-      dangerouslySetInnerHTML={{ __html: safeHtml }}
+      dangerouslySetInnerHTML={{ __html: node?.contentRendered || "" }}
     />
   );
 }
