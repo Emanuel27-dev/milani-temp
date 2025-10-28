@@ -128,9 +128,6 @@ export function WpPage({ fixedUri, fixedSlug }) {
 
   return (
     <>
-      <Helmet>
-        <title>{node?.title ? `${node.title} – milani` : "milani"}</title>
-      </Helmet>
       <article
         key={node?.id}
         className="wpb-content-wrapper"
