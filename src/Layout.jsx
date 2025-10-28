@@ -14,9 +14,9 @@ export function Layout() {
   return (
     <>
 
-      <Helmet>
+      {/* <Helmet>
         <title>Milani plumbing heating & air conditioning</title>
-      </Helmet>
+      </Helmet> */}
       {/* <Header /> */}
       <HeaderTemp />
 

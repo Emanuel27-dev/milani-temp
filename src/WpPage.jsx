@@ -80,8 +80,6 @@ export function WpPage({ fixedUri, fixedSlug }) {
       document.title = "Milani plumbing heating & air conditioning";
     } else if (node?.title) {
       document.title = `${node.title} – milani`;
-    } else {
-      document.title = "milani";
     }
   }, [node?.title, pathname]);
   /* -------------------------------------------------------------
