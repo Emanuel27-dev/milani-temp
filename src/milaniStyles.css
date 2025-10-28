@@ -427,6 +427,12 @@ header {
     padding: 30px 20px;
   }
 
+  .head {
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   padding-bottom: 40px; 
+}
   .services-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 25px;

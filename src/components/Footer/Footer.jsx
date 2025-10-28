@@ -8,7 +8,7 @@ import hoja from "./../../assets/hoja.png";
 export function Footer() {
   return (
     <>
-      {/* <div className="headFooter">
+      <div className="headFooter">
         <div className="container">
           <div className="head">
             <figure className="figureFooter">
@@ -27,7 +27,7 @@ export function Footer() {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
 
     <footer class="footer">
       <div class="container">
