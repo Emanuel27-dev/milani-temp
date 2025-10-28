@@ -126,7 +126,7 @@ export function WpPage({ fixedUri, fixedSlug }) {
 
   // Limpieza de contenido (seguridad)
   const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
-  console.log("Helmet title:", node?.title);
+  console.log("HELMET TITLE:", node?.title);
 
   return (
     <>
