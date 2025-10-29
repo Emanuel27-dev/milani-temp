@@ -1,5 +1,5 @@
 import logo from "./../../assets/logoFooter.svg";
-import wsspIcon from "./../../assets/phone.svg"
+import wsspIcon from "./../../assets/Phone.svg"
 import messageIcon from "./../../assets/chat.svg";
 import tuerca from "./../../assets/tuerca.svg";
 import bbb from "./../../assets/bbb.svg";
