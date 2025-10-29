@@ -1,9 +1,9 @@
-import logo from "./../../assets/LogoMilaniFooter.png";
-import wsspIcon from "./../../assets/wassp.png";
-import messageIcon from "./../../assets/message.png";
-import tuerca from "./../../assets/tuerca.png";
-import bbb from "./../../assets/bbb.png";
-import hoja from "./../../assets/hoja.png";
+import logo from "./../../assets/logoFooter.svg";
+import wsspIcon from "./../../assets/phone.svg"
+import messageIcon from "./../../assets/chat.svg";
+import tuerca from "./../../assets/tuerca.svg";
+import bbb from "./../../assets/bbb.svg";
+import hoja from "./../../assets/hoja.svg";
 
 export function Footer() {
   return (

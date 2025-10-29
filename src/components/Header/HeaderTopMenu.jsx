@@ -1,7 +1,6 @@
 import styles from "./styles/HeaderTopMenu.module.css";
 import { wpUrlToClientPath } from "../../helpers/wpUrlToClientPath";
 import { NavLink } from "react-router-dom";
-import lupa from "./../../assets/lupita.png";
 
 // Menu superior (TopMenu)
 export function HeaderTopMenu({ items }) {
@@ -22,7 +21,7 @@ export function HeaderTopMenu({ items }) {
           )
         })
       }
-      <img src={lupa} alt="lupa" className={styles.lupa} />
+      <img src={""} alt="lupa" className={styles.lupa} />
     </div>
   );
 }
