@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client/react";
 import { Link, NavLink } from "react-router-dom";
 import lupa from "./../../assets/lupa.svg";
 import location from "./../../assets/location.svg";
-import wassp from "./../../assets/phone.svg";
+import wassp from "./../../assets/Phone.svg";
 import { wpUrlToClientPath } from "../../helpers/wpUrlToClientPath";
 import { ZipModal } from "./ZipModal";
 
