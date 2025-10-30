@@ -10,84 +10,69 @@ import { ZipModal } from "./ZipModal";
 import { useIPLocation } from "../../hooks/useIPLocation";
 
 const GET_HEADER = gql`
-query {
-  salientLogo
-  topMenu {
-    label
-    url
-    target
-    kind
-    objectType
-    objectId
+  query {
+    salientLogo
+    topMenu {
+      label
+      url
+      target
+      kind
+      objectType
+      objectId
+    }
+    mainMenu {
+      label
+      url
+      target
+      kind
+      objectType
+      objectId
+    }
+    menuCA {
+      label
+      url
+      target
+      kind
+      objectType
+      objectId
+    }
+    menuUS {
+      label
+      url
+      target
+      kind
+      objectType
+      objectId
+    }
   }
-  mainMenu {
-    label
-    url
-    target
-    kind
-    objectType
-    objectId
-  }
-  menuCA {
-    label
-    url
-    target
-    kind
-    objectType
-    objectId
-  }
-  menuUS {
-    label
-    url
-    target
-    kind
-    objectType
-    objectId
-  }
-}
 `;
 
 export function HeaderTemp() {
   const { data, loading } = useQuery(GET_HEADER);
   const { location } = useIPLocation();
 
-  const [showToolTip, setShowToolTip] = useState(() => {
-    return localStorage.getItem("currentLocation") ? false : true;
-  });
+  const [showToolTip, setShowToolTip] = useState(
+    !localStorage.getItem("currentLocation")
+  );
   const [showZipModal, setShowZipModal] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState(() => {
-    return localStorage.getItem("currentLocation") || "Kelowna";
-  });
+  const [currentLocation, setCurrentLocation] = useState(
+    localStorage.getItem("currentLocation") || "Kelowna"
+  );
 
- // 👇 NUEVO: Estado para manejar el menú (hamburguesa)
   const [menuOpen, setMenuOpen] = useState(false);
-  // 👇 NUEVO: Efecto para manejar clicks y clases
-  useEffect(() => {
-    const toggleBtn = document.querySelector(".menu-toggle");
-    const menus = document.querySelector(".menus");
-    if (!toggleBtn || !menus) return;
-    const handleToggle = () => {
-      // Solo aplica si el ancho es menor o igual a 1000px
-      if (window.innerWidth <= 1000) {
-        setMenuOpen((prev) => !prev);
-      }
-    };
-    toggleBtn.addEventListener("click", handleToggle);
-    return () => toggleBtn.removeEventListener("click", handleToggle);
-  }, []);
-  // 👇 NUEVO: Cerrar menú al cambiar el tamaño de la ventana
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth <= 1000 : false
+  );
+
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 1000) {
-        setMenuOpen(false);
-      }
+      setIsMobile(window.innerWidth <= 1000);
+      if (window.innerWidth > 1000) setMenuOpen(false);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
-  // Detectar país y actualizar ubicación automáticamente
   useEffect(() => {
     if (location?.pais === "United States" && currentLocation !== "Seattle") {
       setCurrentLocation("Seattle");
@@ -105,57 +90,52 @@ export function HeaderTemp() {
 
   if (loading || !data) return null;
 
-    // 🔹 Seleccionar el menú correcto dinámicamente
-  const mainItems = location?.pais === "United States" ? data.menuUS : data.menuCA;
+  const mainItems =
+    location?.pais === "United States" ? data.menuCA : data.menuUS;
 
   return (
     <>
       <header className="header">
         <div className="header-container">
-          {/* LOGO */}
           <Link to={"/"}>
             <div className="logo-block">
               <img src={data.salientLogo} alt="Milani Logo" className="logo" />
             </div>
           </Link>
 
-          {/* MENÚS */}
           <nav className={`menus ${menuOpen ? "active" : ""}`}>
-              {/* 🔹 Botón X para cerrar (solo aparece si está abierto y en mobile) */}
-            {menuOpen && window.innerWidth <= 1000 && (
+            {menuOpen && isMobile && (
               <button
                 className="close-menu"
                 onClick={() => setMenuOpen(false)}
                 style={{
                   position: "absolute",
-                  top: "20px",
+                  top: "10px",
                   right: "15px",
                   background: "none",
                   border: "none",
                   fontSize: "28px",
                   cursor: "pointer",
-                  color: "#ffffff",
+                  color: "white",
                 }}
               >
                 ✕
               </button>
             )}
+
             <div className="top-menu">
-              {data.topMenu.map((item) => {
-                const to = wpUrlToClientPath(item.url);
-                return (
-                  <NavLink
-                    key={item.label}
-                    to={to}
-                    className={({ isActive }) =>
-                      `link ${isActive ? "active" : ""}`
-                    }
-                    onClick={() => setMenuOpen(false)} // Cierra menú al hacer click
-                  >
-                    {item.label}
-                  </NavLink>
-                );
-              })}
+              {data.topMenu.map((item) => (
+                <NavLink
+                  key={item.label}
+                  to={wpUrlToClientPath(item.url)}
+                  className={({ isActive }) =>
+                    `link ${isActive ? "active" : ""}`
+                  }
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item.label}
+                </NavLink>
+              ))}
 
               <button className="search-btn">
                 <img src={lupa} alt="lupa" />
@@ -163,26 +143,22 @@ export function HeaderTemp() {
             </div>
 
             <div className="main-menu">
-              {mainItems.map((item) => {
-                const to = wpUrlToClientPath(item.url);
-                return (
-                  <NavLink
-                    key={item.label}
-                    to={to}
-                    className={({ isActive }) =>
-                      `$link ${isActive ? "active" : ""}`
-                    }
-                    onClick={() => setMenuOpen(false)} // Cierra menú al clickear
-                  >
-                    {item.label}
-                  </NavLink>
-                );
-              })}
+              {mainItems.map((item) => (
+                <NavLink
+                  key={item.label}
+                  to={wpUrlToClientPath(item.url)}
+                  className={({ isActive }) =>
+                    `$link ${isActive ? "active" : ""}`
+                  }
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item.label}
+                </NavLink>
+              ))}
             </div>
           </nav>
 
-          {/* ICONO HAMBURGUESA */}
-          <button className="menu-toggle">
+          <button className="menu-toggle" onClick={() => setMenuOpen((p) => !p)}>
             {!menuOpen ? (
               <>
                 <span></span>
@@ -193,25 +169,6 @@ export function HeaderTemp() {
               <span style={{ fontSize: "24px" }}>✕</span>
             )}
           </button>
-        </div>
-
-        {/* MENÚ MÓVIL */}
-        <div className="mobile-menu">
-          <div className="mobile-main">
-            <a href="#">Plumbing</a>
-            <a href="#">Drainage</a>
-            <a href="#">Heating</a>
-            <a href="#">Air Conditioning</a>
-          </div>
-          <hr />
-          <div className="mobile-top">
-            <a href="#">Commercial Services</a>
-            <a href="#">Rebates</a>
-            <a href="#">Rewards</a>
-            <a href="#">Offers</a>
-            <a href="#">Online Payments</a>
-            <a href="#">Contact Us</a>
-          </div>
         </div>
       </header>
 
@@ -228,18 +185,17 @@ export function HeaderTemp() {
                 onClick={() => setShowToolTip(!showToolTip)}
               >
                 <img src={locationsvg} alt="icono de ubicacion" />
-                <div class="location-btn__text">
-                  <p class="location-btn__label">Current Location</p>
-                  <p class="location-btn__city">{currentLocation}</p>
+                <div className="location-btn__text">
+                  <p className="location-btn__label">Current Location</p>
+                  <p className="location-btn__city">{currentLocation}</p>
                 </div>
               </button>
 
-              <h6 class="header-below__subtitle">
+              <h6 className="header-below__subtitle">
                 A Family Owned Canadian Business
               </h6>
             </div>
 
-            {/* Tooltip */}
             {showToolTip && (
               <div className="location-tooltip">
                 <h5 className="location-tooltip__title">
@@ -278,7 +234,6 @@ export function HeaderTemp() {
           </div>
         </div>
 
-        {/* <ZipModal /> */}
         <ZipModal
           isOpen={showZipModal}
           onClose={() => setShowZipModal(false)}
