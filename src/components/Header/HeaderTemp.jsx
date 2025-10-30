@@ -95,7 +95,7 @@ export function HeaderTemp() {
   if (loading || !data) return null;
 
     // 🔹 Seleccionar el menú correcto dinámicamente
-  const mainItems = location?.pais === "United States" ?  data.menuCA : data.menuUS;
+  const mainItems = location?.pais === "United States" ? data.menuUS : data.menuCA;
 
   return (
     <>
