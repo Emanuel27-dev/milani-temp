@@ -2,9 +2,29 @@ import { useState } from "react";
 import lupa from "./../../assets/lupa2.svg";
 import locationIcon from "./../../assets/location2.svg";
 
-export function ZipModal({ isOpen, onClose }) {
+const locations = [
+  "Vancouver",
+  "Coquitlam",
+  "West Vancouver",
+  "White Rock",
+  "Burnaby",
+  "Langley",
+  "New Westminster",
+  // "Maple Ridge",
+  "Surrey",
+  "Delta",
+  "Port Coquitlam",
+  "Pitt Meadows",
+  "Richmond",
+  "North Vancouver",
+  "Port Moody",
+  "Tsawwassen"
+];
+
+
+export function ZipModal({ isOpen, onClose, currentLocation, setCurrentLocation }) {
   const [searchDone, setSearchDone] = useState(false);
-  const [selected, setSelected] = useState("Vancouver");
+  const [selected, setSelected] = useState(currentLocation);
 
   if (!isOpen) return null;
 
@@ -16,7 +36,7 @@ export function ZipModal({ isOpen, onClose }) {
   };
 
   const handleConfirm = () => {
-    console.log("Ubicación confirmada:", selected);
+    setCurrentLocation(selected);
     setSearchDone(false);
     onClose();
   };
@@ -27,14 +47,19 @@ export function ZipModal({ isOpen, onClose }) {
         className="modal"
         onClick={(e) => e.stopPropagation()} // evita cerrar al hacer clic dentro
       >
-        <button className="modal__close" aria-label="Close modal" onClick={onClose}>
+        <button
+          className="modal__close"
+          aria-label="Close modal"
+          onClick={onClose}
+        >
           &times;
         </button>
 
         <div className="modal__content">
           <h6 className="modal__title">Find services near you</h6>
           <p className="modal__subtitle">
-            Enter your ZIP code to show available technicians and services in your area.
+            Enter your ZIP code to show available technicians and services in
+            your area.
           </p>
 
           <form className="zip-form" onSubmit={handleSearch}>
@@ -59,11 +84,11 @@ export function ZipModal({ isOpen, onClose }) {
                   alt="icon"
                   className="zip-results__icon"
                 />
-                <p>We found 3 Lower Mainland Locations</p>
+                <p>We found {locations.length} Lower Mainland Locations</p>
               </div>
 
               <div className="zip-results__options">
-                {["Vancouver", "North Vancouver", "West Vancouver"].map((city) => (
+                {locations.map((city) => (
                   <label key={city} className="zip-results__option">
                     <input
                       type="radio"
@@ -77,10 +102,7 @@ export function ZipModal({ isOpen, onClose }) {
                 ))}
               </div>
 
-              <button
-                className="zip-results__confirm"
-                onClick={handleConfirm}
-              >
+              <button className="zip-results__confirm" onClick={handleConfirm}>
                 Confirm
               </button>
             </div>

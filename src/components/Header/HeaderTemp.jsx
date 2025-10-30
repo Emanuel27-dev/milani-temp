@@ -3,10 +3,11 @@ import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { Link, NavLink } from "react-router-dom";
 import lupa from "./../../assets/lupa.svg";
-import location from "./../../assets/location.svg";
+import locationsvg from "./../../assets/location.svg";
 import wassp from "./../../assets/Phone.svg";
 import { wpUrlToClientPath } from "../../helpers/wpUrlToClientPath";
 import { ZipModal } from "./ZipModal";
+import { useIPLocation } from "../../hooks/useIPLocation";
 
 const GET_HEADER = gql`
   query {
@@ -48,9 +49,14 @@ const GET_HEADER = gql`
 
 export function HeaderTemp() {
   const { data, loading } = useQuery(GET_HEADER);
+  const { location } = useIPLocation();
 
-  const [showToolTip, setShowToolTip] = useState(false);
+  const [showToolTip, setShowToolTip] = useState(true);
   const [showZipModal ,setShowZipModal] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState(() => {
+    return localStorage.getItem("currentLocation") || "Kelowna";
+  });
+
 
   useEffect(() => {
     const toggleBtn = document.querySelector(".menu-toggle");
@@ -69,11 +75,17 @@ export function HeaderTemp() {
     };
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("currentLocation", currentLocation);
+  },[currentLocation])
+
+
+
   if (loading || !data) return null;
 
   // United States
   const mainItems =
-    location?.pais === "United States" ? data.menuVancouver : data.menuKelowa; // cambio automático
+    location?.pais === "United States" ? "Seattle" : "kelowna"; // cambio automático
 
   return (
     <>
@@ -161,7 +173,7 @@ export function HeaderTemp() {
         <div className="header-container">
           <div className="header-below__info">
             <h4 className="header-below__headline">
-              Fast, Fair and Reliable Service in <span>Kelowna.</span> 100%
+              Fast, Fair and Reliable Service in <span>{currentLocation}.</span> 100%
               Guarantee
             </h4>
             <div className="header-below__details">
@@ -169,10 +181,10 @@ export function HeaderTemp() {
                 className="location-btn"
                 onClick={() => setShowToolTip(!showToolTip)}
               >
-                <img src={location} alt="icono de ubicacion" />
+                <img src={locationsvg} alt="icono de ubicacion" />
                 <div class="location-btn__text">
                   <p class="location-btn__label">Current Location</p>
-                  <p class="location-btn__city">Miami-Florida</p>
+                  <p class="location-btn__city">{currentLocation}</p>
                 </div>
               </button>
 
@@ -221,7 +233,7 @@ export function HeaderTemp() {
         </div>
 
         {/* <ZipModal /> */}
-        <ZipModal isOpen={showZipModal} onClose={() => setShowZipModal(false)} />
+        <ZipModal isOpen={showZipModal} onClose={() => setShowZipModal(false)} currentLocation={currentLocation} setCurrentLocation={setCurrentLocation} />
 
       </div>
     </>

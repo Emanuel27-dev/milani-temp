@@ -271,6 +271,7 @@ header {
   justify-content: center;
   align-items: center;
   z-index: 999;
+  /* max-height: 400px; */
 }
 
 .modal {
@@ -347,6 +348,7 @@ header {
 
 .zip-results {
   /* border: 1px solid; */
+  /* overflow-y: scroll; */
 }
 
 .zip-results__header {
