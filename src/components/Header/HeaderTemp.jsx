@@ -10,41 +10,41 @@ import { ZipModal } from "./ZipModal";
 import { useIPLocation } from "../../hooks/useIPLocation";
 
 const GET_HEADER = gql`
-  query {
-    salientLogo
-    topMenu {
-      label
-      url
-      target
-      kind
-      objectType
-      objectId
-    }
-    mainMenu {
-      label
-      url
-      target
-      kind
-      objectType
-      objectId
-    }
-    menuKelowa {
-      label
-      url
-      target
-      kind
-      objectType
-      objectId
-    }
-    menuVancouver {
-      label
-      url
-      target
-      kind
-      objectType
-      objectId
-    }
+query {
+  salientLogo
+  topMenu {
+    label
+    url
+    target
+    kind
+    objectType
+    objectId
   }
+  mainMenu {
+    label
+    url
+    target
+    kind
+    objectType
+    objectId
+  }
+  menuCA {
+    label
+    url
+    target
+    kind
+    objectType
+    objectId
+  }
+  menuUS {
+    label
+    url
+    target
+    kind
+    objectType
+    objectId
+  }
+}
 `;
 
 export function HeaderTemp() {
@@ -94,6 +94,9 @@ export function HeaderTemp() {
 
   if (loading || !data) return null;
 
+    // 🔹 Seleccionar el menú correcto dinámicamente
+  const mainItems = location?.pais === "United States" ?  data.menuCA : data.menuUS;
+
   return (
     <>
       <header className="header">
@@ -130,7 +133,7 @@ export function HeaderTemp() {
             </div>
 
             <div className="main-menu">
-              {data.mainMenu.map((item) => {
+              {mainItems.map((item) => {
                 // Convirtiendo la URL absoluta de WP a /plumbing, /drainage, etc
                 const to = wpUrlToClientPath(item.url);
                 return (
