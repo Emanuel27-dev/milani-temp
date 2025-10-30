@@ -59,22 +59,33 @@ export function HeaderTemp() {
     return localStorage.getItem("currentLocation") || "Kelowna";
   });
 
+ // 👇 NUEVO: Estado para manejar el menú (hamburguesa)
+  const [menuOpen, setMenuOpen] = useState(false);
+  // 👇 NUEVO: Efecto para manejar clicks y clases
   useEffect(() => {
     const toggleBtn = document.querySelector(".menu-toggle");
-    const mobileMenu = document.querySelector(".mobile-menu");
-
-    if (!toggleBtn || !mobileMenu) return;
-
+    const menus = document.querySelector(".menus");
+    if (!toggleBtn || !menus) return;
     const handleToggle = () => {
-      mobileMenu.classList.toggle("open");
+      // Solo aplica si el ancho es menor o igual a 1000px
+      if (window.innerWidth <= 1000) {
+        setMenuOpen((prev) => !prev);
+      }
     };
-
     toggleBtn.addEventListener("click", handleToggle);
-
-    return () => {
-      toggleBtn.removeEventListener("click", handleToggle);
-    };
+    return () => toggleBtn.removeEventListener("click", handleToggle);
   }, []);
+  // 👇 NUEVO: Cerrar menú al cambiar el tamaño de la ventana
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1000) {
+        setMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
 
   // Detectar país y actualizar ubicación automáticamente
   useEffect(() => {
@@ -109,10 +120,28 @@ export function HeaderTemp() {
           </Link>
 
           {/* MENÚS */}
-          <nav className="menus">
+          <nav className={`menus ${menuOpen ? "active" : ""}`}>
+              {/* 🔹 Botón X para cerrar (solo aparece si está abierto y en mobile) */}
+            {menuOpen && window.innerWidth <= 1000 && (
+              <button
+                className="close-menu"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  position: "absolute",
+                  top: "20px",
+                  right: "15px",
+                  background: "none",
+                  border: "none",
+                  fontSize: "28px",
+                  cursor: "pointer",
+                  color: "#ffffff",
+                }}
+              >
+                ✕
+              </button>
+            )}
             <div className="top-menu">
               {data.topMenu.map((item) => {
-                // Convirtiendo la URL absoluta de WP a /offers, /heating, etc
                 const to = wpUrlToClientPath(item.url);
                 return (
                   <NavLink
@@ -121,6 +150,7 @@ export function HeaderTemp() {
                     className={({ isActive }) =>
                       `link ${isActive ? "active" : ""}`
                     }
+                    onClick={() => setMenuOpen(false)} // Cierra menú al hacer click
                   >
                     {item.label}
                   </NavLink>
@@ -134,7 +164,6 @@ export function HeaderTemp() {
 
             <div className="main-menu">
               {mainItems.map((item) => {
-                // Convirtiendo la URL absoluta de WP a /plumbing, /drainage, etc
                 const to = wpUrlToClientPath(item.url);
                 return (
                   <NavLink
@@ -143,6 +172,7 @@ export function HeaderTemp() {
                     className={({ isActive }) =>
                       `$link ${isActive ? "active" : ""}`
                     }
+                    onClick={() => setMenuOpen(false)} // Cierra menú al clickear
                   >
                     {item.label}
                   </NavLink>
@@ -153,9 +183,15 @@ export function HeaderTemp() {
 
           {/* ICONO HAMBURGUESA */}
           <button className="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
+            {!menuOpen ? (
+              <>
+                <span></span>
+                <span></span>
+                <span></span>
+              </>
+            ) : (
+              <span style={{ fontSize: "24px" }}>✕</span>
+            )}
           </button>
         </div>
 
