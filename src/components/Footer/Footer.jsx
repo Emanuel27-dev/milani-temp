@@ -39,56 +39,56 @@ export function Footer() {
           <div class="service-column">
             <h3>Plumbing</h3>
             <ul>
-              <li>Maintenance and Repair</li>
-              <li>Hot Water Heater</li>
-              <li>Water Main Replacement</li>
-              <li>Installations</li>
-              <li>Trenchless Pipe Repair</li>
+              <li><a href="#">Maintenance and Repair</a></li>
+              <li><a href="#">Hot Water Heater</a></li>
+              <li><a href="#">Water Main Replacement</a></li>
+              <li><a href="#">Installations</a></li>
+              <li><a href="#">Trenchless Pipe Repair</a></li>
             </ul>
           </div>
 
           <div class="service-column">
             <h3>Drainage</h3>
             <ul>
-              <li>Drain Tile Systems</li>
-              <li>Drainage and Sewer Maintenance</li>
-              <li>Draintile & Sewer Inspection</li>
-              <li>Pressure Jetting & Cleaning</li>
-              <li>Drainage Lines Repair & Service</li>
-              <li>Vacuum Truck Service</li>
-              <li>Drainage & Sewer Installation</li>
+              <li><a href="#">Drain Tile Systems</a></li>
+              <li><a href="#">Drainage and Sewer Maintenance</a></li>
+              <li><a href="#">Draintile & Sewer Inspection</a></li>
+              <li><a href="#">Pressure Jetting & Cleaning</a></li>
+              <li><a href="#">Drainage Lines Repair & Service</a></li>
+              <li><a href="#">Vacuum Truck Service</a></li>
+              <li><a href="#">Drainage & Sewer Installation</a></li>
             </ul>
           </div>
 
           <div class="service-column">
             <h3>Heating</h3>
             <ul>
-              <li>Furnaces</li>
-              <li>Boilers</li>
-              <li>Heat Pumps</li>
-              <li>Green Heating Solutions</li>
-              <li>Air Filters</li>
+              <li><a href="#">Furnaces</a></li>
+              <li><a href="#">Boilers</a></li>
+              <li><a href="#">Heat Pumps</a></li>
+              <li><a href="#">Green Heating Solutions</a></li>
+              <li><a href="#">Air Filters</a></li>
             </ul>
           </div>
 
           <div class="service-column">
             <h3>Air Conditioning</h3>
             <ul>
-              <li>Air Conditioning Units</li>
-              <li>Repair and Replacement</li>
-              <li>Ductless Mini Splits</li>
-              <li>Heat Pumps</li>
+              <li><a href="#">Air Conditioning Units</a></li>
+              <li><a href="#">Repair and Replacement</a></li>
+              <li><a href="#">Ductless Mini Splits</a></li>
+              <li><a href="#">Heat Pumps</a></li>
             </ul>
           </div>
 
           <div class="service-column with-border">
             <h3></h3>
             <ul>
-              <li>Promotions</li>
-              <li>Commercial Service</li>
-              <li>Rebate Information</li>
-              <li>Careers</li>
-              <li>Payments</li>
+              <li><a href="#">Promotions</a></li>
+              <li><a href="#">Commercial Service</a></li>
+              <li><a href="#">Rebate Information</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Payments</a></li>
             </ul>
           </div>
         </div>

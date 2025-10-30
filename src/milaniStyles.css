@@ -18,7 +18,7 @@ header {
 
 /* === LOGO === */
 .logo-block {
-   width: 542px;
+   width: 440px;
 }
 
 .logo {
@@ -425,14 +425,78 @@ header {
   display: none;
 }
 
+.close-btn {
+  display: none;
+}
+
 /* === RESPONSIVE: MOBILE (≤1300px) === */
-@media (max-width: 1365px) {
+@media (max-width: 1250px) {
+  .logo-block {
+    width: 300px;
+  }
   .menus {
-    display: none;
+      gap: 10px;
+      padding: 15px 0;
+  }
+}
+@media (max-width: 1000px) {
+  .top-menu {
+    flex-direction: column;
+    order: 1;
+    align-items: flex-start;
+    border-top: 1px solid white;
+    padding-top: 15px;
+  }
+  .main-menu a {
+    font-size: 30px !important;
+    color: white !important;
+  }
+  .main-menu {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .close-btn {
+    display: flex;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1100; /* Aseguramos que esté encima de otros elementos */
+  }
+  .menus {
+    width: 100%;
+    right: 0;
+    position: fixed; /* Cambié a fixed para que el menú quede sobre el contenido */
+    top: -100%;
+    right: 0; /* El menú empieza fuera de la pantalla */
+    background: #ce2229;
+    padding: 30px;
+    transition: top 0.3s ease; /* Transición para deslizar el menú */
+    z-index: 1000; /* Para asegurarnos de que el menú esté encima de otros elementos */
+  }
+
+  .menus.active {
+    top: 0; /* Cuando se activa, el menú aparece desde la derecha */
   }
 
   .menu-toggle {
     display: flex;
+  }
+  nav.menus.active::after {
+      width: 200px;
+      content: "";
+      height: 50px;
+      position: absolute;
+      background-image: url("data:image/svg+xml,%3Csvg width='200' height='51' viewBox='0 0 200 51' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.1'%3E%3Cpath d='M0 50.9079V0.00738525H18.4631L25.1849 30.0937H25.2881L32.2532 0.00738525H50.4214V50.9079H38.0022L39.3214 11.0041H39.2256L29.9978 50.9079H20.3277L11.3947 11.0041H11.1958L12.4266 50.9079H0Z' fill='white'/%3E%3Cpath d='M67.8894 0.00738525H54.9321V50.9153H67.8894V0.00738525Z' fill='white'/%3E%3Cpath d='M73.292 50.9079V0.00738525H86.3524V40.7514H102.258V50.9079H73.292Z' fill='white'/%3E%3Cpath d='M104.513 50.9079L116.638 0H132.344L144.373 50.9079H131.216L129.447 41.0387H119.188L117.669 50.9079H104.513ZM124.546 9.23522H124.347L120.566 32.0099H128.128L124.546 9.23522Z' fill='white'/%3E%3Cpath d='M157.927 22.3916L157.779 22.5832L158.951 50.9079H146.635V0.00738525H160.035L170.096 28.5237H170.243L169.019 0.00738525H181.439V50.9079H168.083L157.927 22.3916Z' fill='white'/%3E%3Cpath d='M199.01 0.00738525H186.053V50.9153H199.01V0.00738525Z' fill='white'/%3E%3C/g%3E%3C/svg%3E%0A");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      bottom: 0;
+      right: 0;
   }
 
   .mobile-menu {
@@ -477,6 +541,23 @@ header {
     border: none;
     border-top: 1px solid rgba(255, 255, 255, 0.3);
     margin: 1rem 0;
+  }
+
+  .headFooter img.imgFooter {
+    max-width: 215px;
+    margin: auto;
+  }
+  .headFooter .buttons {
+    flex-wrap: wrap;
+  }
+
+  .headFooter .buttons .button:nth-child(3) {
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+  }
+  .headFooter .head {
+    padding-top: 30px;
   }
 }
 
@@ -705,8 +786,48 @@ header {
 
 /* Mobile specific styles */
 @media (max-width: 768px) {
+  .header-below .header-container {
+    flex-wrap: wrap;
+  }
+  .header-below .header-container .header-below__headline {
+    font-size: 15px;
+  }
+  .header-below .header-container .header-below__subtitle {
+    font-size: 15px;
+  }
+  .header-below__info {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .location-btn__city {
+    font-size: 18px;
+  }
+  .buttons-header div,
+  .buttons-header button.button {
+    font-size: 20px;
+  }
+  button.location-btn {
+     min-width: 180px;
+  }
   .footer {
-    padding: 30px 20px;
+    padding: 30px 0 80px 0;
+    position: relative;
+  }
+  .footer::after {
+      width: 200px;
+      content: "";
+      height: 50px;
+      position: absolute;
+      background-image: url("data:image/svg+xml,%3Csvg width='200' height='51' viewBox='0 0 200 51' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.1'%3E%3Cpath d='M0 50.9079V0.00738525H18.4631L25.1849 30.0937H25.2881L32.2532 0.00738525H50.4214V50.9079H38.0022L39.3214 11.0041H39.2256L29.9978 50.9079H20.3277L11.3947 11.0041H11.1958L12.4266 50.9079H0Z' fill='white'/%3E%3Cpath d='M67.8894 0.00738525H54.9321V50.9153H67.8894V0.00738525Z' fill='white'/%3E%3Cpath d='M73.292 50.9079V0.00738525H86.3524V40.7514H102.258V50.9079H73.292Z' fill='white'/%3E%3Cpath d='M104.513 50.9079L116.638 0H132.344L144.373 50.9079H131.216L129.447 41.0387H119.188L117.669 50.9079H104.513ZM124.546 9.23522H124.347L120.566 32.0099H128.128L124.546 9.23522Z' fill='white'/%3E%3Cpath d='M157.927 22.3916L157.779 22.5832L158.951 50.9079H146.635V0.00738525H160.035L170.096 28.5237H170.243L169.019 0.00738525H181.439V50.9079H168.083L157.927 22.3916Z' fill='white'/%3E%3Cpath d='M199.01 0.00738525H186.053V50.9153H199.01V0.00738525Z' fill='white'/%3E%3C/g%3E%3C/svg%3E%0A");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      bottom: 0;
+      right: 0;
+  }
+
+  .footer .container {
+    max-width: 90% !important;
   }
 
   .head {
@@ -735,10 +856,11 @@ header {
   .contact-section {
     flex-direction: column !important;
     align-items: start !important;
+    gap: 15px;
   }
 
   .canadian-business {
-    margin-top: 20px;
+    margin-top: 0;
   }
 
   .canadian-business span {
@@ -766,3 +888,15 @@ header {
     margin-left: auto;
   }
 }
+
+
+
+/* PAOLO */
+.container-wrap {
+    padding-bottom: 0 !important;
+}
+.footer .services-grid li a {
+  color: #808080;
+}
+
+
