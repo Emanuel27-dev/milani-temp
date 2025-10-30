@@ -51,12 +51,13 @@ export function HeaderTemp() {
   const { data, loading } = useQuery(GET_HEADER);
   const { location } = useIPLocation();
 
-  const [showToolTip, setShowToolTip] = useState(true);
-  const [showZipModal ,setShowZipModal] = useState(false);
+  const [showToolTip, setShowToolTip] = useState(() => {
+    return localStorage.getItem("currentLocation") ? false : true;
+  });
+  const [showZipModal, setShowZipModal] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(() => {
     return localStorage.getItem("currentLocation") || "Kelowna";
   });
-
 
   useEffect(() => {
     const toggleBtn = document.querySelector(".menu-toggle");
@@ -75,17 +76,23 @@ export function HeaderTemp() {
     };
   }, []);
 
+  // Detectar país y actualizar ubicación automáticamente
+  useEffect(() => {
+    if (location?.pais === "United States" && currentLocation !== "Seattle") {
+      setCurrentLocation("Seattle");
+    } else if (
+      location?.pais !== "United States" &&
+      currentLocation === "Seattle"
+    ) {
+      setCurrentLocation("Kelowna");
+    }
+  }, [location]);
+
   useEffect(() => {
     localStorage.setItem("currentLocation", currentLocation);
-  },[currentLocation])
-
-
+  }, [currentLocation]);
 
   if (loading || !data) return null;
-
-  // United States
-  const mainItems =
-    location?.pais === "United States" ? "Seattle" : "kelowna"; // cambio automático
 
   return (
     <>
@@ -173,8 +180,8 @@ export function HeaderTemp() {
         <div className="header-container">
           <div className="header-below__info">
             <h4 className="header-below__headline">
-              Fast, Fair and Reliable Service in <span>{currentLocation}.</span> 100%
-              Guarantee
+              Fast, Fair and Reliable Service in <span>{currentLocation}.</span>{" "}
+              100% Guarantee
             </h4>
             <div className="header-below__details">
               <button
@@ -233,8 +240,14 @@ export function HeaderTemp() {
         </div>
 
         {/* <ZipModal /> */}
-        <ZipModal isOpen={showZipModal} onClose={() => setShowZipModal(false)} currentLocation={currentLocation} setCurrentLocation={setCurrentLocation} />
-
+        <ZipModal
+          isOpen={showZipModal}
+          onClose={() => setShowZipModal(false)}
+          currentLocation={currentLocation}
+          setCurrentLocation={setCurrentLocation}
+          showToolTip={showToolTip}
+          setShowToolTip={setShowToolTip}
+        />
       </div>
     </>
   );
