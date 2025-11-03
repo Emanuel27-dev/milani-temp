@@ -35,6 +35,10 @@ const GET_HEADER = gql`
       kind
       objectType
       objectId
+      children {
+        label
+        url
+      }
     }
     menuUS {
       label
@@ -43,45 +47,22 @@ const GET_HEADER = gql`
       kind
       objectType
       objectId
-    }
-
-    services(where: { parent: null, status: PUBLISH }) {
-      nodes {
-        ... on Service {
-          id
-          title
-          uri
-          url
-          children {
-            nodes {
-              ... on Service {
-                id
-                title
-                uri
-                url
-              }
-            }
-          }
-        }
+      children {
+        label
+        url
       }
     }
   }
 `;
 
-const childrens = ["hijo1", "hijo2", "hijo3"];
-
 export function HeaderTemp() {
   const { data, loading } = useQuery(GET_HEADER);
   const { location } = useIPLocation();
-  const [openDropdown, setOpenDropDown] = useState(null); // variable para que al pasar el mouse aparezca el dropdown
+  const [openDropdown, setOpenDropDown] = useState(null);
 
-  const [showToolTip, setShowToolTip] = useState(
-    !localStorage.getItem("currentLocation")
-  );
+  const [showToolTip, setShowToolTip] = useState(!localStorage.getItem("currentLocation"));
   const [showZipModal, setShowZipModal] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState(
-    localStorage.getItem("currentLocation") || "Kelowna"
-  );
+  const [currentLocation, setCurrentLocation] = useState(localStorage.getItem("currentLocation") || "Kelowna");
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(
@@ -100,10 +81,7 @@ export function HeaderTemp() {
   useEffect(() => {
     if (location?.pais === "United States" && currentLocation !== "Seattle") {
       setCurrentLocation("Seattle");
-    } else if (
-      location?.pais !== "United States" &&
-      currentLocation === "Seattle"
-    ) {
+    } else if (location?.pais !== "United States" && currentLocation === "Seattle") {
       setCurrentLocation("Kelowna");
     }
   }, [location]);
@@ -114,13 +92,8 @@ export function HeaderTemp() {
 
   if (loading || !data) return null;
 
-  const mainItems =
-    location?.pais === "United States" ? data.menuCA : data.menuUS;
-
-  // const servicesWithChildren = data.services.nodes.filter(s => s.children.nodes.length > 0);
-
-  // console.log(servicesWithChildren);
-  console.log("==> ", mainItems);
+  // 🔹 Usa los menús jerárquicos ya preparados en WP
+  const mainItems = location?.pais === "United States" ? data.menuUS : data.menuCA;
 
   return (
     <>
@@ -154,13 +127,10 @@ export function HeaderTemp() {
 
             <div className="top-menu">
               {data.topMenu.map((item) => (
-                <li className="menu-item">
+                <li className="menu-item" key={item.label}>
                   <NavLink
-                    key={item.label}
                     to={wpUrlToClientPath(item.url)}
-                    className={({ isActive }) =>
-                      `link ${isActive ? "active" : ""}`
-                    }
+                    className={({ isActive }) => `link ${isActive ? "active" : ""}`}
                     onClick={() => setMenuOpen(false)}
                   >
                     {item.label}
@@ -173,15 +143,10 @@ export function HeaderTemp() {
               </button>
             </div>
 
-            <div className="main-menu">
+            {/* 🔹 Menú principal con hijos */}
+            <div className="main-menu" style={{ listStyle: "none" }}>
               {mainItems.map((item, index) => {
-                // 1. Buscar el service cuyo url coincide con el del menu
-                const matchedService = data.services.nodes.find(
-                  (s) => s.url && item.url && s.url.trim() === item.url.trim()
-                );
-
-                // 2. Si coincide, obtener hijos
-                const children = matchedService?.children?.nodes || [];
+                const children = item.children || [];
 
                 return (
                   <li
@@ -189,31 +154,26 @@ export function HeaderTemp() {
                     className="menu-item"
                     onMouseEnter={() => setOpenDropDown(index)}
                     onMouseLeave={() => setOpenDropDown(null)}
+                    style={{ listStyle: "none" }}
                   >
                     <NavLink
                       to={wpUrlToClientPath(item.url)}
-                      className={({ isActive }) =>
-                        `link ${isActive ? "active" : ""}`
-                      }
+                      className={({ isActive }) => `link ${isActive ? "active" : ""}`}
                       onClick={() => setMenuOpen(false)}
                     >
                       {item.label}
                     </NavLink>
 
-                    {/* 👇 SOLO si tiene hijos mostramos el dropdown */}
+                    {/* 👇 Dropdown si tiene hijos */}
                     {children.length > 0 && (
                       <ul
-                        className={`dropdown ${
-                          openDropdown === index ? "show" : ""
-                        }`}
+                        className={`dropdown ${openDropdown === index ? "show" : ""}`}
+                        style={{ listStyle: "none" }}
                       >
                         {children.map((child) => (
-                          <li key={child.id}>
-                            <NavLink
-                              to={wpUrlToClientPath(child.url)}
-                              className="dropdown-link"
-                            >
-                              {child.title}
+                          <li key={child.label} style={{ listStyle: "none" }}>
+                            <NavLink to={wpUrlToClientPath(child.url)} className="dropdown-link">
+                              {child.label}
                             </NavLink>
                           </li>
                         ))}
@@ -225,10 +185,7 @@ export function HeaderTemp() {
             </div>
           </nav>
 
-          <button
-            className="menu-toggle"
-            onClick={() => setMenuOpen((p) => !p)}
-          >
+          <button className="menu-toggle" onClick={() => setMenuOpen((p) => !p)}>
             {!menuOpen ? (
               <>
                 <span></span>
@@ -246,14 +203,10 @@ export function HeaderTemp() {
         <div className="header-container">
           <div className="header-below__info">
             <h4 className="header-below__headline">
-              Fast, Fair and Reliable Service in <span>{currentLocation}.</span>{" "}
-              100% Guarantee
+              Fast, Fair and Reliable Service in <span>{currentLocation}.</span> 100% Guarantee
             </h4>
             <div className="header-below__details">
-              <button
-                className="location-btn"
-                onClick={() => setShowToolTip(!showToolTip)}
-              >
+              <button className="location-btn" onClick={() => setShowToolTip(!showToolTip)}>
                 <img src={locationsvg} alt="icono de ubicacion" />
                 <div className="location-btn__text">
                   <p className="location-btn__label">Current Location</p>
@@ -261,16 +214,12 @@ export function HeaderTemp() {
                 </div>
               </button>
 
-              <h6 className="header-below__subtitle">
-                A Family Owned Canadian Business
-              </h6>
+              <h6 className="header-below__subtitle">A Family Owned Canadian Business</h6>
             </div>
 
             {showToolTip && (
               <div className="location-tooltip">
-                <h5 className="location-tooltip__title">
-                  Want to see options closer to your home?
-                </h5>
+                <h5 className="location-tooltip__title">Want to see options closer to your home?</h5>
                 <p className="location-tooltip__description">
                   Select your location to show available services in your area.
                 </p>
