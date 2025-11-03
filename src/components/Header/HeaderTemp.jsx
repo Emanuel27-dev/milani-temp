@@ -115,7 +115,7 @@ export function HeaderTemp() {
   if (loading || !data) return null;
 
   const mainItems =
-    location?.pais === "United States" ? data.menuCA : data.menuUS;
+    location?.pais === "United States" ? data.menuUS : data.menuCA;
 
   // const servicesWithChildren = data.services.nodes.filter(s => s.children.nodes.length > 0);
 
