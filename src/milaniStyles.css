@@ -420,6 +420,54 @@ header {
   border-radius: 2px;
 }
 
+
+/* ELEMENTO DROPDOWN */
+
+.main-menu {
+  list-style: none;
+  position: relative;
+}
+
+.menu-item {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  list-style: none;
+  display: none;
+  background: rgb(219, 71, 71);
+  border-radius: .5rem;
+  min-width: 180px;
+  padding: 8px 0;
+  z-index: 10;
+}
+
+.dropdown li {
+  list-style: none;
+}
+
+.dropdown.show {
+  display: block;
+}
+
+.dropdown-link {
+  display: block;
+  padding: 8px 15px;
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.dropdown-link:hover {
+  background: rgb(227, 176, 176);
+}
+
+
+
+
+
 /* === PANEL MÓVIL (oculto por defecto) === */
 .mobile-menu {
   display: none;

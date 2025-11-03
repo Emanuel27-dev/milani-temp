@@ -87,7 +87,14 @@ strong {
    font-weight: bold !important;
 }
 
+ul {
+   /* para los dropdown */
+   margin: 0 !important; 
+}
 
+li {
+   list-style: none;
+}
 
 .outlet {
    /* border: 1px solid red; */

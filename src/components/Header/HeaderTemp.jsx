@@ -47,9 +47,12 @@ const GET_HEADER = gql`
   }
 `;
 
+const childrens = ["hijo1", "hijo2", "hijo3"];
+
 export function HeaderTemp() {
   const { data, loading } = useQuery(GET_HEADER);
   const { location } = useIPLocation();
+  const [openDropdown, setOpenDropDown] = useState(null); // variable para que al pasar el mouse aparezca el dropdown
 
   const [showToolTip, setShowToolTip] = useState(
     !localStorage.getItem("currentLocation")
@@ -125,16 +128,18 @@ export function HeaderTemp() {
 
             <div className="top-menu">
               {data.topMenu.map((item) => (
-                <NavLink
-                  key={item.label}
-                  to={wpUrlToClientPath(item.url)}
-                  className={({ isActive }) =>
-                    `link ${isActive ? "active" : ""}`
-                  }
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {item.label}
-                </NavLink>
+                <li className="menu-item">
+                  <NavLink
+                    key={item.label}
+                    to={wpUrlToClientPath(item.url)}
+                    className={({ isActive }) =>
+                      `link ${isActive ? "active" : ""}`
+                    }
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
               ))}
 
               <button className="search-btn">
@@ -143,22 +148,49 @@ export function HeaderTemp() {
             </div>
 
             <div className="main-menu">
-              {mainItems.map((item) => (
-                <NavLink
+              {mainItems.map((item, index) => (
+                <li
                   key={item.label}
-                  to={wpUrlToClientPath(item.url)}
-                  className={({ isActive }) =>
-                    `$link ${isActive ? "active" : ""}`
-                  }
-                  onClick={() => setMenuOpen(false)}
+                  className="menu-item"
+                  onMouseEnter={() => setOpenDropDown(index)}
+                  onMouseLeave={() => setOpenDropDown(null)}
                 >
-                  {item.label}
-                </NavLink>
+                  <NavLink
+                    key={item.label}
+                    to={wpUrlToClientPath(item.url)}
+                    className={({ isActive }) =>
+                      `$link ${isActive ? "active" : ""}`
+                    }
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {item.label}
+                  </NavLink>
+
+                  {/* Definicion de dropdown */}
+                  {childrens && childrens.length > 0 && (
+                    <ul
+                      className={`dropdown ${
+                        openDropdown === index ? "show" : ""
+                      }`}
+                    >
+                      {childrens.map((child) => (
+                        <li key={child}>
+                          <NavLink to={"#"} className="dropdown-link">
+                            {child}
+                          </NavLink>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
               ))}
             </div>
           </nav>
 
-          <button className="menu-toggle" onClick={() => setMenuOpen((p) => !p)}>
+          <button
+            className="menu-toggle"
+            onClick={() => setMenuOpen((p) => !p)}
+          >
             {!menuOpen ? (
               <>
                 <span></span>
