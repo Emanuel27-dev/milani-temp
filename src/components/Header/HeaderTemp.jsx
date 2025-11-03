@@ -44,6 +44,27 @@ const GET_HEADER = gql`
       objectType
       objectId
     }
+
+    services(where: { parent: null, status: PUBLISH }) {
+      nodes {
+        ... on Service {
+          id
+          title
+          uri
+          url
+          children {
+            nodes {
+              ... on Service {
+                id
+                title
+                uri
+                url
+              }
+            }
+          }
+        }
+      }
+    }
   }
 `;
 
@@ -95,6 +116,11 @@ export function HeaderTemp() {
 
   const mainItems =
     location?.pais === "United States" ? data.menuCA : data.menuUS;
+
+  // const servicesWithChildren = data.services.nodes.filter(s => s.children.nodes.length > 0);
+
+  // console.log(servicesWithChildren);
+  console.log("==> ", mainItems);
 
   return (
     <>
@@ -148,42 +174,54 @@ export function HeaderTemp() {
             </div>
 
             <div className="main-menu">
-              {mainItems.map((item, index) => (
-                <li
-                  key={item.label}
-                  className="menu-item"
-                  onMouseEnter={() => setOpenDropDown(index)}
-                  onMouseLeave={() => setOpenDropDown(null)}
-                >
-                  <NavLink
-                    key={item.label}
-                    to={wpUrlToClientPath(item.url)}
-                    className={({ isActive }) =>
-                      `$link ${isActive ? "active" : ""}`
-                    }
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {item.label}
-                  </NavLink>
+              {mainItems.map((item, index) => {
+                // 1. Buscar el service cuyo url coincide con el del menu
+                const matchedService = data.services.nodes.find(
+                  (s) => s.url && item.url && s.url.trim() === item.url.trim()
+                );
 
-                  {/* Definicion de dropdown */}
-                  {childrens && childrens.length > 0 && (
-                    <ul
-                      className={`dropdown ${
-                        openDropdown === index ? "show" : ""
-                      }`}
+                // 2. Si coincide, obtener hijos
+                const children = matchedService?.children?.nodes || [];
+
+                return (
+                  <li
+                    key={item.label}
+                    className="menu-item"
+                    onMouseEnter={() => setOpenDropDown(index)}
+                    onMouseLeave={() => setOpenDropDown(null)}
+                  >
+                    <NavLink
+                      to={wpUrlToClientPath(item.url)}
+                      className={({ isActive }) =>
+                        `link ${isActive ? "active" : ""}`
+                      }
+                      onClick={() => setMenuOpen(false)}
                     >
-                      {childrens.map((child) => (
-                        <li key={child}>
-                          <NavLink to={"#"} className="dropdown-link">
-                            {child}
-                          </NavLink>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
+                      {item.label}
+                    </NavLink>
+
+                    {/* 👇 SOLO si tiene hijos mostramos el dropdown */}
+                    {children.length > 0 && (
+                      <ul
+                        className={`dropdown ${
+                          openDropdown === index ? "show" : ""
+                        }`}
+                      >
+                        {children.map((child) => (
+                          <li key={child.id}>
+                            <NavLink
+                              to={wpUrlToClientPath(child.url)}
+                              className="dropdown-link"
+                            >
+                              {child.title}
+                            </NavLink>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
             </div>
           </nav>
 
