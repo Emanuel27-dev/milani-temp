@@ -96,6 +96,10 @@ li {
    list-style: none;
 }
 
+.location-btn__text p {
+   padding-bottom: 0 !important;
+}
+
 .outlet {
    /* border: 1px solid red; */
 }

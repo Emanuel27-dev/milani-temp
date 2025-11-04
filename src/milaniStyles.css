@@ -49,16 +49,18 @@ header {
 }
 
 .top-menu a:hover {
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 
 .link {
    color: var(--color-white);
    text-decoration: none;
+   padding-bottom: 10px;
 }
 
 .active {
-   color: var(--color-yellow-milani);
+   color: var(--color-yellow-milani) !important;
+   border-bottom: 3px solid var(--color-yellow-milani);
 }         
 
 .search-btn {
@@ -70,44 +72,10 @@ header {
 }
 
 .main-menu {
-   /* border: 1px solid blue; */
    padding-bottom: .5rem;
    display: flex;
    justify-content: end;
    gap: 19px;
-}
-
-.link-main {
-   position: relative;
-   color: var(--color-white);
-   text-decoration: none;
-   /* border: 1px solid white; */
-   display: flex;
-   align-items: center;
-}
-
-/* agrega el “pipe” a todos menos al último */
-.link-main:not(:last-child)::after {
-  content: "|";
-  margin-left: 19px;      /* espacio entre texto y pipe */
-  color: var(--color-white); /* evita heredar el color del enlace activo */
-}
-
-.active-main {
-   color: var(--color-yellow-milani );
-
-}
-
-/* Subrayado debajo del texto activo */
-.active-main::before {
-  content: "";
-  position: absolute;
-  bottom: -10px;             /* ajusta según el tamaño de fuente */
-  left: 0;
-  width: 70%;
-  height: 3px;              /* grosor de la línea */
-  background-color: var(--color-yellow-milani);
-  border-radius: 2px;
 }
 
 /* estilos header below */
@@ -427,10 +395,24 @@ header {
   list-style: none;
   position: relative;
 }
+.menu-item-top {
+  position: relative;
+  list-style: none;
+}
 
 .menu-item {
   position: relative;
+  /* border: 1px solid; */
 }
+
+/* agrega el “pipe” a todos menos al último */
+.menu-item:not(:last-child)::after {
+  content: "|";
+  margin-left: 19px;      /* espacio entre texto y pipe */
+  color: var(--color-white); /* evita heredar el color del enlace activo */
+}
+
+
 
 .dropdown {
   position: absolute;

@@ -125,9 +125,9 @@ export function HeaderTemp() {
               </button>
             )}
 
-            <div className="top-menu">
+            <ul className="top-menu">
               {data.topMenu.map((item) => (
-                <li className="menu-item" key={item.label}>
+                <li className="menu-item-top" key={item.label}>
                   <NavLink
                     to={wpUrlToClientPath(item.url)}
                     className={({ isActive }) => `link ${isActive ? "active" : ""}`}
@@ -141,10 +141,10 @@ export function HeaderTemp() {
               <button className="search-btn">
                 <img src={lupa} alt="lupa" />
               </button>
-            </div>
+            </ul>
 
             {/* 🔹 Menú principal con hijos */}
-            <div className="main-menu" style={{ listStyle: "none" }}>
+            <ul className="main-menu" style={{ listStyle: "none" }}>
               {mainItems.map((item, index) => {
                 const children = item.children || [];
 
@@ -182,7 +182,7 @@ export function HeaderTemp() {
                   </li>
                 );
               })}
-            </div>
+            </ul>
           </nav>
 
           <button className="menu-toggle" onClick={() => setMenuOpen((p) => !p)}>
