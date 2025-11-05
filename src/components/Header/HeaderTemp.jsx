@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client/react";
 import { Link, NavLink } from "react-router-dom";
 import lupa from "./../../assets/lupa.svg";
 import locationsvg from "./../../assets/location.svg";
@@ -9,54 +7,9 @@ import { wpUrlToClientPath } from "../../helpers/wpUrlToClientPath";
 import { ZipModal } from "./ZipModal";
 import { useIPLocation } from "../../hooks/useIPLocation";
 
-const GET_HEADER = gql`
-  query {
-    salientLogo
-    topMenu {
-      label
-      url
-      target
-      kind
-      objectType
-      objectId
-    }
-    mainMenu {
-      label
-      url
-      target
-      kind
-      objectType
-      objectId
-    }
-    menuCA {
-      label
-      url
-      target
-      kind
-      objectType
-      objectId
-      children {
-        label
-        url
-      }
-    }
-    menuUS {
-      label
-      url
-      target
-      kind
-      objectType
-      objectId
-      children {
-        label
-        url
-      }
-    }
-  }
-`;
 
-export function HeaderTemp() {
-  const { data, loading } = useQuery(GET_HEADER);
+export function HeaderTemp({ data }) {
+  
   const { location } = useIPLocation();
   const [openDropdown, setOpenDropDown] = useState(null);
 
@@ -90,7 +43,6 @@ export function HeaderTemp() {
     localStorage.setItem("currentLocation", currentLocation);
   }, [currentLocation]);
 
-  if (loading || !data) return null;
 
   // 🔹 Usa los menús jerárquicos ya preparados en WP
   const mainItems = location?.pais === "United States" ? data.menuUS : data.menuCA;

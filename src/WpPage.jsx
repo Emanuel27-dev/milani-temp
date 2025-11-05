@@ -1,16 +1,15 @@
 // src/pages/WpPage.jsx
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useOutletContext } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { useEffect } from "react";
 
 // 🔹 Hooks personalizados
-import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets"; // estilos globales + body inicial
-import { useWpBodyAttributesFromWp } from "./hooks/useWpBodyAttributesFromWp"; // body dinámico por página
-import { usePageCss } from "./hooks/usePageCss"; // CSS dinámico (WPBakery + Salient)
-import { useWpReflow } from "./hooks/useWpReflow"; // reactivación de scripts y animaciones
-
+import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";
+import { useWpBodyAttributesFromWp } from "./hooks/useWpBodyAttributesFromWp";
+import { usePageCss } from "./hooks/usePageCss";
+import { useWpReflow } from "./hooks/useWpReflow";
 
 // =========================================================
 // 🔹 QUERY PRINCIPAL UNIVERSAL (Page, Post, Service, Property…)
@@ -79,29 +78,43 @@ const NODE_BY_PATH = gql`
   }
 `;
 
-
 // =========================================================
 // 🔹 COMPONENTE PRINCIPAL
 // =========================================================
 export function WpPage({ fixedUri, fixedSlug }) {
   const { pathname } = useLocation();
+  const { homeData } = useOutletContext() || {}; // 🟩 viene desde Layout.jsx
+
   const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
   const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : autoUri);
 
-  // 1️⃣ Primera consulta (contenido base)
+  // 🟩 Detectar si estamos en la página de inicio
+  const isHome =
+    pathname === "/" || pathname === "/home/" || pathname === "/home";
+
+  // 1️⃣ Primera consulta: contenido base
   const { data, loading, error } = useQuery(NODE_BY_PATH, {
     variables: { uri, id: 0 },
-    fetchPolicy: "network-only",
+    fetchPolicy: isHome ? "cache-first" : "cache-and-network",
+    nextFetchPolicy: "cache-first",
+    skip: isHome && homeData, // ⏩ no hace query si ya tenemos data precargada
   });
 
-  const node = data?.contentNode;
+  // 🟩 Selecciona la fuente de datos: precargada o desde la query
+  const node = isHome
+    ? homeData?.contentNode || data?.contentNode
+    : data?.contentNode;
   const dbId = node?.databaseId ?? 0;
 
-  // 2️⃣ Actualizar el título de la pestaña según la página
-  useEffect(() => {
-    const isHome =
-      pathname === "/" || pathname === "/home/" || pathname === "/home";
+  // 2️⃣ Segunda consulta: estilos inline por databaseId
+  const { data: inlineData } = useQuery(NODE_BY_PATH, {
+    variables: { uri, id: dbId },
+    skip: !dbId,
+    fetchPolicy: "cache-first",
+  });
 
+  // 3️⃣ Actualiza el título del documento
+  useEffect(() => {
     if (isHome) {
       document.title = "Milani Plumbing Heating & Air Conditioning";
     } else if (node?.title) {
@@ -109,16 +122,9 @@ export function WpPage({ fixedUri, fixedSlug }) {
     }
   }, [node?.title, pathname]);
 
-  // 3️⃣ Segunda consulta: inline styles (por databaseId)
-  const { data: inlineData } = useQuery(NODE_BY_PATH, {
-    variables: { uri, id: dbId },
-    skip: !dbId,
-    fetchPolicy: "network-only",
-  });
-
-  // 4️⃣ Hooks visuales sincronizados
-  useWpGlobalAssets(); // Carga global (Salient base)
-  useWpBodyAttributesFromWp({ data: inlineData || data }); // Actualiza <body>
+  // 4️⃣ Hooks visuales (no se tocan)
+  useWpGlobalAssets();
+  useWpBodyAttributesFromWp({ data: inlineData || data });
   usePageCss(
     {
       ...node,
@@ -127,12 +133,11 @@ export function WpPage({ fixedUri, fixedSlug }) {
     },
     inlineData?.wpbInlineStyles
   );
-  useWpReflow([node?.id]); // Reactiva scripts, sliders, animaciones
+  useWpReflow([node?.id]);
 
   // 5️⃣ Renderizado
-  if (loading) return null;
   if (error) return <p>Error cargando el contenido.</p>;
-  if (!node) return <p>Página no encontrada.</p>;
+  if (!node) return <p></p>;
 
   const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
 
@@ -140,7 +145,7 @@ export function WpPage({ fixedUri, fixedSlug }) {
     <article
       key={node?.id}
       className="wpb-content-wrapper"
-      dangerouslySetInnerHTML={{ __html: node?.contentRendered || "" }}
+      dangerouslySetInnerHTML={{ __html: safeHtml }}
     />
   );
 }
