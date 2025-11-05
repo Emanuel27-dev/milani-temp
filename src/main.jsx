@@ -22,9 +22,12 @@ const client = new ApolloClient({
   cache: new InMemoryCache(), // sistema para manejar el cache
 });
 
+// contexto explicito para Helmet
+const helmetContext = {};
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <HelmetProvider>
+    <HelmetProvider context={helmetContext}>
       <BrowserRouter>
         <ApolloProvider client={client}>
           <App />

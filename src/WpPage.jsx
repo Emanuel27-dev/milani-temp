@@ -1,4 +1,5 @@
 // src/pages/WpPage.jsx
+import { Helmet } from "react-helmet-async";
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { useLocation, useOutletContext } from "react-router-dom";
@@ -30,6 +31,24 @@ const NODE_BY_PATH = gql`
         wpbCss
         vcCustomCss
         dynamicCss
+        seo {
+          title
+          metaDesc
+          canonical
+          opengraphTitle
+          opengraphDescription
+          opengraphImage {
+            sourceUrl
+          }
+          twitterTitle
+          twitterDescription
+          twitterImage {
+            sourceUrl
+          }
+          schema {
+            raw
+          }
+        }
         inlineDynamicCssGrouped {
           emoji
           global
@@ -46,6 +65,24 @@ const NODE_BY_PATH = gql`
         wpbCss
         vcCustomCss
         dynamicCss
+        seo {
+          title
+          metaDesc
+          canonical
+          opengraphTitle
+          opengraphDescription
+          opengraphImage {
+            sourceUrl
+          }
+          twitterTitle
+          twitterDescription
+          twitterImage {
+            sourceUrl
+          }
+          schema {
+            raw
+          }
+        }
         inlineDynamicCssGrouped {
           emoji
           global
@@ -62,6 +99,24 @@ const NODE_BY_PATH = gql`
         wpbCss
         vcCustomCss
         dynamicCss
+        seo {
+          title
+          metaDesc
+          canonical
+          opengraphTitle
+          opengraphDescription
+          opengraphImage {
+            sourceUrl
+          }
+          twitterTitle
+          twitterDescription
+          twitterImage {
+            sourceUrl
+          }
+          schema {
+            raw
+          }
+        }
         inlineDynamicCssGrouped {
           emoji
           global
@@ -122,6 +177,12 @@ export function WpPage({ fixedUri, fixedSlug }) {
     }
   }, [node?.title, pathname]);
 
+  useEffect(() => {
+    if (node?.seo) {
+      console.log("🧠 SEO data ready for Helmet:", node.seo.title);
+    }
+  }, [node?.seo]);
+
   // 4️⃣ Hooks visuales (no se tocan)
   useWpGlobalAssets();
   useWpBodyAttributesFromWp({ data: inlineData || data });
@@ -141,11 +202,78 @@ export function WpPage({ fixedUri, fixedSlug }) {
 
   const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
 
+  console.log("SEO: ", node.seo);
+  console.log("🔍 Helmet test", {
+    loading,
+    hasSEO: !!node?.seo,
+    title: node?.seo?.title,
+  });
+
   return (
-    <article
-      key={node?.id}
-      className="wpb-content-wrapper"
-      dangerouslySetInnerHTML={{ __html: node?.contentRendered || ""}}
-    />
+    <>
+      {/* 🔹 Inyección dinámica de metadatos SEO */}
+      {!loading && node?.seo && (
+        <Helmet key={node?.id || node?.uri}>
+          <title>{node.seo.title || node.title}</title>
+
+          {node.seo.metaDesc && (
+            <meta name="description" content={node.seo.metaDesc} />
+          )}
+
+          {node.seo.canonical && (
+            <link rel="canonical" href={node.seo.canonical} />
+          )}
+
+          {node.seo.opengraphTitle && (
+            <meta property="og:title" content={node.seo.opengraphTitle} />
+          )}
+          {node.seo.opengraphDescription && (
+            <meta
+              property="og:description"
+              content={node.seo.opengraphDescription}
+            />
+          )}
+          {node.seo.opengraphImage?.sourceUrl && (
+            <meta
+              property="og:image"
+              content={node.seo.opengraphImage.sourceUrl}
+            />
+          )}
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:url"
+            content={node.seo.canonical || window.location.href}
+          />
+
+          {node.seo.twitterTitle && (
+            <meta name="twitter:title" content={node.seo.twitterTitle} />
+          )}
+          {node.seo.twitterDescription && (
+            <meta
+              name="twitter:description"
+              content={node.seo.twitterDescription}
+            />
+          )}
+          {node.seo.twitterImage?.sourceUrl && (
+            <meta
+              name="twitter:image"
+              content={node.seo.twitterImage.sourceUrl}
+            />
+          )}
+          <meta name="twitter:card" content="summary_large_image" />
+
+          {node.seo.schema?.raw && (
+            <script type="application/ld+json">{node.seo.schema.raw}</script>
+          )}
+        </Helmet>
+      )}
+
+      {/* 🔹 Contenido principal */}
+      <article
+        key={node?.id}
+        className="wpb-content-wrapper"
+        dangerouslySetInnerHTML={{ __html: node?.contentRendered || "" }}
+      />
+    </>
   );
 }

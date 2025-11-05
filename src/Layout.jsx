@@ -56,11 +56,9 @@ const GET_HEADER = gql`
   }
 `;
 
-
 // =========================================================
 // 🔹 Query para precargar la página de inicio (/home/)
 // =========================================================
-
 const GET_HOME = gql`
   query {
     contentNode(id: "/home/", idType: URI) {
@@ -76,6 +74,24 @@ const GET_HOME = gql`
         wpbCss
         vcCustomCss
         dynamicCss
+        seo {
+          title
+          metaDesc
+          canonical
+          opengraphTitle
+          opengraphDescription
+          opengraphImage {
+            sourceUrl
+          }
+          twitterTitle
+          twitterDescription
+          twitterImage {
+            sourceUrl
+          }
+          schema {
+            raw
+          }
+        }
         inlineDynamicCssGrouped {
           emoji
           global
@@ -91,6 +107,24 @@ const GET_HOME = gql`
         wpbCss
         vcCustomCss
         dynamicCss
+        seo {
+          title
+          metaDesc
+          canonical
+          opengraphTitle
+          opengraphDescription
+          opengraphImage {
+            sourceUrl
+          }
+          twitterTitle
+          twitterDescription
+          twitterImage {
+            sourceUrl
+          }
+          schema {
+            raw
+          }
+        }
         inlineDynamicCssGrouped {
           emoji
           global
@@ -106,6 +140,24 @@ const GET_HOME = gql`
         wpbCss
         vcCustomCss
         dynamicCss
+        seo {
+          title
+          metaDesc
+          canonical
+          opengraphTitle
+          opengraphDescription
+          opengraphImage {
+            sourceUrl
+          }
+          twitterTitle
+          twitterDescription
+          twitterImage {
+            sourceUrl
+          }
+          schema {
+            raw
+          }
+        }
         inlineDynamicCssGrouped {
           emoji
           global
