@@ -145,7 +145,7 @@ export function WpPage({ fixedUri, fixedSlug }) {
     <article
       key={node?.id}
       className="wpb-content-wrapper"
-      dangerouslySetInnerHTML={{ __html: safeHtml }}
+      dangerouslySetInnerHTML={{ __html: node?.contentRendered || ""}}
     />
   );
 }
