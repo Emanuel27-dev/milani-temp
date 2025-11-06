@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://milani.xpress.ws/sitemap_index.xml
