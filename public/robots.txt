@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://milani.xpress.ws/sitemap_index.xml
+Sitemap: https://milani.co/sitemap_index.xml

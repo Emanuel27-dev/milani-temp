@@ -82,7 +82,7 @@ export function Footer() {
           </div>
 
           <div class="service-column with-border">
-            <h3></h3>
+            <div className="little-border">
             <ul>
               <li><a href="#">Promotions</a></li>
               <li><a href="#">Commercial Service</a></li>
@@ -90,6 +90,7 @@ export function Footer() {
               <li><a href="#">Careers</a></li>
               <li><a href="#">Payments</a></li>
             </ul>
+            </div>
           </div>
         </div>
 
@@ -112,7 +113,7 @@ export function Footer() {
           </div>
           <div className="canadian-business">
             <figure>
-              <img src={hoja} alt="hoja" />
+              <img src={hoja} alt="hoja" className="canadian-bussiness__img" />
             </figure>
             <span>A Family Owned Canadian Business</span>
           </div>
