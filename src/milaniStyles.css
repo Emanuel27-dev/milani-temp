@@ -59,6 +59,11 @@ header {
   padding-bottom: 10px;
 }
 
+.link:hover {
+  color: var(--color-yellow-milani) !important;
+  border-bottom: 3px solid var(--color-yellow-milani);
+}
+
 .active {
   color: var(--color-yellow-milani) !important;
   border-bottom: 3px solid var(--color-yellow-milani);
