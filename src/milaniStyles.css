@@ -511,7 +511,6 @@ header {
     padding-top: 15px;
   }
   .main-menu a {
-    font-size: 30px !important;
     color: white !important;
   }
   .main-menu {
@@ -532,9 +531,8 @@ header {
   }
   .menus {
     width: 100%;
-    right: 0;
     position: fixed; /* Cambié a fixed para que el menú quede sobre el contenido */
-    top: -100%;
+    top: 100%;
     right: 0; /* El menú empieza fuera de la pantalla */
     background: #ce2229;
     padding: 30px;
@@ -544,6 +542,10 @@ header {
 
   .menus.active {
     top: 0; /* Cuando se activa, el menú aparece desde la derecha */
+  }
+
+  .menu-item:not(:last-child)::after {
+    content: ""; /* Eliminamos el pipe */
   }
 
   .menu-toggle {
