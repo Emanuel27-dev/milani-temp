@@ -209,12 +209,14 @@ export function WpPage({ fixedUri, fixedSlug }) {
     title: node?.seo?.title,
   });
 
+  console.log("gaaa:", node.title)
+
   return (
     <>
       {/* 🔹 Inyección dinámica de metadatos SEO */}
       {!loading && node?.seo && (
         <Helmet key={node?.id || node?.uri}>
-          <title>{node.seo.title || node.title}</title>
+          {/* <title>{node.seo.title || node.title}</title> reescribe el titulo que ya estaba definido en el effect */}
 
           {node.seo.metaDesc && (
             <meta name="description" content={node.seo.metaDesc} />

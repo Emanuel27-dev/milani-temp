@@ -7,20 +7,24 @@ import { wpUrlToClientPath } from "../../helpers/wpUrlToClientPath";
 import { ZipModal } from "./ZipModal";
 import { useIPLocation } from "../../hooks/useIPLocation";
 
-
 export function HeaderTemp({ data }) {
-  
   const { location } = useIPLocation();
   const [openDropdown, setOpenDropDown] = useState(null);
 
-  const [showToolTip, setShowToolTip] = useState(!localStorage.getItem("currentLocation"));
+  const [showToolTip, setShowToolTip] = useState(
+    !localStorage.getItem("currentLocation")
+  );
   const [showZipModal, setShowZipModal] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState(localStorage.getItem("currentLocation") || "Kelowna");
+  const [currentLocation, setCurrentLocation] = useState(
+    localStorage.getItem("currentLocation") || "Kelowna"
+  );
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth <= 1000 : false
   );
+
+  const [openSearch, setOpenSearch] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,7 +38,10 @@ export function HeaderTemp({ data }) {
   useEffect(() => {
     if (location?.pais === "United States" && currentLocation !== "Seattle") {
       setCurrentLocation("Seattle");
-    } else if (location?.pais !== "United States" && currentLocation === "Seattle") {
+    } else if (
+      location?.pais !== "United States" &&
+      currentLocation === "Seattle"
+    ) {
       setCurrentLocation("Kelowna");
     }
   }, [location]);
@@ -43,9 +50,9 @@ export function HeaderTemp({ data }) {
     localStorage.setItem("currentLocation", currentLocation);
   }, [currentLocation]);
 
-
   // 🔹 Usa los menús jerárquicos ya preparados en WP
-  const mainItems = location?.pais === "United States" ? data.menuUS : data.menuCA;
+  const mainItems =
+    location?.pais === "United States" ? data.menuUS : data.menuCA;
 
   return (
     <>
@@ -82,15 +89,19 @@ export function HeaderTemp({ data }) {
                 <li className="menu-item-top" key={item.label}>
                   <NavLink
                     to={wpUrlToClientPath(item.url)}
-                    className={({ isActive }) => `link ${isActive ? "active" : ""}`}
+                    className={({ isActive }) =>
+                      `link ${isActive ? "active" : ""}`
+                    }
                     onClick={() => setMenuOpen(false)}
                   >
                     {item.label}
                   </NavLink>
                 </li>
               ))}
-
-              <button className="search-btn">
+              <button
+                className="search-btn"
+                onClick={() => setOpenSearch(true)}
+              >
                 <img src={lupa} alt="lupa" />
               </button>
             </ul>
@@ -110,7 +121,9 @@ export function HeaderTemp({ data }) {
                   >
                     <NavLink
                       to={wpUrlToClientPath(item.url)}
-                      className={({ isActive }) => `link ${isActive ? "active" : ""}`}
+                      className={({ isActive }) =>
+                        `link ${isActive ? "active" : ""}`
+                      }
                       onClick={() => setMenuOpen(false)}
                     >
                       {item.label}
@@ -119,26 +132,33 @@ export function HeaderTemp({ data }) {
                     {/* 👇 Dropdown si tiene hijos */}
                     {children.length > 0 && (
                       <ul
-                        className={`dropdown ${openDropdown === index ? "show" : ""}`}
+                        className={`dropdown ${
+                          openDropdown === index ? "show" : ""
+                        }`}
                         style={{ listStyle: "none" }}
                       >
                         {children.map((child) => (
                           <li key={child.label} style={{ listStyle: "none" }}>
-                            <NavLink to={wpUrlToClientPath(child.url)} className="dropdown-link">
+                            <NavLink
+                              to={wpUrlToClientPath(child.url)}
+                              className="dropdown-link"
+                            >
                               {child.label}
                             </NavLink>
                           </li>
                         ))}
                       </ul>
                     )}
-                    
                   </li>
                 );
               })}
             </ul>
           </nav>
 
-          <button className="menu-toggle" onClick={() => setMenuOpen((p) => !p)}>
+          <button
+            className="menu-toggle"
+            onClick={() => setMenuOpen((p) => !p)}
+          >
             {!menuOpen ? (
               <>
                 <span></span>
@@ -152,14 +172,44 @@ export function HeaderTemp({ data }) {
         </div>
       </header>
 
+      {/* 🔍 Search Overlay */}
+      <div
+        id="search-outer"
+        className={`search-overlay ${openSearch ? "active" : ""}`}
+      >
+        <div className="search-box">
+          <form
+            role="search"
+            action="https://milani.xpress.ws/"
+            method="GET"
+            className="search-form"
+          >
+            <input
+              type="text"
+              name="s"
+              aria-label="Search"
+              placeholder="Search"
+              autoFocus
+            />
+          </form>
+          <button className="close-search" onClick={() => setOpenSearch(false)}>
+            ✕
+          </button>
+        </div>
+      </div>
+
       <div className="header-below">
         <div className="header-container">
           <div className="header-below__info">
             <h4 className="header-below__headline">
-              Fast, Fair and Reliable Service in <span>{currentLocation}.</span> 100% Guarantee
+              Fast, Fair and Reliable Service in <span>{currentLocation}.</span>{" "}
+              100% Guarantee
             </h4>
             <div className="header-below__details">
-              <button className="location-btn" onClick={() => setShowToolTip(!showToolTip)}>
+              <button
+                className="location-btn"
+                onClick={() => setShowToolTip(!showToolTip)}
+              >
                 <img src={locationsvg} alt="icono de ubicacion" />
                 <div className="location-btn__text">
                   <p className="location-btn__label">Current Location</p>
@@ -167,12 +217,16 @@ export function HeaderTemp({ data }) {
                 </div>
               </button>
 
-              <h6 className="header-below__subtitle">A Family Owned Canadian Business</h6>
+              <h6 className="header-below__subtitle">
+                A Family Owned Canadian Business
+              </h6>
             </div>
 
             {showToolTip && (
               <div className="location-tooltip">
-                <h5 className="location-tooltip__title">Want to see options closer to your home?</h5>
+                <h5 className="location-tooltip__title">
+                  Want to see options closer to your home?
+                </h5>
                 <p className="location-tooltip__description">
                   Select your location to show available services in your area.
                 </p>
