@@ -65,25 +65,6 @@ export function HeaderTemp({ data }) {
           </Link>
 
           <nav className={`menus ${menuOpen ? "active" : ""}`}>
-            {menuOpen && isMobile && (
-              <button
-                className="close-menu"
-                onClick={() => setMenuOpen(false)}
-                style={{
-                  position: "absolute",
-                  top: "10px",
-                  right: "15px",
-                  background: "none",
-                  border: "none",
-                  fontSize: "28px",
-                  cursor: "pointer",
-                  color: "white",
-                }}
-              >
-                ✕
-              </button>
-            )}
-
             <ul className="top-menu">
               {data.topMenu.map((item) => (
                 <li className="menu-item-top" key={item.label}>
@@ -155,20 +136,14 @@ export function HeaderTemp({ data }) {
             </ul>
           </nav>
 
-          <button
-            className="menu-toggle"
-            onClick={() => setMenuOpen((p) => !p)}
-          >
-            {!menuOpen ? (
-              <>
-                <span></span>
-                <span></span>
-                <span></span>
-              </>
-            ) : (
-              <span style={{ fontSize: "24px" }}>✕</span>
-            )}
-          </button>
+<button
+  className={`menu-toggle ${menuOpen ? "open" : ""}`}
+  onClick={() => setMenuOpen((p) => !p)}
+>
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
         </div>
       </header>
 

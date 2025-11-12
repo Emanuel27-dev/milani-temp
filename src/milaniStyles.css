@@ -5,6 +5,8 @@ header {
   font-family: "Archivo SemiCondensed";
   color: var(--color-white);
   height: 143px;
+    position: relative;
+  z-index: 100;
 }
 
 .header-container {
@@ -399,25 +401,45 @@ header {
   }
 }
 
-/* === ICONO HAMBURGUESA (oculto en desktop) === */
+/* === ICONO HAMBURGUESA === */
 .menu-toggle {
   display: none;
   flex-direction: column;
   justify-content: space-between;
-  width: 24px;
-  height: 18px;
+  width: 26px;
+  height: 20px;
   background: none;
   border: none;
   cursor: pointer;
+  position: relative;
+  z-index: 9999;
+  padding: 0;
+  border: 1px solid var(--color-red);
 }
 
 .menu-toggle span {
   display: block;
-  height: 3px;
+  height: 2.5px;
   width: 100%;
   background-color: #fff;
   border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center center;
 }
+
+/* === ESTADO ACTIVO (forma de X) === */
+.menu-toggle.open span:nth-child(1) {
+  transform: translateY(8px) rotate(40deg);
+}
+
+.menu-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.open span:nth-child(3) {
+  transform: translateY(-8px) rotate(-40deg);
+}
+
 
 /* ELEMENTO DROPDOWN */
 
@@ -446,7 +468,6 @@ header {
   left: auto;
   right: 0;
 }
-
 
 .dropdown {
   position: absolute;
@@ -536,30 +557,41 @@ header {
     cursor: pointer;
     z-index: 1100; /* Aseguramos que esté encima de otros elementos */
   }
-  .menus {
-    width: 100%;
-    position: fixed; /* Cambié a fixed para que el menú quede sobre el contenido */
-    top: 100%;
-    right: 0; /* El menú empieza fuera de la pantalla */
-    background: #ce2229;
-    padding: 30px;
-    transition: top 0.3s ease; /* Transición para deslizar el menú */
-    z-index: 1000; /* Para asegurarnos de que el menú esté encima de otros elementos */
-  }
 
-  .menus.active {
-    top: 0; /* Cuando se activa, el menú aparece desde la derecha */
-  }
+/* === Menú móvil que aparece justo debajo del header === */
+.menus {
+  width: 100%;
+  position: absolute;
+  top: 100%; /* se ancla al final del header */
+  left: 0;
+  right: 0;
+  background: #ce2229;
+  padding: 30px;
+  transform-origin: top center; /* 🔹 punto de animación: la base del header */
+  transform: scaleY(0);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.35s ease, opacity 0.35s ease, visibility 0s linear 0.35s;
+  z-index: 10;
+}
+
+.menus.active {
+  transform: scaleY(1); /* 🔹 se despliega desde el borde inferior del header */
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
 
   .menu-item:not(:last-child)::after {
     content: ""; /* Eliminamos el pipe */
   }
 
   /* Corrige el último dropdown (abre hacia la izquierda) */
-.main-menu > .menu-item:last-child > .dropdown {
-  left: 0;
-  right: auto;
-}
+  .main-menu > .menu-item:last-child > .dropdown {
+    left: 0;
+    right: auto;
+  }
 
   .menu-toggle {
     display: flex;
@@ -1031,7 +1063,6 @@ header {
 .footer .services-grid li a {
   color: #808080;
 }
-
 
 /* ==========================================================
    🔍 BUSCADOR HEADER (versión limpia y funcional)
