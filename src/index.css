@@ -100,6 +100,32 @@ li {
    padding-bottom: 0 !important;
 }
 
+/* 🔧 Fix para Salient / WPBakery responsivo */
+/* @media only screen and (max-width: 999px) {
+  .container-wrap {
+    min-width: auto !important;
+    width: 100% !important;
+  }
+} */
+
+/* 🩵 Fix para contenedores del theme Salient en headless React */
+.container,
+.container-wrap {
+  width: 100% !important;
+  /* max-width: 100% !important; */
+  min-width: auto !important;
+}
+
+@media only screen and (max-width: 999px) {
+  .container,
+  .container-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: auto !important;
+  }
+}
+
+
 .outlet {
    /* border: 1px solid red; */
 }
