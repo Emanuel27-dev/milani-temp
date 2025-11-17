@@ -112,33 +112,32 @@ header {
 .header-below__details {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 20px;
 }
 
 .location-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
+  padding: 5px 15px;
   gap: 10px;
   background-color: var(--color-black);
   border: 1px solid var(--color-yellow-milani);
   cursor: pointer;
 }
 
+.location-btn img {
+  width: 20px;
+}
+
+
 .location-btn__text {
   color: var(--color-white);
   display: flex;
-  flex-direction: column;
-  align-items: start;
 }
 
 .location-btn__text p {
   margin-bottom: 0 !important;
-}
-
-.location-btn__label {
-  font-size: 12px;
 }
 
 .location-btn__city {
@@ -230,6 +229,18 @@ header {
 
 .tooltip-btn--primary {
   flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.tooltip-btn--primary img {
+  width: 20px;
+}
+
+.tooltip-btn--primary:hover img {
+  filter: brightness(0) invert(1);
 }
 
 .tooltip-btn--primary:hover {
@@ -247,58 +258,128 @@ header {
 }
 
 /* ZIP MODAL */
+/* === OVERLAY === */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0,0,0,0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 999;
-  /* max-height: 400px; */
+  padding: 20px;
+  overflow-y: auto; /* el overlay scrollea, no el modal */
 }
 
-.modal {
-  background: var(--color-white);
-  border-radius: 10px;
-  padding: 40px;
+/* === DIALOG (caja centrada) === */
+.modal-dialog {
   width: 100%;
-  max-width: 636px;
-  position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  max-width: 750px;
 }
 
-.modal__close {
+/* === CONTENIDO (borde + sombra) === */
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh; /* límite vertical SIN scroll externo */
+  overflow: hidden; /* evita deformaciones */
+}
+
+/* === CLOSE BUTTON === */
+.modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 16px;
+  right: 16px;
   border: none;
-  background: transparent;
-  font-size: 2rem;
+  background: none;
+  font-size: 35px;
   cursor: pointer;
   color: var(--color-red);
 }
 
-.modal__content {
+/* === HEADER (sin scroll) === */
+.modal-header-custom {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 14px;
+  padding: 24px 40px;
+  border-bottom: 1px solid #808080;
 }
 
-.modal__title {
+.modal-header-custom h6 {
   color: var(--color-black);
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 20rem;
+  margin-bottom: 0 !important;
 }
 
-.modal__subtitle {
-  font-size: 20px;
+/* === BODY (AQUÍ VA EL SCROLL COMO BOOTSTRAP) === */
+.modal-body-custom {
+  padding: 24px 40px;
+  overflow-y: auto;         /* SOLO AQUÍ */
+  scrollbar-gutter: stable; /* 🔥 evita salto de borde */
+}
+
+/* === ITEMS === */
+.modal-item {
+  padding: 20px 0 34px 0;
+  border-bottom: 2px solid #808080;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+
+.modal-item-title {
   color: var(--color-black);
-  margin-bottom: 1.5rem;
 }
 
-.zip-form {
+.locations-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
+  column-gap: 40px;
+  row-gap: 8px;
+}
+
+.location-item:hover {
+  color: var(--color-red);
+}
+
+.location-item.active {
+  color: var(--color-red);
+}
+
+.modal-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+
+
+@media (max-width: 1200px) {
+  .modal {
+    padding: 25px 30px;
+    max-width: 550px;
+  }
+}
+
+@media (max-width: 900px) {
+  .modal {
+    padding: 20px;
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal {
+    padding: 16px;
+    max-width: 94%;
+  }
+}
+
+
+/* .zip-form {
   display: flex;
   align-items: center;
   background: #f7f7f7;
@@ -328,11 +409,6 @@ header {
   gap: 0.4rem;
   font-weight: 600;
   cursor: pointer;
-}
-
-.zip-results {
-  /* border: 1px solid; */
-  /* overflow-y: scroll; */
 }
 
 .zip-results__header {
@@ -377,7 +453,7 @@ header {
   cursor: pointer;
   padding: 6px 10px;
   margin: 0 auto;
-}
+} */
 
 /* Opcional: ocultar pipes en móvil */
 @media (max-width: 640px) {

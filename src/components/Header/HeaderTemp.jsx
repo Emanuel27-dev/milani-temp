@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import lupa from "./../../assets/lupa.svg";
 import locationsvg from "./../../assets/location.svg";
+import location2svg from "./../../assets/location2.svg";
 import wassp from "./../../assets/Phone.svg";
 import { wpUrlToClientPath } from "../../helpers/wpUrlToClientPath";
 import { ZipModal } from "./ZipModal";
@@ -187,7 +188,7 @@ export function HeaderTemp({ data }) {
               >
                 <img src={locationsvg} alt="icono de ubicacion" />
                 <div className="location-btn__text">
-                  <p className="location-btn__label">Current Location</p>
+                  {/* <p className="location-btn__label">Current Location</p> */}
                   <p className="location-btn__city">{currentLocation}</p>
                 </div>
               </button>
@@ -213,6 +214,7 @@ export function HeaderTemp({ data }) {
                       setShowToolTip(false);
                     }}
                   >
+                    <img src={location2svg} alt="location" />
                     CHANGE LOCATION
                   </button>
                   <button
