@@ -152,7 +152,7 @@ header {
 
 .buttons-header {
   display: flex;
-  gap: 19px;
+  gap: 10px;
 }
 .buttons-header button {
   white-space: nowrap;
@@ -1219,9 +1219,10 @@ header {
   }
 }
 
-@media (width <= 375px) {
+@media (width <= 370px) {
   .buttons-header {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 12px;
 }
 }
