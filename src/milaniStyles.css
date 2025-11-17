@@ -978,7 +978,7 @@ header {
 }
 
 /* Mobile specific styles */
-@media (max-width: 800px) {
+@media (max-width: 850px) {
   .header-below .header-container {
     flex-wrap: wrap;
   }
@@ -1217,4 +1217,11 @@ header {
   .search-form input {
     font-size: 28px;
   }
+}
+
+@media (width <= 375px) {
+  .buttons-header {
+  display: flex;
+  gap: 8px;
+}
 }
