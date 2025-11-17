@@ -358,54 +358,57 @@ header {
   margin-bottom: 0;
 }
 
-
 @media (max-width: 600px) {
-  .modal {
-    padding: 18px;
-    max-width: 92%;
-    border-radius: 12px;
+  .modal-dialog {
+    max-width: 94%;
   }
 
-  .modal__title {
-    font-size: 20px;
+  .modal-content {
+    border-radius: 10px;
   }
 
-  /* Header del modal */
-  .modal__header img {
+  .modal-header-custom,
+  .modal-body-custom {
+    padding: 16px 18px;
+  }
+
+  .modal-header-custom img {
     width: 20px;
     height: 20px;
   }
 
-  /* Espaciado interno */
-  .modal__item {
-    gap: 10px;
-    padding-bottom: 24px;
+  .modal-header-custom h6 {
+    font-size: 24px;
   }
 
-  /* Grid móvil: 1 sola columna */
+  /* GRID → 1 columna en móvil */
   .locations-grid {
-    display: grid;
-    grid-template-columns: 1fr;
     grid-auto-flow: row;
-    grid-template-rows: auto;
+    grid-template-rows: initial;
+    grid-template-columns: 1fr;
     row-gap: 10px;
     column-gap: 0;
+  }
+
+  .modal-item-title {
+    font-size: 22px;
   }
 
   .location-item {
     font-size: 16px;
   }
 
-  .modal__content {
-    max-height: 70vh;
-    padding-right: 12px;
+  .modal-body-custom {
+    max-height: 72vh;
     overflow-y: auto;
+    padding-right: 12px;
     scrollbar-gutter: stable;
   }
 
-  .modal__close {
-    top: 14px;
-    right: 14px;
+  .modal-close {
+    font-size: 32px;
+    top: 12px;
+    right: 12px;
   }
 }
 
