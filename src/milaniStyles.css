@@ -306,7 +306,10 @@ header {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 24px 40px;
+  /* padding: 24px 40px; */
+  padding: 0 40px;
+  padding-top: 40px;
+  padding-bottom: 14px;
   border-bottom: 1px solid #808080;
 }
 
@@ -317,14 +320,14 @@ header {
 
 /* === BODY (AQUÍ VA EL SCROLL COMO BOOTSTRAP) === */
 .modal-body-custom {
-  padding: 24px 40px;
+  padding: 14px 40px;
   overflow-y: auto;         /* SOLO AQUÍ */
   scrollbar-gutter: stable; /* 🔥 evita salto de borde */
 }
 
 /* === ITEMS === */
 .modal-item {
-  padding: 20px 0 34px 0;
+  padding: 20px 0;
   border-bottom: 2px solid #808080;
   margin-bottom: 14px;
   cursor: pointer;
@@ -332,6 +335,7 @@ header {
 
 .modal-item-title {
   color: var(--color-black);
+  margin-bottom: 14px !important;
 }
 
 .locations-grid {
@@ -411,83 +415,6 @@ header {
     right: 12px;
   }
 }
-
-
-/* .zip-form {
-  display: flex;
-  align-items: center;
-  background: #f7f7f7;
-  border-radius: 6px;
-  padding: 0.3rem;
-}
-
-.zip-form__input {
-  flex: 1;
-  border: 0;
-  background: transparent;
-  padding: 0.6rem 1rem;
-  font-size: 0.9rem;
-}
-
-.zip-form__input:focus {
-  outline: none;
-}
-
-.zip-form__btn {
-  background: var(--color-red) !important;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.zip-results__header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.zip-results__header p {
-  margin-bottom: 0 !important;
-  font-size: 16px;
-  color: var(--color-black);
-}
-
-.zip-results__options {
-  display: flex;
-  flex-direction: column;
-  padding: 10px 20px;
-}
-
-.zip-results__option {
-  color: var(--color-black);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.zip-results__option input[type="radio"] {
-  accent-color: var(--color-red);
-  transform: scale(1.2);
-}
-
-.zip-results__confirm {
-  background: var(--color-red);
-  color: var(--color-white);
-  border: none;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 6px 10px;
-  margin: 0 auto;
-} */
 
 /* Opcional: ocultar pipes en móvil */
 @media (max-width: 640px) {
@@ -778,7 +705,7 @@ header {
   }
   .headFooter .head {
     padding-top: 20px;
-    padding-bottom: 40px;
+    padding-bottom: 40px;;
   }
 }
 
@@ -849,9 +776,10 @@ header {
   padding: 50px;
 }
 
-.container {
+.container-footer {
   max-width: 1424px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .footer-header {
@@ -1091,8 +1019,8 @@ header {
     right: 0;
   }
 
-  .footer .container {
-    max-width: 90% !important;
+  .container {
+    /* max-width: 90% !important; */
   }
 
   .head {

@@ -9,7 +9,7 @@ export function Footer() {
   return (
     <>
       <div className="headFooter">
-        <div className="container">
+        <div className="container-footer">
           <div className="head">
             <figure className="figureFooter">
               <img src={logo} alt="logo footer" className="imgFooter" />
@@ -32,7 +32,7 @@ export function Footer() {
       </div>
 
       <footer class="footer">
-        <div class="container">
+        <div class="container-footer">
           <div class="footer-header">
             <h4>Fast, Fair and Reliable Service is our Promise</h4>
           </div>
