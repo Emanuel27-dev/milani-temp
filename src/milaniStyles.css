@@ -978,7 +978,7 @@ header {
 }
 
 /* Mobile specific styles */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .header-below .header-container {
     flex-wrap: wrap;
   }
@@ -1003,7 +1003,7 @@ header {
     min-width: 180px;
   }
   .footer {
-    padding: 30px 0 80px 0;
+    padding: 40px 0 80px 0;
     position: relative;
   }
   .footer::after {
@@ -1059,6 +1059,7 @@ header {
   }
 
   .contact-section {
+    /* justify-content: start; */
     flex-direction: column !important;
     align-items: start !important;
     gap: 15px;
@@ -1075,6 +1076,32 @@ header {
   .footer-bottom {
     font-size: 14px;
     color: var(--color-grey2);
+  }
+
+
+  /* PLUMBING se queda en su lugar */
+  .services-grid .plumbing {
+    order: 1;
+  }
+
+  /* HEATING sube al segundo lugar */
+  .services-grid .heating {
+    order: 2;
+  }
+
+  /* DRAINAGE baja al tercer lugar */
+  .services-grid .drainage {
+    order: 3;
+  }
+
+  /* AIR CONDITIONING en cuarto */
+  .services-grid .airconditioning {
+    order: 4;
+  }
+
+  /* Los links finales siempre al final */
+  .services-grid .with-border {
+    order: 5;
   }
 }
 

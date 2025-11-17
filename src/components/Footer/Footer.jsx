@@ -38,7 +38,7 @@ export function Footer() {
           </div>
 
           <div class="services-grid">
-            <div class="service-column">
+            <div class="service-column plumbing">
               <h3>Plumbing</h3>
               <ul>
                 <li>
@@ -59,7 +59,7 @@ export function Footer() {
               </ul>
             </div>
 
-            <div class="service-column">
+            <div class="service-column drainage">
               <h3>Drainage</h3>
               <ul>
                 <li>
@@ -86,7 +86,7 @@ export function Footer() {
               </ul>
             </div>
 
-            <div class="service-column">
+            <div class="service-column heating">
               <h3>Heating</h3>
               <ul>
                 <li>
@@ -107,7 +107,7 @@ export function Footer() {
               </ul>
             </div>
 
-            <div class="service-column">
+            <div class="service-column airconditioning">
               <h3>Air Conditioning</h3>
               <ul>
                 <li>
