@@ -46,7 +46,6 @@ export function ZipModal({
   if (error) return <p>Error: {error.message}</p>;
 
   const { wpcmRegions, wpcmCities, posts } = data;
-  console.log("AHORA: ", wpcmRegions);
   if (!isOpen) return null;
 
   const handleItem = (city) => {
@@ -68,25 +67,29 @@ export function ZipModal({
           </div>
 
           <div className="modal-body-custom">
-            {wpcmRegions.map(({ title, id, cities }) => (
-              <div key={id} className="modal-item">
-                <h5 className="modal-item-title">{title}</h5>
+            {wpcmRegions
+              .filter(({ cities }) => cities.length > 0) // ⬅️ NO mostrar regiones vacías
+              .map(({ title, id, cities }) => (
+                <div key={id} className="modal-item">
+                  <h5 className="modal-item-title">{title}</h5>
 
-                <div className="locations-grid">
-                  {cities.map(({ name }) => (
-                    <div
-                      key={name}
-                      className={`location-item ${
-                        currentLocation === name ? "active-currentLocation" : ""
-                      }`}
-                      onClick={() => handleItem(name)}
-                    >
-                      {name}
-                    </div>
-                  ))}
+                  <div className="locations-grid">
+                    {cities.map(({ name }) => (
+                      <div
+                        key={name}
+                        className={`location-item ${
+                          currentLocation === name
+                            ? "active-currentLocation"
+                            : ""
+                        }`}
+                        onClick={() => handleItem(name)}
+                      >
+                        {name}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>
