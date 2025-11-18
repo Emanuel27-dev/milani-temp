@@ -1226,3 +1226,155 @@ header {
   gap: 12px;
 }
 }
+
+.active-currentLocation {
+  color: var(--color-red);
+}
+
+
+
+/* ============================================================
+   🔥 MOBILE: Fila link + flecha
+   ============================================================ */
+.menu-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Botón flecha */
+.arrow-toggle {
+  background: none;
+  border: none;
+  color: var(--color-white);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px 10px;
+  transform: rotate(0deg);
+  transition: transform 0.25s ease;
+}
+
+/* Cuando está abierto */
+.arrow-toggle.open {
+  transform: rotate(90deg);
+}
+
+
+/* ============================================================
+   🔥 MODO MOBILE (solo se aplicará en ≤1110px)
+   ============================================================ */
+@media (max-width: 1110px) {
+
+  /* Contenedor link + flecha */
+  .menu-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* Flecha toggle */
+  .arrow-toggle {
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px 10px;
+    line-height: 1;
+    transform: rotate(0deg);
+    transition: transform 0.2s ease;
+  }
+
+  .arrow-toggle.open {
+    transform: rotate(90deg);
+  }
+
+  /* Deshabilitar dropdown desktop en mobile */
+  .menu-item .dropdown {
+    position: static !important;
+    background: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin-top: 6px;
+    width: 100% !important;
+    display: none !important;
+  }
+
+  /* Cuando es visible */
+  .menu-item .dropdown.show {
+    display: block !important;
+  }
+
+  /* Hijos */
+  .menu-item .dropdown li {
+    padding-left: 22px;
+    margin-bottom: 10px;
+  }
+
+  .dropdown-link {
+    color: var(--color-white);
+    font-size: 17px;
+    display: block;
+    padding: 4px 0;
+  }
+
+  .dropdown-link:hover {
+    color: var(--color-yellow-milani);
+  }
+
+  /* Importante: eliminar pipes SOLO en mobile */
+  .main-menu .menu-item:not(:last-child)::after {
+    display: none !important;
+  }
+}
+
+
+@media (max-width: 1110px) {
+
+  /* Contenedor del item */
+  .menu-item-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;   /* espacio entre flecha y texto */
+    width: 100%;
+  }
+
+  /* Flecha a la izquierda */
+  .arrow-toggle {
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-size: 20px;
+    padding: 10px 5px;
+    cursor: pointer;
+    transform: rotate(0deg);
+    transition: transform 0.2s ease;
+  }
+
+  /* Flecha girada cuando está abierto */
+  .arrow-toggle.open {
+    transform: rotate(90deg);
+  }
+
+  /* El texto ocupa todo el espacio restante */
+  .menu-item-row .link {
+    flex: 1;
+  }
+
+  /* Dropdown formateado */
+  .menu-item .dropdown {
+    display: none !important;
+    padding-left: 32px !important;
+    margin-top: 5px;
+  }
+
+  .menu-item .dropdown.show {
+    display: block !important;
+  }
+}
+
+

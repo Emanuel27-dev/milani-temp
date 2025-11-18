@@ -1,38 +1,58 @@
 import layerLupa from "./../../assets/Layer.svg";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
-const locations = [
-  {
-    region: "Okanagan",
-    cities: ["Kelowna", "West Kelowna", "Lake Country"],
-  },
-  {
-    region: "Alberta",
-    cities: [
-      "Grande Prairie",
-      "Fort McMurray",
-      "Peace River",
-      "High Level",
-      "Edmonton",
-      "St. Albert",
-    ],
-  },
-  {
-    region: "Lower Mainland",
-    cities: ["Vancouver", "Burnaby", "Richmond", "Surrey", "Coquitlam"],
-  },
-];
+export const GET_GEO_DATA = gql`
+  query {
+    wpcmRegions {
+      id
+      title
+      slug
+      cities {
+        name
+        slug
+        region
+      }
+    }
+    wpcmCities {
+      name
+      slug
+      region
+      regionTitle
+    }
+    posts {
+      nodes {
+        id
+        title
+        city {
+          name
+          slug
+          region
+          regionTitle
+        }
+      }
+    }
+  }
+`;
 
 export function ZipModal({
   isOpen,
   onClose,
   setCurrentLocation,
+  currentLocation,
 }) {
+  const { data, loading, error } = useQuery(GET_GEO_DATA);
+  if (loading) return <p></p>;
+  if (error) return <p>Error: {error.message}</p>;
 
+  const { wpcmRegions, wpcmCities, posts } = data;
+  console.log("AHORA: ", wpcmRegions);
   if (!isOpen) return null;
 
- const handleItem = (city) => {
-  setCurrentLocation(city)
- }
+  const handleItem = (city) => {
+    setCurrentLocation(city);
+    onClose();
+  };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -48,18 +68,20 @@ export function ZipModal({
           </div>
 
           <div className="modal-body-custom">
-            {locations.map(({ region, cities }) => (
-              <div key={region} className="modal-item">
-                <h5 className="modal-item-title">{region}</h5>
+            {wpcmRegions.map(({ title, id, cities }) => (
+              <div key={id} className="modal-item">
+                <h5 className="modal-item-title">{title}</h5>
 
                 <div className="locations-grid">
-                  {cities.map((city) => (
-                    <div 
-                      key={city}
-                      className="location-item"
-                      onClick={() => handleItem(city)}  
+                  {cities.map(({ name }) => (
+                    <div
+                      key={name}
+                      className={`location-item ${
+                        currentLocation === name ? "active-currentLocation" : ""
+                      }`}
+                      onClick={() => handleItem(name)}
                     >
-                      {city}
+                      {name}
                     </div>
                   ))}
                 </div>

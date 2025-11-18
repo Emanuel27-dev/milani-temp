@@ -209,8 +209,6 @@ export function WpPage({ fixedUri, fixedSlug }) {
     title: node?.seo?.title,
   });
 
-  console.log("gaaa:", node.title)
-
   return (
     <>
       {/* 🔹 Inyección dinámica de metadatos SEO */}

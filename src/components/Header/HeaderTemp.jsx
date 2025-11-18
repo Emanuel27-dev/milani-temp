@@ -137,14 +137,14 @@ export function HeaderTemp({ data }) {
             </ul>
           </nav>
 
-<button
-  className={`menu-toggle ${menuOpen ? "open" : ""}`}
-  onClick={() => setMenuOpen((p) => !p)}
->
-  <span></span>
-  <span></span>
-  <span></span>
-</button>
+          <button
+            className={`menu-toggle ${menuOpen ? "open" : ""}`}
+            onClick={() => setMenuOpen((p) => !p)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
       </header>
 
