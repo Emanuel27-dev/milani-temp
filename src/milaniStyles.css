@@ -36,6 +36,7 @@ header {
   display: flex;
   flex-direction: column;
   /* color: var(--color-white); */
+  border-bottom-color: var(--color-red) !important;
   gap: 30px;
 }
 
@@ -79,6 +80,10 @@ header {
   cursor: pointer;
 }
 
+.search-btn-hidden {
+  display: none;
+}
+
 .search-btn img {
   width: 19px;
 }
@@ -94,6 +99,9 @@ header {
 .header-below {
   background-color: var(--color-black);
   padding: 24px 0;
+}
+.header-container--below {
+  display: flex;
 }
 
 .header-below__info {
@@ -112,8 +120,18 @@ header {
 .header-below__details {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
 }
+
+
+/* .menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+} */
+
+
 
 .location-btn {
   display: flex;
@@ -168,7 +186,7 @@ header {
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   width: 350px;
-  z-index: 1000;
+  z-index: 50;
   /* opacity: 0;
   visibility: hidden; */
   transform: translateY(-10px);
@@ -256,6 +274,75 @@ header {
   background: var(--color-red);
   color: var(--color-white);
 }
+
+.buttons-toggle {
+  display: none !important;
+}
+
+
+
+@media (width < 600px) {
+  .header-container--below {
+    gap: 20px;
+  }
+
+  .header-below__info {
+    order: 1;
+    gap: 10px !important;
+  }
+
+  .header-below__subtitle {
+    display: none;
+  }
+
+  .location-btn {
+    flex: 1;
+  }
+
+  .buttons-header {
+    width: 100%;
+    gap: 20px !important;
+  }
+
+
+  .location-tooltip {
+    width: 95%;
+    /* max-width: 400px; */
+  }
+
+  .tooltip-btn {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--color-red);
+  color: var(--color-red);
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tooltip-btn--primary {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+}
+
+@media (width <= 375px) {
+  .buttons-header {
+    flex-wrap: wrap;
+    gap: 10px !important;
+  }
+}
+
+
+
+
+
 
 /* ZIP MODAL */
 /* === OVERLAY === */
@@ -707,6 +794,20 @@ header {
     padding-top: 20px;
     padding-bottom: 40px;;
   }
+
+
+  .search-btn-hidden {
+    display: block;
+  }
+
+  .searh-btn-hidden-top {
+    display: none;
+  }
+
+  .buttons-toggle {
+  display: flex !important;
+  gap: 12px;
+}
 }
 
 /* ESTILOS DEL FOOTER */
@@ -983,10 +1084,10 @@ header {
     flex-wrap: wrap;
   }
   .header-below .header-container .header-below__headline {
-    font-size: 15px;
+    font-size: 16px;
   }
   .header-below .header-container .header-below__subtitle {
-    font-size: 15px;
+    font-size: 16px;
   }
   .header-below__info {
     gap: 8px;
@@ -1298,7 +1399,7 @@ header {
     background: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    padding: 0 !important;
+    padding: 10px 0px !important;
     margin-top: 6px;
     width: 100% !important;
     display: none !important;
@@ -1311,8 +1412,8 @@ header {
 
   /* Hijos */
   .menu-item .dropdown li {
-    padding-left: 22px;
-    margin-bottom: 10px;
+    padding-left: 15px;
+    /* margin-bottom: 10px; */
   }
 
   .dropdown-link {
@@ -1329,6 +1430,11 @@ header {
   /* Importante: eliminar pipes SOLO en mobile */
   .main-menu .menu-item:not(:last-child)::after {
     display: none !important;
+  }
+
+  .main-menu .link {
+    border-bottom: none;
+    padding: 0;
   }
 }
 
@@ -1368,7 +1474,6 @@ header {
   /* Dropdown formateado */
   .menu-item .dropdown {
     display: none !important;
-    padding-left: 32px !important;
     margin-top: 5px;
   }
 

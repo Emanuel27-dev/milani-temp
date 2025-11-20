@@ -4,6 +4,7 @@ import lupa from "./../../assets/lupa.svg";
 import locationsvg from "./../../assets/location.svg";
 import location2svg from "./../../assets/location2.svg";
 import wassp from "./../../assets/Phone.svg";
+import arrow from "./../../assets/arrow.svg";
 import { wpUrlToClientPath } from "../../helpers/wpUrlToClientPath";
 import { ZipModal } from "./ZipModal";
 import { useIPLocation } from "../../hooks/useIPLocation";
@@ -81,7 +82,7 @@ export function HeaderTemp({ data }) {
                 </li>
               ))}
               <button
-                className="search-btn"
+                className="search-btn searh-btn-hidden-top"
                 onClick={() => setOpenSearch(true)}
               >
                 <img src={lupa} alt="lupa" />
@@ -101,6 +102,19 @@ export function HeaderTemp({ data }) {
                     onMouseLeave={() => setOpenDropDown(null)}
                     style={{ listStyle: "none" }}
                   >
+                    {/* <div className="menu-trigger">
+                      <img src={arrow} alt="arrow" />
+                      <NavLink
+                        to={wpUrlToClientPath(item.url)}
+                        className={({ isActive }) =>
+                          `link ${isActive ? "active" : ""}`
+                        }
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        {item.label}
+                      </NavLink>
+                    </div> */}
+
                     <NavLink
                       to={wpUrlToClientPath(item.url)}
                       className={({ isActive }) =>
@@ -137,14 +151,22 @@ export function HeaderTemp({ data }) {
             </ul>
           </nav>
 
-          <button
-            className={`menu-toggle ${menuOpen ? "open" : ""}`}
-            onClick={() => setMenuOpen((p) => !p)}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
+          <div className="buttons-toggle">
+            <button
+              className="search-btn search-btn-hidden"
+              onClick={() => setOpenSearch(true)}
+            >
+              <img src={lupa} alt="lupa" />
+            </button>
+            <button
+              className={`menu-toggle ${menuOpen ? "open" : ""}`}
+              onClick={() => setMenuOpen((p) => !p)}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -175,7 +197,7 @@ export function HeaderTemp({ data }) {
       </div>
 
       <div className="header-below">
-        <div className="header-container">
+        <div className="header-container header-container--below">
           <div className="header-below__info">
             <h4 className="header-below__headline">
               Fast, Fair and Reliable Service in <span>{currentLocation}.</span>{" "}
