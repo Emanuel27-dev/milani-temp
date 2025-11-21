@@ -97,30 +97,42 @@ export function HeaderTemp({ data }) {
                 return (
                   <li
                     key={item.label}
-                    className="menu-item"
-                    onMouseEnter={() => setOpenDropDown(index)}
-                    onMouseLeave={() => setOpenDropDown(null)}
+                    className={`menu-item ${
+                      openDropdown === index ? "open" : ""
+                    }`}
+                    onMouseEnter={
+                      !isMobile ? () => setOpenDropDown(index) : undefined
+                    }
+                    onMouseLeave={
+                      !isMobile ? () => setOpenDropDown(null) : undefined
+                    }
+                    onClick={
+                      isMobile
+                        ? () =>
+                            setOpenDropDown(
+                              openDropdown === index ? null : index
+                            )
+                        : undefined
+                    }
                     style={{ listStyle: "none" }}
                   >
-                    {/* <div className="menu-trigger">
-                      <img src={arrow} alt="arrow" />
-                      <NavLink
-                        to={wpUrlToClientPath(item.url)}
-                        className={({ isActive }) =>
-                          `link ${isActive ? "active" : ""}`
-                        }
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        {item.label}
-                      </NavLink>
-                    </div> */}
-
                     <NavLink
-                      to={wpUrlToClientPath(item.url)}
+                      to={!isMobile ? wpUrlToClientPath(item.url) : "#"}
                       className={({ isActive }) =>
                         `link ${isActive ? "active" : ""}`
                       }
-                      onClick={() => setMenuOpen(false)}
+                      onClick={(e) => {
+                        if (isMobile) {
+                          e.preventDefault(); // 🚫 NO navegación en mobile
+                          setOpenDropDown(
+                            openDropdown === index ? null : index
+                          ); // 🔥 toggle accordion
+                          return;
+                        }
+
+                        // Desktop → sí navegar
+                        setMenuOpen(false);
+                      }}
                     >
                       {item.label}
                     </NavLink>

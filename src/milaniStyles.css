@@ -123,16 +123,6 @@ header {
   gap: 18px;
 }
 
-
-/* .menu-trigger {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-} */
-
-
-
 .location-btn {
   display: flex;
   justify-content: center;
@@ -808,6 +798,90 @@ header {
   display: flex !important;
   gap: 12px;
 }
+
+
+  /* El link necesita espacio para la flecha */
+  .main-menu .menu-item > .link {
+    position: relative;
+    padding-left: 20px; /* espacio para el icono */
+  }
+
+  /* Insertamos arrow.svg */
+  .main-menu .menu-item > .link::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 2px; /* ajusta si necesario */
+    width: 20px;
+    height: 20px;
+    
+    /* tu SVG usado como MÁSCARA */
+    mask-image: url("/src/assets/arrow.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+
+    /* color por defecto */
+    background-color: var(--color-white);
+    transition: transform 0.25s ease;
+  }
+
+  /* Cuando el item está abierto → rotamos el SVG */
+  .main-menu .menu-item.open > .link::before {
+    transform: rotate(90deg);
+    background-color: var(--color-yellow-milani); /* tu color */
+  }
+
+   /* Flecha SVG usando máscara */
+  .main-menu .menu-item > .link {
+    position: relative;
+    padding-left: 24px;
+    color: var(--color-white);
+  }
+
+
+
+  /* Cuando el item está ABIERTO → flecha gira + texto amarillo */
+  .main-menu .menu-item.open > .link {
+    color: var(--color-yellow-milani) !important;
+  }
+
+  .main-menu .menu-item.open .dropdown {
+    display: block !important;
+  }
+
+  .main-menu .dropdown li {
+    padding-left: 20px;
+  }
+
+
+
+    /* texto blanco cuando NO está open */
+  .main-menu .menu-item:not(.open) > .link {
+    color: var(--color-white) !important;
+  }
+
+  /* desactivar hover amarillo cuando estamos en mobile */
+  .main-menu .link:hover {
+    color: var(--color-white) !important;
+    border: none !important;
+  }
+
+  /* desactivar estado activo de NavLink en mobile */
+  .main-menu .link.active {
+    color: var(--color-white) !important;
+    border: none !important;
+  }
+
+  /* pero SI está open → se pone amarillo (ya lo tienes) */
+  .main-menu .menu-item.open > .link {
+    color: var(--color-yellow-milani) !important;
+  }
+
+
+  .menu-item-top a {
+    border: none !important;
+  }
 }
 
 /* ESTILOS DEL FOOTER */
