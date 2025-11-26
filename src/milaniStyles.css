@@ -64,12 +64,12 @@ header {
 
 .link:hover {
   color: var(--color-yellow-milani) !important;
-  border-bottom: 3px solid var(--color-yellow-milani);
+  /* border-bottom: 3px solid var(--color-yellow-milani); */
 }
 
 .active {
   color: var(--color-yellow-milani) !important;
-  border-bottom: 3px solid var(--color-yellow-milani);
+  /* border-bottom: 3px solid var(--color-yellow-milani); */
 }
 
 .search-btn {
@@ -585,7 +585,7 @@ header {
 
 .dropdown {
   position: absolute;
-  top: 117%;
+  top: 100%;
   left: 0;
   list-style: none;
   display: none;
