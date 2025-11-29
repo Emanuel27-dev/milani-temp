@@ -8,8 +8,9 @@ import arrow from "./../../assets/arrow.svg";
 import { wpUrlToClientPath } from "../../helpers/wpUrlToClientPath";
 import { ZipModal } from "./ZipModal";
 import { useIPLocation } from "../../hooks/useIPLocation";
+import { FormModal } from "./FormModal";
 
-export function HeaderTemp({ data }) {
+export function HeaderTemp({ data, switchFormModal, showFormModal, setShowFormModal }) {
   const { location } = useIPLocation();
   const [openDropdown, setOpenDropDown] = useState(null);
 
@@ -51,6 +52,23 @@ export function HeaderTemp({ data }) {
   useEffect(() => {
     localStorage.setItem("currentLocation", currentLocation);
   }, [currentLocation]);
+
+
+  // Codigo para que el boton GetFreeEstimate funcione
+useEffect(() => {
+  const handleClick = (e) => {
+    if (e.target.closest(".btn_estimate")) {
+      setShowFormModal(true);
+    }
+  };
+
+  document.addEventListener("click", handleClick);
+
+  return () => {
+    document.removeEventListener("click", handleClick);
+  };
+}, []);
+
 
   // 🔹 Usa los menús jerárquicos ya preparados en WP
   const mainItems =
@@ -263,11 +281,11 @@ export function HeaderTemp({ data }) {
           </div>
 
           <div className="buttons-header">
-            <button className="button">
+            <button className="button" onClick={switchFormModal}>
               <img src={wassp} alt="phone" />
               <div>250.900.900</div>
             </button>
-            <button className="button">BOOK NOW</button>
+            <button className="button" onClick={switchFormModal}>BOOK NOW</button>
           </div>
         </div>
 
@@ -279,6 +297,10 @@ export function HeaderTemp({ data }) {
           showToolTip={showToolTip}
           setShowToolTip={setShowToolTip}
         />
+
+        {
+          showFormModal ? <FormModal setShowFormModal={setShowFormModal}/> : ''
+        }
       </div>
     </>
   );

@@ -126,17 +126,3 @@ li {
     min-width: auto !important;
   }
 }
-
-
-.outlet {
-   /* border: 1px solid red; */
-}
-/* 
-.container {
-   max-width: 1425px;
-   margin: 0 auto;
-   display: flex;
-   justify-content: center;
-   min-height: 300px;
-   padding: 0 20px;
-} */

@@ -6,6 +6,7 @@ import { Footer } from "./components/Footer/Footer";
 import { useWpAssets } from "./hooks/useWpAssets";
 import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";
 import { HeaderTemp } from "./components/Header/HeaderTemp";
+import { useState } from "react";
 
 // =========================================================
 // 🔹 Query del Header (logo + menús)
@@ -170,8 +171,6 @@ const GET_HOME = gql`
   }
 `;
 
-
-
 export function Layout() {
   useWpAssets();
   useWpGlobalAssets();
@@ -185,12 +184,16 @@ export function Layout() {
     fetchPolicy: "cache-first",
   })
 
+  const [showFormModal, setShowFormModal] = useState(false);
+  const switchFormModal = () => {
+    setShowFormModal(!showFormModal);
+  }
 
   if(loading || !data) return null; //evita mostrar el body sin Header
 
   return (
     <>
-      <HeaderTemp data={data}/>
+      <HeaderTemp data={data} switchFormModal={switchFormModal} showFormModal={showFormModal} setShowFormModal= {setShowFormModal}/>
 
       {/* Estructura idéntica a Salient */}
       <div className="ocm-effect-wrap">
@@ -207,7 +210,7 @@ export function Layout() {
         </div>
       </div>
 
-      <Footer />
+      <Footer switchFormModal={switchFormModal}/>
     </>
   );
 }

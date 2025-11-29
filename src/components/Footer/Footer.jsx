@@ -5,7 +5,7 @@ import tuerca from "./../../assets/tuerca.svg";
 import bbb from "./../../assets/bbb.svg";
 import hoja from "./../../assets/hoja.svg";
 
-export function Footer() {
+export function Footer({ switchFormModal }) {
   return (
     <>
       <div className="headFooter">
@@ -16,13 +16,13 @@ export function Footer() {
             </figure>
             <div className="buttons">
               <div className="buttons-block">
-                <div className="button">
+                <div className="button" onClick={switchFormModal}>
                   <img src={wsspIcon} alt="whatsapp" />
                   <span>250.900.900</span>
                 </div>
-                <div className="button button-book">BOOK NOW</div>
+                <div className="button button-book" onClick={switchFormModal}>BOOK NOW</div>
               </div>
-              <div className="button button-chat">
+              <div className="button button-chat" onClick={switchFormModal}>
                 <img src={messageIcon} alt="message" />
                 <span>CHAT WITH US</span>
               </div>
