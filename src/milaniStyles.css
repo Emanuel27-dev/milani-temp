@@ -100,6 +100,12 @@
   background-color: var(--color-black);
   padding: 24px 0;
 }
+
+/* eliminacion provisional de un mensaje de error cuando se desactiva el plugin de ciudades */
+.header-below > p {
+  display: none;
+}
+
 .header-container--below {
   display: flex;
 }
