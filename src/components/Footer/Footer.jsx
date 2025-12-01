@@ -39,7 +39,7 @@ export function Footer({ switchFormModal }) {
 
           <div class="services-grid">
             <div class="service-column plumbing">
-              <h3>Plumbing</h3>
+              <p className="service-column-name">Plumbing</p>
               <ul>
                 <li>
                   <a href="#">Maintenance and Repair</a>
@@ -60,7 +60,7 @@ export function Footer({ switchFormModal }) {
             </div>
 
             <div class="service-column drainage">
-              <h3>Drainage</h3>
+              <p className="service-column-name">Drainage</p>
               <ul>
                 <li>
                   <a href="#">Drain Tile Systems</a>
@@ -87,7 +87,7 @@ export function Footer({ switchFormModal }) {
             </div>
 
             <div class="service-column heating">
-              <h3>Heating</h3>
+              <p className="service-column-name">Heating</p>
               <ul>
                 <li>
                   <a href="#">Furnaces</a>
@@ -108,7 +108,7 @@ export function Footer({ switchFormModal }) {
             </div>
 
             <div class="service-column airconditioning">
-              <h3>Air Conditioning</h3>
+              <p className="service-column-name">Air Conditioning</p>
               <ul>
                 <li>
                   <a href="#">Air Conditioning Units</a>
@@ -151,7 +151,7 @@ export function Footer({ switchFormModal }) {
           <div className="contact-section">
             <div className="contact-box1">
               <div class="contact-info">
-                <h3>Okanagan Service</h3>
+                <p>Okanagan Service</p>
                 <div class="phone">250-800-0000</div>
                 <div class="email">customerservice@milani.ca</div>
               </div>

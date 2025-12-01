@@ -1,6 +1,6 @@
 /* Estilos para header */
 /* === ESTILO BASE === */
-header {
+.header {
   background-color: var(--color-red);
   font-family: "Archivo SemiCondensed";
   color: var(--color-white);
@@ -560,6 +560,7 @@ header {
 .main-menu {
   list-style: none;
   position: relative;
+  font-size: 20px;
 }
 .menu-item-top {
   position: relative;
@@ -1000,6 +1001,14 @@ header {
   /* padding-left: 64px; */
 }
 
+.service-column-name {
+  font-family: "Archivo SemiCondensed" !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  margin-bottom: 12px !important;
+  color: #E1E1E1;
+}
+
 .little-border {
   border-left: 1px solid #666;
   padding-left: 64px;
@@ -1011,6 +1020,7 @@ header {
 
 .service-column ul li {
   margin-bottom: 7px;
+  font-family: "Archivo Semicondensed" !important;
   font-size: 16px;
   font-weight: 500;
   color: var(--color-grey2);
@@ -1031,8 +1041,9 @@ header {
   padding-left: 0 !important;
 }
 
-.contact-info h3 {
+.contact-info p {
   font-size: 24px;
+  font-family: "Archivo SemiCondensed" !important;
   font-weight: bold;
   color: var(--color-white);
   margin-bottom: 3px;
@@ -1040,13 +1051,15 @@ header {
 
 .contact-info .phone {
   font-size: 24px;
+  font-family: "Archivo SemiCondensed" !important;
   font-weight: 700;
   margin-bottom: 16px;
   color: #aeaeae;
 }
 
 .contact-info .email {
-  font-size: 16px;
+  font-size: 18px;
+  font-family: "Archivo SemiCondensed" !important;
   font-weight: 500;
   color: #ccc;
 }
@@ -1054,6 +1067,8 @@ header {
 .bbb-figure {
   width: 64px;
 }
+
+
 
 .bbb-figure img {
   display: block;
@@ -1129,8 +1144,9 @@ header {
 
 .canadian-business span {
   color: var(--color-white);
+  font-family: "Archivo SemiCondensed" !important;
   font-size: 28px;
-  font-weight: 500;
+  font-weight: 500 !important;
 }
 
 .contact-box1 {
@@ -1572,10 +1588,10 @@ header {
         }
 
         .form-container {
-            background-color: white;
+            background-color: var(--color-white);
             border-radius: 12px;
             padding: 40px;
-            max-width: 450px;
+            max-width: 460px;
             width: 100%;
             position: relative;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -1588,7 +1604,7 @@ header {
             background: none;
             border: none;
             font-size: 24px;
-            color: #ff0000;
+            color: var(--color-red);
             cursor: pointer;
             line-height: 1;
             padding: 0;
@@ -1605,7 +1621,7 @@ header {
         .contact-form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 24px;
         }
 
         .form-group {
@@ -1652,8 +1668,10 @@ header {
         }
 
         .submit-btn {
-            background-color: #ffc107;
-            color: #000;
+            background-color: var(--color-yellow-milani);
+            color: var(--color-black) !important;
+            font-family: 'Archivo SemiCondensed' !important;
+            font-weight: bold !important;
             border: none;
             padding: 15px;
             border-radius: 8px;

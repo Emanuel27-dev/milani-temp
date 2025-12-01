@@ -11,6 +11,7 @@ import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";
 import { useWpBodyAttributesFromWp } from "./hooks/useWpBodyAttributesFromWp";
 import { usePageCss } from "./hooks/usePageCss";
 import { useWpReflow } from "./hooks/useWpReflow";
+import { CityGlobalSection } from "./components/GlobalSections/CityGlobalSection";
 
 // =========================================================
 // 🔹 QUERY PRINCIPAL UNIVERSAL (Page, Post, Service, Property…)
@@ -269,6 +270,9 @@ export function WpPage({ fixedUri, fixedSlug }) {
       )}
 
       {/* 🔹 Contenido principal */}
+      
+      {!loading && isHome && <CityGlobalSection />}
+
       <article
         key={node?.id}
         className="wpb-content-wrapper"
