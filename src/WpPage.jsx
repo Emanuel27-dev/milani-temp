@@ -271,7 +271,7 @@ export function WpPage({ fixedUri, fixedSlug }) {
 
       {/* 🔹 Contenido principal */}
       
-      {!loading && isHome && <CityGlobalSection />}
+      {/* {!loading && isHome && <CityGlobalSection />} */}
 
       <article
         key={node?.id}
