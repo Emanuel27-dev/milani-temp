@@ -61,8 +61,8 @@ const GET_HEADER = gql`
 // 🔹 Query para precargar la página de inicio (/home/)
 // =========================================================
 const GET_HOME = gql`
-  query {
-    contentNode(id: "/home/", idType: URI) {
+  query GetHome($city: String) {
+    contentNode(id: "/home/", idType: URI, city: $city) {
       __typename
       id
       databaseId
@@ -175,25 +175,43 @@ export function Layout() {
   useWpAssets();
   useWpGlobalAssets();
 
+
+  // asigna a currentLocation la ciudad selecionada, almacenada en el localStorage y por defecto es kelowna
+  const [currentLocation, setCurrentLocation] = useState(
+    localStorage.getItem("currentLocation") || "Kelowna"
+  );
+
   const { data, loading } = useQuery(GET_HEADER, {
     fetchPolicy: "cache-first",
   });
 
   // Precarga del Home (una sola vez)
+  // const { data: homeData } = useQuery(GET_HOME, {
+  //   fetchPolicy: "cache-first",
+  // })
+
   const { data: homeData } = useQuery(GET_HOME, {
+    variables: { currentLocation },
     fetchPolicy: "cache-first",
-  })
+  });
 
   const [showFormModal, setShowFormModal] = useState(false);
   const switchFormModal = () => {
     setShowFormModal(!showFormModal);
-  }
+  };
 
-  if(loading || !data) return null; //evita mostrar el body sin Header
+  if (loading || !data) return null; //evita mostrar el body sin Header
 
   return (
     <>
-      <HeaderTemp data={data} switchFormModal={switchFormModal} showFormModal={showFormModal} setShowFormModal= {setShowFormModal}/>
+      <HeaderTemp
+        data={data}
+        switchFormModal={switchFormModal}
+        showFormModal={showFormModal}
+        setShowFormModal={setShowFormModal}
+        currentLocation={currentLocation}
+        setCurrentLocation={setCurrentLocation}
+      />
 
       {/* Estructura idéntica a Salient */}
       <div className="ocm-effect-wrap">
@@ -202,7 +220,8 @@ export function Layout() {
             <div className="container-wrap">
               <div className="container main-content" role="main">
                 <div className="row">
-                  <Outlet context={{ homeData }} /> {/* aquí entra <WpPage /> */}
+                  <Outlet context={{ homeData, currentLocation }} />{" "}
+                  {/* aquí entra <WpPage /> */}
                 </div>
               </div>
             </div>
@@ -210,7 +229,7 @@ export function Layout() {
         </div>
       </div>
 
-      <Footer switchFormModal={switchFormModal}/>
+      <Footer switchFormModal={switchFormModal} />
     </>
   );
 }

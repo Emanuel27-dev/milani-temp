@@ -4,7 +4,7 @@ import { useEffect } from "react";
 export function useWpAssets() {
   useEffect(() => {
     const base = "https://milani.xpress.ws";
-    // const base = "https://milani.local"
+    // const base = "https://milani-local.local"
 
     // === Helpers ===
     const inject = (el) => {

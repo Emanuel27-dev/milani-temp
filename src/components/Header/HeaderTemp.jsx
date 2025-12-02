@@ -10,7 +10,7 @@ import { ZipModal } from "./ZipModal";
 import { useIPLocation } from "../../hooks/useIPLocation";
 import { FormModal } from "./FormModal";
 
-export function HeaderTemp({ data, switchFormModal, showFormModal, setShowFormModal }) {
+export function HeaderTemp({ data, switchFormModal, showFormModal, setShowFormModal, currentLocation, setCurrentLocation }) {
   const { location } = useIPLocation();
   const [openDropdown, setOpenDropDown] = useState(null);
 
@@ -18,9 +18,9 @@ export function HeaderTemp({ data, switchFormModal, showFormModal, setShowFormMo
     !localStorage.getItem("currentLocation")
   );
   const [showZipModal, setShowZipModal] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState(
-    localStorage.getItem("currentLocation") || "Kelowna"
-  );
+  // const [currentLocation, setCurrentLocation] = useState(
+  //   localStorage.getItem("currentLocation") || "Kelowna"
+  // );
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(

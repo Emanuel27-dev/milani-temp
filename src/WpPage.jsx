@@ -11,7 +11,6 @@ import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";
 import { useWpBodyAttributesFromWp } from "./hooks/useWpBodyAttributesFromWp";
 import { usePageCss } from "./hooks/usePageCss";
 import { useWpReflow } from "./hooks/useWpReflow";
-import { CityGlobalSection } from "./components/GlobalSections/CityGlobalSection";
 
 // =========================================================
 // 🔹 QUERY PRINCIPAL UNIVERSAL (Page, Post, Service, Property…)
@@ -139,7 +138,7 @@ const NODE_BY_PATH = gql`
 // =========================================================
 export function WpPage({ fixedUri, fixedSlug }) {
   const { pathname } = useLocation();
-  const { homeData } = useOutletContext() || {}; // 🟩 viene desde Layout.jsx
+  const { homeData, currentLocation } = useOutletContext() || {}; // 🟩 viene desde Layout.jsx
 
   const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
   const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : autoUri);
@@ -150,7 +149,7 @@ export function WpPage({ fixedUri, fixedSlug }) {
 
   // 1️⃣ Primera consulta: contenido base
   const { data, loading, error } = useQuery(NODE_BY_PATH, {
-    variables: { uri, id: 0 },
+    variables: { uri, id: 0, city: currentLocation },
     fetchPolicy: isHome ? "cache-first" : "cache-and-network",
     nextFetchPolicy: "cache-first",
     skip: isHome && homeData, // ⏩ no hace query si ya tenemos data precargada
