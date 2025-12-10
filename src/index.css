@@ -5,10 +5,10 @@
 
 @font-face {
     font-family: 'Archivo SemiCondensed Bold';
-    src: url('../public/fonts/ArchivoSemiCondensed-Bold.eot');
-    src: url('fonts/ArchivoSemiCondensed-Bold.eot?#iefix') format('embedded-opentype'),
-        url('fonts/ArchivoSemiCondensed-Bold.woff2') format('woff2'),
-        url('fonts/ArchivoSemiCondensed-Bold.woff') format('woff');
+    src: url('../public/fonts2/ArchivoSemiCondensed-Bold.eot');
+    src: url('../public/fonts2/ArchivoSemiCondensed-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../public/fonts2/ArchivoSemiCondensed-Bold.woff2') format('woff2'),
+        url('../public/fonts2/ArchivoSemiCondensed-Bold.woff') format('woff');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -16,10 +16,10 @@
 
 @font-face {
     font-family: 'Archivo Condensed ExtraBold';
-    src: url('../public/fonts/ArchivoCondensed-ExtraBold.eot');
-    src: url('../public/fonts/ArchivoCondensed-ExtraBold.eot?#iefix') format('embedded-opentype'),
-        url('../public/fonts/ArchivoCondensed-ExtraBold.woff2') format('woff2'),
-        url('../public/fonts/ArchivoCondensed-ExtraBold.woff') format('woff');
+    src: url('../public/fonts2/ArchivoCondensed-ExtraBold.eot');
+    src: url('../public/fonts2/ArchivoCondensed-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('../public/fonts2/ArchivoCondensed-ExtraBold.woff2') format('woff2'),
+        url('../public/fonts2/ArchivoCondensed-ExtraBold.woff') format('woff');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -27,10 +27,10 @@
 
 @font-face {
     font-family: 'Archivo SemiCondensed Medium';
-    src: url('../public/fonts/ArchivoSemiCondensed-Medium.eot');
-    src: url('fonts/ArchivoSemiCondensed-Medium.eot?#iefix') format('embedded-opentype'),
-        url('fonts/ArchivoSemiCondensed-Medium.woff2') format('woff2'),
-        url('fonts/ArchivoSemiCondensed-Medium.woff') format('woff');
+    src: url('../public/fonts2/ArchivoSemiCondensed-Medium.eot');
+    src: url('../public/fonts2/ArchivoSemiCondensed-Medium.eot?#iefix') format('embedded-opentype'),
+        url('../public/fonts2/ArchivoSemiCondensed-Medium.woff2') format('woff2'),
+        url('../public/fonts2/ArchivoSemiCondensed-Medium.woff') format('woff');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -38,17 +38,14 @@
 
 @font-face {
     font-family: 'Archivo SemiCondensed ExtraBold';
-    src: url('../public/fonts/ArchivoSemiCondensed-ExtraBold.eot');
-    src: url('../public/fonts/ArchivoSemiCondensed-ExtraBold.eot?#iefix') format('embedded-opentype'),
-        url('../public/fonts/ArchivoSemiCondensed-ExtraBold.woff2') format('woff2'),
-        url('../public/fonts/ArchivoSemiCondensed-ExtraBold.woff') format('woff');
+    src: url('../public/fonts2/ArchivoCondensed-ExtraBold.eot');
+    src: url('../public/fonts2/ArchivoSemiCondensed-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('../public/fonts2/ArchivoSemiCondensed-ExtraBold.woff2') format('woff2'),
+        url('../public/fonts2/ArchivoSemiCondensed-ExtraBold.woff') format('woff');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
 }
-
-
-
 
 :root {
 /* font */
