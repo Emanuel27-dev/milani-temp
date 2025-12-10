@@ -178,7 +178,7 @@ export function Layout() {
 
   // asigna a currentLocation la ciudad selecionada, almacenada en el localStorage y por defecto es kelowna
   const [currentLocation, setCurrentLocation] = useState(
-    localStorage.getItem("currentLocation") || "Kelowna"
+    localStorage.getItem("currentLocation") || "kelowna"
   );
 
   const { data, loading } = useQuery(GET_HEADER, {
