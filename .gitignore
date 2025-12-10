@@ -26,3 +26,4 @@ dist-ssr
 #Ignorar archivos de configuracion de entorno
 .env
 .env
+.env
