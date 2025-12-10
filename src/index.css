@@ -3,34 +3,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
 
 
-/* --- Archivo Condensed ExtraBold (800) --- */
-@font-face {
-    font-family: 'Archivo Condensed';
-    src: url('../public/fonts/ArchivoCondensed-ExtraBold.eot');
-    src: url('../public/fonts/ArchivoCondensed-ExtraBold.eot?#iefix') format('embedded-opentype'),
-        url('../public/fonts/ArchivoCondensed-ExtraBold.woff2') format('woff2'),
-        url('../public/fonts/ArchivoCondensed-ExtraBold.woff') format('woff');
-    font-weight: 800;
-    font-style: normal;
-    font-display: swap;
-}
 
-/* --- Archivo SemiCondensed Bold (700) --- */
+
 @font-face {
-    font-family: 'Archivo SemiCondensed';
+    font-family: 'Archivo SemiCondensed Bold';
     src: url('../public/fonts/ArchivoSemiCondensed-Bold.eot');
     src: url('../public/fonts/ArchivoSemiCondensed-Bold.eot?#iefix') format('embedded-opentype'),
         url('../public/fonts/ArchivoSemiCondensed-Bold.woff2') format('woff2'),
         url('../public/fonts/ArchivoSemiCondensed-Bold.woff') format('woff');
-    font-weight: 700;
+    font-weight: bold;
     font-style: normal;
     font-display: swap;
 }
 
-
-/* --- Archivo SemiCondensed Medium (500) --- */
 @font-face {
-    font-family: 'Archivo SemiCondensed';
+    font-family: 'Archivo Condensed ExtraBold';
+    src: url('../public/fonts/ArchivoCondensed-ExtraBold.eot');
+    src: url('../public/fonts/ArchivoCondensed-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('../public/fonts/ArchivoCondensed-ExtraBold.woff2') format('woff2'),
+        url('../public/fonts/ArchivoCondensed-ExtraBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Archivo SemiCondensed Medium';
     src: url('../public/fonts/ArchivoSemiCondensed-Medium.eot');
     src: url('../public/fonts/ArchivoSemiCondensed-Medium.eot?#iefix') format('embedded-opentype'),
         url('../public/fonts/ArchivoSemiCondensed-Medium.woff2') format('woff2'),
@@ -40,151 +38,105 @@
     font-display: swap;
 }
 
-/* --- Archivo SemiCondensed ExtraBold (800) --- */
 @font-face {
-  font-family: "Archivo SemiCondensed";
-  src: url("../public/fonts/ArchivoSemiCondensed-ExtraBold.eot");
-  src: url("../public/fonts/ArchivoSemiCondensed-ExtraBold.eot?#iefix") format("embedded-opentype"),
-       url("../public/fonts/ArchivoSemiCondensed-ExtraBold.woff2") format("woff2"),
-       url("../public/fonts/ArchivoSemiCondensed-ExtraBold.woff") format("woff");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
+    font-family: 'Archivo SemiCondensed ExtraBold';
+    src: url('../public/fonts/ArchivoSemiCondensed-ExtraBold.eot');
+    src: url('../public/fonts/ArchivoSemiCondensed-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('../public/fonts/ArchivoSemiCondensed-ExtraBold.woff2') format('woff2'),
+        url('../public/fonts/ArchivoSemiCondensed-ExtraBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
 }
+
 
 
 
 :root {
-   /* font */
-   --font-primary:  font-family: "Archivo", sans-serif;
+/* font */
+--font-primary: font-family: "Archivo", sans-serif;
 
-   /* colors*/
-   --color-white: #fff;
-   --color-black: #000;
-   --color-red: #CE2229;
-   --color-grey1: #808080;
-   --color-grey2: #949494;
-   --color-yellow-milani: #FFC527;
+/* colors*/
+--color-white: #fff;
+--color-black: #000;
+--color-red: #CE2229;
+--color-grey1: #808080;
+--color-grey2: #949494;
+--color-yellow-milani: #FFC527;
 
-   --header-height: 143px;
+--header-height: 143px;
 }
 
 
 * {
-   margin: 0;
-   padding: 0;
-   box-sizing: border-box;
+margin: 0;
+padding: 0;
+box-sizing: border-box;
 }
 
 
 html,body {
-   background-color: var(--color-grey1);
-   font-family: var(--font-primary);
+background-color: var(--color-grey1);
+font-family: var(--font-primary);
 }
 
 
 /* ============================================
-   TITULOS SEGÚN TABLA OFICIAL DE FIGMA
-   ============================================ */
+TITULOS SEGÚN TABLA OFICIAL DE FIGMA
+============================================ */
 
-/* H1 — Archivo Condensed ExtraBold — 85px — LH 1 */
-h1 {
-   font-family: "Archivo Condensed" !important;
-   font-weight: 800 !important;
-   font-size: 85px !important;
-   line-height: 1 !important;
-}
 
-/* H2 — Archivo Condensed ExtraBold — 54px */
-h2 {
-   font-family: "Archivo Condensed" !important;
-   font-weight: 800 !important;
-   font-size: 54px !important;
-   line-height: 1.1 !important;
-}
-
-/* H3 — Archivo SemiCondensed Medium — 40px */
-h3 {
-   font-family: "Archivo SemiCondensed" !important;
-   font-weight: 500 !important;
-   font-size: 40px !important;
-   line-height: 1.1 !important;
-}
-
-/* H4 — Archivo SemiCondensed Bold — 30px */
-h4 {
-   font-family: "Archivo SemiCondensed" !important;
-   font-weight: 700 !important;
-   font-size: 30px !important;
-   line-height: 1.1 !important;
-}
-
-/* H5 — Archivo SemiCondensed ExtraBold — 26px */
-h5 {
-   font-family: "Archivo SemiCondensed" !important;
-   font-weight: 800 !important;
-   font-size: 26px !important; 
-   line-height: 1.1 !important;
-}
-
-/* H6 — Archivo SemiCondensed ExtraBold — 21px */
-h6 {
-   font-family: "Archivo SemiCondensed" !important;
-   font-weight: 800 !important;
-   font-size: 21px !important;
-   line-height: 1.1 !important;
-}
 
 
 /* ============================================
-   PARRAFOS Y TIPOGRAFÍA BASE
-   ============================================ */
+PARRAFOS Y TIPOGRAFÍA BASE
+============================================ */
 
 
 p {
-   font-family: var(--font-primary) !important;
-   font-weight: 400 !important;
+font-family: var(--font-primary) !important;
+font-weight: 400 !important;
 }
 
 strong {
-   font-family: var(--font-primary) !important;
-   font-weight: bold !important;
+font-family: var(--font-primary) !important;
+font-weight: bold !important;
 }
 
 ul {
-   /* para los dropdown */
-   margin: 0 !important; 
+/* para los dropdown */
+margin: 0 !important;
 }
 
 li {
-   list-style: none;
+list-style: none;
 }
 
 .location-btn__text p {
-   padding-bottom: 0 !important;
+padding-bottom: 0 !important;
 }
 
 /* 🔧 Fix para Salient / WPBakery responsivo */
 /* @media only screen and (max-width: 999px) {
-  .container-wrap {
-    min-width: auto !important;
-    width: 100% !important;
-  }
+.container-wrap {
+min-width: auto !important;
+width: 100% !important;
+}
 } */
 
 /* 🩵 Fix para contenedores del theme Salient en headless React */
 .container,
 .container-wrap {
-  width: 100% !important;
-  /* max-width: 100% !important; */
-  min-width: auto !important;
+width: 100% !important;
+/* max-width: 100% !important; */
+min-width: auto !important;
 }
 
 @media only screen and (max-width: 999px) {
-  .container,
-  .container-wrap {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: auto !important;
-  }
+.container,
+.container-wrap {
+width: 100% !important;
+max-width: 100% !important;
+min-width: auto !important;
+}
 }
