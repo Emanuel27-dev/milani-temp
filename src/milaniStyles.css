@@ -2,7 +2,6 @@
 /* === ESTILO BASE === */
 .header {
   background-color: var(--color-red);
-  font-family: "Archivo SemiCondensed";
   color: var(--color-white);
   height: 143px;
     position: relative;
@@ -1008,7 +1007,6 @@
 }
 
 .service-column-name {
-  font-family: "Archivo SemiCondensed" !important;
   font-size: 17px !important;
   font-weight: 800 !important;
   margin-bottom: 12px !important;
@@ -1026,7 +1024,6 @@
 
 .service-column ul li {
   margin-bottom: 7px;
-  font-family: "Archivo Semicondensed" !important;
   font-size: 16px;
   font-weight: 500;
   color: var(--color-grey2);
@@ -1049,7 +1046,6 @@
 
 .contact-info p {
   font-size: 24px;
-  font-family: "Archivo SemiCondensed" !important;
   font-weight: bold;
   color: var(--color-white);
   margin-bottom: 3px;
@@ -1057,7 +1053,6 @@
 
 .contact-info .phone {
   font-size: 24px;
-  font-family: "Archivo SemiCondensed" !important;
   font-weight: 700;
   margin-bottom: 16px;
   color: #aeaeae;
@@ -1065,7 +1060,6 @@
 
 .contact-info .email {
   font-size: 18px;
-  font-family: "Archivo SemiCondensed" !important;
   font-weight: 500;
   color: #ccc;
 }
@@ -1150,7 +1144,6 @@
 
 .canadian-business span {
   color: var(--color-white);
-  font-family: "Archivo SemiCondensed" !important;
   font-size: 28px;
   font-weight: 500 !important;
 }
@@ -1676,7 +1669,6 @@
         .submit-btn {
             background-color: var(--color-yellow-milani);
             color: var(--color-black) !important;
-            font-family: 'Archivo SemiCondensed' !important;
             font-weight: bold !important;
             border: none;
             padding: 15px;

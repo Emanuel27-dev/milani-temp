@@ -3,66 +3,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
 
 
-
-/* --- Archivo Condensed ExtraBold (800) --- */
-@font-face {
-font-family: 'Archivo Condensed';
-src: url('../public/fonts/ArchivoCondensed-ExtraBold.eot');
-src: url('../public/fonts/ArchivoCondensed-ExtraBold.eot?#iefix') format('embedded-opentype'),
-url('../public/fonts/ArchivoCondensed-ExtraBold.woff2') format('woff2'),
-url('../public/fonts/ArchivoCondensed-ExtraBold.woff') format('woff');
-font-weight: 800;
-font-style: normal;
-font-display: swap;
-}
-
-/* --- Archivo SemiCondensed Bold (700) --- */
-@font-face {
-font-family: 'Archivo SemiCondensed';
-src: url('../public/fonts/ArchivoSemiCondensed-Bold.eot');
-src: url('../public/fonts/ArchivoSemiCondensed-Bold.eot?#iefix') format('embedded-opentype'),
-url('../public/fonts/ArchivoSemiCondensed-Bold.woff2') format('woff2'),
-url('../public/fonts/ArchivoSemiCondensed-Bold.woff') format('woff');
-font-weight: 700;
-font-style: normal;
-font-display: swap;
-}
-
-
-/* --- Archivo SemiCondensed Medium (500) --- */
-@font-face {
-font-family: 'Archivo SemiCondensed';
-src: url('../public/fonts/ArchivoSemiCondensed-Medium.eot');
-src: url('../public/fonts/ArchivoSemiCondensed-Medium.eot?#iefix') format('embedded-opentype'),
-url('../public/fonts/ArchivoSemiCondensed-Medium.woff2') format('woff2'),
-url('../public/fonts/ArchivoSemiCondensed-Medium.woff') format('woff');
-font-weight: 500;
-font-style: normal;
-font-display: swap;
-}
-
-/* --- Archivo SemiCondensed ExtraBold (800) --- */
-@font-face {
-font-family: "Archivo SemiCondensed";
-src: url("../public/fonts/ArchivoSemiCondensed-ExtraBold.eot");
-src: url("../public/fonts/ArchivoSemiCondensed-ExtraBold.eot?#iefix") format("embedded-opentype"),
-url("../public/fonts/ArchivoSemiCondensed-ExtraBold.woff2") format("woff2"),
-url("../public/fonts/ArchivoSemiCondensed-ExtraBold.woff") format("woff");
-font-weight: 800;
-font-style: normal;
-font-display: swap;
-}
-
-
-/*
- Theme Name: Salient Child
- Theme URI: http://example.com/
- Description: Child theme de Salient
- Author: Enrique
- Template: salient
- Version: 1.0.0
-*/
-
 @font-face {
     font-family: 'Archivo SemiCondensed Bold';
     src: url('../public/fonts/ArchivoSemiCondensed-Bold.eot');
@@ -145,7 +85,7 @@ TITULOS SEGÚN TABLA OFICIAL DE FIGMA
 
 /* H1 — Archivo Condensed ExtraBold — 85px — LH 1 */
 h1 {
-font-family: "Archivo Condensed";
+font-family: 'Archivo Condensed ExtraBold';
 font-weight: 800;
 font-size: 85px;
 line-height: 1;
@@ -153,7 +93,7 @@ line-height: 1;
 
 /* H2 — Archivo Condensed ExtraBold — 54px */
 h2 {
-font-family: "Archivo Condensed";
+font-family: 'Archivo Condensed ExtraBold';
 font-weight: 800;
 font-size: 54px;
 line-height: 1.1;
@@ -161,7 +101,7 @@ line-height: 1.1;
 
 /* H3 — Archivo SemiCondensed Medium — 40px */
 h3 {
-font-family: "Archivo SemiCondensed";
+font-family: 'Archivo SemiCondensed Medium';
 font-weight: 500;
 font-size: 40px;
 line-height: 1.1;
@@ -169,7 +109,7 @@ line-height: 1.1;
 
 /* H4 — Archivo SemiCondensed Bold — 30px */
 h4 {
-font-family: "Archivo SemiCondensed";
+font-family: 'Archivo SemiCondensed Bold';
 font-weight: 700;
 font-size: 30px;
 line-height: 1.1;
@@ -177,7 +117,7 @@ line-height: 1.1;
 
 /* H5 — Archivo SemiCondensed ExtraBold — 26px */
 h5 {
-font-family: "Archivo SemiCondensed";
+font-family: 'Archivo Condensed ExtraBold';
 font-weight: 800;
 font-size: 26px;
 line-height: 1.1;
@@ -185,7 +125,7 @@ line-height: 1.1;
 
 /* H6 — Archivo SemiCondensed ExtraBold — 21px */
 h6 {
-font-family: "Archivo SemiCondensed";
+font-family: 'Archivo Condensed ExtraBold';
 font-weight: 800 ;
 font-size: 21px;
 line-height: 1.1;
