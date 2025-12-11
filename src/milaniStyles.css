@@ -114,12 +114,13 @@
 
 .header-container--below {
   display: flex;
+  align-items: center;
 }
 
 .header-below__info {
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 8px;
 }
 .header-below__headline {
   color: var(--color-white);
@@ -135,6 +136,7 @@
   align-items: center;
   gap: 18px;
 }
+
 
 .location-btn {
   display: flex;
@@ -170,12 +172,12 @@
   font-size: 24px;
   font-weight: 400;
   font-family: "Archivo";
-  /* margin-bottom: 0; */
+  margin: 0;
 }
 
 .buttons-header {
   display: flex;
-  gap: 17px;
+  gap: 20px;
 }
 .buttons-header button {
   white-space: nowrap;
@@ -292,6 +294,10 @@
 
 .buttons-toggle {
   display: none !important;
+}
+
+.buttons-header button{
+  gap: 6px;
 }
 
 
