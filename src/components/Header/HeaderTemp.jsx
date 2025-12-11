@@ -14,7 +14,14 @@ import wsspIcon from "./../../assets/Phone.svg";
 import messageIcon from "./../../assets/chat.svg";
 import { useStickyFooterBar } from "../../hooks/useStickyFooterBar";
 
-export function HeaderTemp({ data, switchFormModal, showFormModal, setShowFormModal, currentLocation, setCurrentLocation }) {
+export function HeaderTemp({
+  data,
+  switchFormModal,
+  showFormModal,
+  setShowFormModal,
+  currentLocation,
+  setCurrentLocation,
+}) {
   const { location } = useIPLocation();
   const [openDropdown, setOpenDropDown] = useState(null);
   const { hiddenInFooter, visible } = useStickyFooterBar();
@@ -58,22 +65,20 @@ export function HeaderTemp({ data, switchFormModal, showFormModal, setShowFormMo
     localStorage.setItem("currentLocation", currentLocation);
   }, [currentLocation]);
 
-
   // Codigo para que el boton GetFreeEstimate funcione
-useEffect(() => {
-  const handleClick = (e) => {
-    if (e.target.closest(".btn_estimate")) {
-      setShowFormModal(true);
-    }
-  };
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (e.target.closest(".btn_estimate")) {
+        setShowFormModal(true);
+      }
+    };
 
-  document.addEventListener("click", handleClick);
+    document.addEventListener("click", handleClick);
 
-  return () => {
-    document.removeEventListener("click", handleClick);
-  };
-}, []);
-
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
 
   // 🔹 Usa los menús jerárquicos ya preparados en WP
   const mainItems =
@@ -81,7 +86,6 @@ useEffect(() => {
 
   return (
     <>
-
       <header className="header">
         <div className="header-container">
           <Link to={"/"}>
@@ -231,33 +235,38 @@ useEffect(() => {
           </button>
         </div>
       </div>
-      
-                <div id="stickyFooterBar" className={
-    "headFooter sticky-headFooter " +
-    (visible ? "visible " : "") +
-    (hiddenInFooter ? "hidden" : "")
-  }>
-            <div className="container-footer">
-              <div className="head">
-                <figure className="figureFooter">
-                  <img src={logo} alt="logo footer" className="imgFooter" />
-                </figure>
-                <div className="buttons">
-                  <div className="buttons-block">
-                    <div className="button" onClick={switchFormModal}>
-                      <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
-                      <span>250.900.900</span>
-                    </div>
-                    <div className="button button-book" onClick={switchFormModal}>BOOK NOW</div>
-                  </div>
-                  <div className="button button-chat" onClick={switchFormModal}>
-                    <img src={messageIcon} alt="message" className="btn-icon" />
-                    <span>CHAT WITH US</span>
-                  </div>
+
+      <div
+        id="stickyFooterBar"
+        className={
+          "headFooter sticky-headFooter " +
+          (visible ? "visible " : "") +
+          (hiddenInFooter ? "hidden" : "")
+        }
+      >
+        <div className="container-footer">
+          <div className="head">
+            <figure className="figureFooter">
+              <img src={logo} alt="logo footer" className="imgFooter" />
+            </figure>
+            <div className="buttons">
+              <div className="buttons-block">
+                <div className="button" onClick={switchFormModal}>
+                  <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
+                  <span>250.900.900</span>
                 </div>
+                <div className="button button-book" onClick={switchFormModal}>
+                  BOOK NOW
+                </div>
+              </div>
+              <div className="button button-chat" onClick={switchFormModal}>
+                <img src={messageIcon} alt="message" className="btn-icon" />
+                <span>CHAT WITH US</span>
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
       <div className="header-below">
         <div className="header-container header-container--below">
@@ -318,7 +327,9 @@ useEffect(() => {
               <img src={wassp} alt="phone" className="btn-icon" />
               <div>250.900.900</div>
             </button>
-            <button className="button" onClick={switchFormModal}>BOOK NOW</button>
+            <button className="button" onClick={switchFormModal}>
+              BOOK NOW
+            </button>
           </div>
         </div>
 
@@ -331,9 +342,7 @@ useEffect(() => {
           setShowToolTip={setShowToolTip}
         />
 
-        {
-          showFormModal ? <FormModal setShowFormModal={setShowFormModal}/> : ''
-        }
+        {showFormModal ? <FormModal setShowFormModal={setShowFormModal} /> : ""}
       </div>
     </>
   );
