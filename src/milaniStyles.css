@@ -1389,6 +1389,13 @@
   .buttons-block {
     justify-content: space-between;
   }
+
+  .buttons-block :first-child {
+    max-width: none;
+}
+  .buttons-block :last-child {
+    max-width: none;
+}
 }
 
 @media (min-width: 769px) {
