@@ -132,7 +132,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 108px;
+  max-width: max-content;
   padding: 7px 10px;
   gap: 5px;
   background-color: var(--color-black);
