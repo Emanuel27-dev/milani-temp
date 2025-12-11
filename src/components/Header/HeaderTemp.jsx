@@ -9,6 +9,9 @@ import { wpUrlToClientPath } from "../../helpers/wpUrlToClientPath";
 import { ZipModal } from "./ZipModal";
 import { useIPLocation } from "../../hooks/useIPLocation";
 import { FormModal } from "./FormModal";
+import logo from "./../../assets/logoFooter.svg";
+import wsspIcon from "./../../assets/Phone.svg";
+import messageIcon from "./../../assets/chat.svg";
 
 export function HeaderTemp({ data, switchFormModal, showFormModal, setShowFormModal, currentLocation, setCurrentLocation }) {
   const { location } = useIPLocation();
@@ -76,6 +79,29 @@ useEffect(() => {
 
   return (
     <>
+          {/* <div id="stickyFooterBar" className="headFooter sticky-headFooter">
+            <div className="container-footer">
+              <div className="head">
+                <figure className="figureFooter">
+                  <img src={logo} alt="logo footer" className="imgFooter" />
+                </figure>
+                <div className="buttons">
+                  <div className="buttons-block">
+                    <div className="button" onClick={switchFormModal}>
+                      <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
+                      <span>250.900.900</span>
+                    </div>
+                    <div className="button button-book" onClick={switchFormModal}>BOOK NOW</div>
+                  </div>
+                  <div className="button button-chat" onClick={switchFormModal}>
+                    <img src={messageIcon} alt="message" className="btn-icon" />
+                    <span>CHAT WITH US</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> */}
+
       <header className="header">
         <div className="header-container">
           <Link to={"/"}>
@@ -282,7 +308,7 @@ useEffect(() => {
 
           <div className="buttons-header">
             <button className="button" onClick={switchFormModal}>
-              <img src={wassp} alt="phone" />
+              <img src={wassp} alt="phone" className="btn-icon" />
               <div>250.900.900</div>
             </button>
             <button className="button" onClick={switchFormModal}>BOOK NOW</button>

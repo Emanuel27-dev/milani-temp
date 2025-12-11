@@ -17,13 +17,13 @@ export function Footer({ switchFormModal }) {
             <div className="buttons">
               <div className="buttons-block">
                 <div className="button" onClick={switchFormModal}>
-                  <img src={wsspIcon} alt="whatsapp" />
+                  <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
                   <span>250.900.900</span>
                 </div>
                 <div className="button button-book" onClick={switchFormModal}>BOOK NOW</div>
               </div>
               <div className="button button-chat" onClick={switchFormModal}>
-                <img src={messageIcon} alt="message" />
+                <img src={messageIcon} alt="message" className="btn-icon" />
                 <span>CHAT WITH US</span>
               </div>
             </div>
