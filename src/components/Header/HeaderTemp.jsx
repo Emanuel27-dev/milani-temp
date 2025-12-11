@@ -79,28 +79,6 @@ useEffect(() => {
 
   return (
     <>
-          {/* <div id="stickyFooterBar" className="headFooter sticky-headFooter">
-            <div className="container-footer">
-              <div className="head">
-                <figure className="figureFooter">
-                  <img src={logo} alt="logo footer" className="imgFooter" />
-                </figure>
-                <div className="buttons">
-                  <div className="buttons-block">
-                    <div className="button" onClick={switchFormModal}>
-                      <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
-                      <span>250.900.900</span>
-                    </div>
-                    <div className="button button-book" onClick={switchFormModal}>BOOK NOW</div>
-                  </div>
-                  <div className="button button-chat" onClick={switchFormModal}>
-                    <img src={messageIcon} alt="message" className="btn-icon" />
-                    <span>CHAT WITH US</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
 
       <header className="header">
         <div className="header-container">
@@ -251,6 +229,29 @@ useEffect(() => {
           </button>
         </div>
       </div>
+      
+                {/* <div id="stickyFooterBar" className="headFooter sticky-headFooter visible">
+            <div className="container-footer">
+              <div className="head">
+                <figure className="figureFooter">
+                  <img src={logo} alt="logo footer" className="imgFooter" />
+                </figure>
+                <div className="buttons">
+                  <div className="buttons-block">
+                    <div className="button" onClick={switchFormModal}>
+                      <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
+                      <span>250.900.900</span>
+                    </div>
+                    <div className="button button-book" onClick={switchFormModal}>BOOK NOW</div>
+                  </div>
+                  <div className="button button-chat" onClick={switchFormModal}>
+                    <img src={messageIcon} alt="message" className="btn-icon" />
+                    <span>CHAT WITH US</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> */}
 
       <div className="header-below">
         <div className="header-container header-container--below">
