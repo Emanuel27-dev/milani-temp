@@ -1,7 +1,10 @@
 /* Estilos para header */
 /* === ESTILO BASE === */
+*{
+  text-rendering: geometricPrecision;
+}
 .header {
-  background-color: var(--color-red);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50.29%, rgba(0, 0, 0, 0.16) 153.76%), #CE212A;
   color: var(--color-white);
   height: 137px;
   position: relative;
@@ -14,7 +17,7 @@
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
 /* === LOGO === */
@@ -30,12 +33,11 @@
 
 /* === MENÚS === */
 .menus {
-  /* border: 1px solid white; */
   display: flex;
   flex-direction: column;
-  /* color: var(--color-white); */
   border-bottom-color: var(--color-red) !important;
-  gap: 19px;
+  gap: 23px;
+  padding-top: 30px;
 }
 
 .top-menu {
@@ -92,7 +94,13 @@
   justify-content: end;
   gap: 19px;
 }
+.main-menu .menu-item a.link{
+  font-family: 'Archivo SemiCondensed Bold';
+}
 
+.main-menu .menu-item a.link:hover{
+  border-bottom: solid 4px var(--color-yellow-milani);
+}
 /* ESTILOS HEADER BELOW*/
 .header-below {
   background-color: var(--color-black);
@@ -603,7 +611,7 @@
 
 .dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 26px);
   left: 0;
   list-style: none;
   display: none;
@@ -614,10 +622,8 @@
   border-bottom-right-radius: 8px;
   min-width: 180px;
   width: max-content;
-  padding: 30px 23px;
-  padding-top: 40px;
+  padding: 20px 23px;
   z-index: 100;
-  /* border: 1px solid wheat; */
 }
 
 .dropdown li {
@@ -628,7 +634,7 @@
 .dropdown.show {
   display: flex;
   flex-direction: column;
-  gap: 17px;
+  gap: 10px;
 }
 
 .dropdown-link {
