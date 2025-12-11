@@ -1010,8 +1010,6 @@
 }
 
 
-
-
 .footer {
   background-color: var(--color-black);
   padding: 50px;
@@ -1024,7 +1022,7 @@
 }
 
 .footer-header {
-  margin-bottom: 44px;
+  margin-bottom: 34px;
 }
 
 .footer-header h4 {
@@ -1099,7 +1097,7 @@
   align-items: end !important;
   gap: 30px;
   margin-bottom: 78px;
-  max-width: 1024px;
+  max-width: 1184px;
   /* border: 1px solid white; */
 }
 
@@ -1207,7 +1205,7 @@
 
 .canadian-business span {
   color: var(--color-white);
-  font-size: 28px;
+  font-size: 21px;
   font-weight: 500 !important;
 }
 

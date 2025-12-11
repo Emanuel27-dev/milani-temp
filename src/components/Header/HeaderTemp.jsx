@@ -12,10 +12,12 @@ import { FormModal } from "./FormModal";
 import logo from "./../../assets/logoFooter.svg";
 import wsspIcon from "./../../assets/Phone.svg";
 import messageIcon from "./../../assets/chat.svg";
+import { useStickyFooterBar } from "../../hooks/useStickyFooterBar";
 
 export function HeaderTemp({ data, switchFormModal, showFormModal, setShowFormModal, currentLocation, setCurrentLocation }) {
   const { location } = useIPLocation();
   const [openDropdown, setOpenDropDown] = useState(null);
+  const { hiddenInFooter, visible } = useStickyFooterBar();
 
   const [showToolTip, setShowToolTip] = useState(
     !localStorage.getItem("currentLocation")
@@ -230,7 +232,11 @@ useEffect(() => {
         </div>
       </div>
       
-                {/* <div id="stickyFooterBar" className="headFooter sticky-headFooter visible">
+                <div id="stickyFooterBar" className={
+    "headFooter sticky-headFooter " +
+    (visible ? "visible " : "") +
+    (hiddenInFooter ? "hidden" : "")
+  }>
             <div className="container-footer">
               <div className="head">
                 <figure className="figureFooter">
@@ -251,7 +257,7 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
 
       <div className="header-below">
         <div className="header-container header-container--below">
