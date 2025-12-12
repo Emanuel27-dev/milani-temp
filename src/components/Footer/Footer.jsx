@@ -5,7 +5,7 @@ import tuerca from "./../../assets/tuerca.svg";
 import bbb from "./../../assets/bbb.svg";
 import hoja from "./../../assets/hoja.svg";
 
-export function Footer({ switchFormModal }) {
+export function Footer({ switchFormModal, currentPhone }) {
   return (
     <>
       <div className="headFooter">
@@ -18,7 +18,7 @@ export function Footer({ switchFormModal }) {
               <div className="buttons-block">
                 <div className="button" onClick={switchFormModal}>
                   <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
-                  <span>250.900.900</span>
+                  <span>{currentPhone}</span>
                 </div>
                 <div className="button button-book" onClick={switchFormModal}>BOOK NOW</div>
               </div>
@@ -152,7 +152,7 @@ export function Footer({ switchFormModal }) {
             <div className="contact-box1">
               <div class="contact-info">
                 <p>Okanagan Service</p>
-                <div class="phone">250-800-0000</div>
+                <div class="phone">{currentPhone}</div>
                 <div class="email">customerservice@milani.ca</div>
               </div>
               <figure className="bbb-figure">

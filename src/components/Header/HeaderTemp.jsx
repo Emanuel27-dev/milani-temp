@@ -21,6 +21,8 @@ export function HeaderTemp({
   setShowFormModal,
   currentLocation,
   setCurrentLocation,
+  currentPhone,
+  setCurrentPhone,
 }) {
   const { location } = useIPLocation();
   const [openDropdown, setOpenDropDown] = useState(null);
@@ -253,7 +255,7 @@ export function HeaderTemp({
               <div className="buttons-block">
                 <div className="button" onClick={switchFormModal}>
                   <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
-                  <span>250.900.900</span>
+                  <span>{currentPhone}</span>
                 </div>
                 <div className="button button-book" onClick={switchFormModal}>
                   BOOK NOW
@@ -325,7 +327,7 @@ export function HeaderTemp({
           <div className="buttons-header">
             <button className="button" onClick={switchFormModal}>
               <img src={wassp} alt="phone" className="btn-icon" />
-              <div>250.900.900</div>
+              <div>{currentPhone}</div>
             </button>
             <button className="button" onClick={switchFormModal}>
               BOOK NOW
@@ -340,6 +342,7 @@ export function HeaderTemp({
           setCurrentLocation={setCurrentLocation}
           showToolTip={showToolTip}
           setShowToolTip={setShowToolTip}
+          setCurrentPhone={setCurrentPhone}
         />
 
         {showFormModal ? <FormModal setShowFormModal={setShowFormModal} /> : ""}

@@ -181,6 +181,8 @@ export function Layout() {
     localStorage.getItem("currentLocation") || "kelowna"
   );
 
+  const [currentPhone, setCurrentPhone] = useState(localStorage.getItem("currentPhone") || "250.900.900");
+
   const { data, loading } = useQuery(GET_HEADER, {
     fetchPolicy: "cache-first",
   });
@@ -211,6 +213,8 @@ export function Layout() {
         setShowFormModal={setShowFormModal}
         currentLocation={currentLocation}
         setCurrentLocation={setCurrentLocation}
+        currentPhone={currentPhone}
+        setCurrentPhone={setCurrentPhone}
       />
 
       {/* Estructura idéntica a Salient */}
@@ -229,7 +233,7 @@ export function Layout() {
         </div>
       </div>
 
-      <Footer switchFormModal={switchFormModal} />
+      <Footer switchFormModal={switchFormModal} currentPhone={currentPhone} />
     </>
   );
 }
