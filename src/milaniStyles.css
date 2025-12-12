@@ -1112,7 +1112,7 @@
   font-size: 16px;
   font-weight: 500;
   color: var(--color-grey2);
-  line-height: 1.5;
+  line-height: 120%;
   list-style: none;
 }
 
@@ -1248,6 +1248,7 @@
 .footer-bottom p {
       margin-bottom: 0;
     padding-bottom: 0;
+    font-size: 14px;
 }
 
 .footer-bottom span {
@@ -1422,6 +1423,11 @@
 }
 .footer .services-grid li a {
   color: #808080;
+  font-size: 16px;
+  font-weight: 400;
+}
+.footer .services-grid li a:hover{
+  color: var(--color-yellow-milani);
 }
 
 /* ==========================================================
