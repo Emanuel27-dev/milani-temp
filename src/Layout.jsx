@@ -8,6 +8,7 @@ import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";
 import { HeaderTemp } from "./components/Header/HeaderTemp";
 import { useEffect, useState } from "react";
 import { useIPLocation } from "./hooks/useIPLocation";
+import { isCityInList } from "./helpers/isCityInList";
 
 // =========================================================
 // 🔹 Query del Header (logo + menús)
@@ -195,8 +196,15 @@ export function Layout() {
     // Esperamos a que termine la llamada a la API
     if (loadingLocation) return;
 
-    setCurrentLocation(location.ciudad);
-    localStorage.setItem("currentLocation", location.ciudad);
+    // verificar si esta ciudad se encuentra en la "base de datos", si esta mostramos si no, mostramos kelowna
+    if(isCityInList(location.ciudad)) {
+        setCurrentLocation(location.ciudad);
+        localStorage.setItem("currentLocation", location.ciudad);
+    }
+    else {
+        setCurrentLocation("kelowna");
+        localStorage.setItem("currentLocation", "kelowna");
+    }
   }, [loadingLocation, location]);
 
   const { data, loading } = useQuery(GET_HEADER, {
