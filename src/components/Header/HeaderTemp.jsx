@@ -24,7 +24,7 @@ export function HeaderTemp({
   currentPhone,
   setCurrentPhone,
 }) {
-  const { location } = useIPLocation();
+  // const { location } = useIPLocation();
   const [openDropdown, setOpenDropDown] = useState(null);
   const { hiddenInFooter, visible } = useStickyFooterBar();
 
@@ -52,16 +52,16 @@ export function HeaderTemp({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    if (location?.pais === "United States" && currentLocation !== "Seattle") {
-      setCurrentLocation("Seattle");
-    } else if (
-      location?.pais !== "United States" &&
-      currentLocation === "Seattle"
-    ) {
-      setCurrentLocation("Kelowna");
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location?.pais === "United States" && currentLocation !== "Seattle") {
+  //     setCurrentLocation("Seattle");
+  //   } else if (
+  //     location?.pais !== "United States" &&
+  //     currentLocation === "Seattle"
+  //   ) {
+  //     setCurrentLocation("Kelowna");
+  //   }
+  // }, [location]);
 
   useEffect(() => {
     localStorage.setItem("currentLocation", currentLocation);

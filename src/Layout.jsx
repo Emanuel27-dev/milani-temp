@@ -6,7 +6,8 @@ import { Footer } from "./components/Footer/Footer";
 import { useWpAssets } from "./hooks/useWpAssets";
 import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";
 import { HeaderTemp } from "./components/Header/HeaderTemp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useIPLocation } from "./hooks/useIPLocation";
 
 // =========================================================
 // 🔹 Query del Header (logo + menús)
@@ -175,13 +176,28 @@ export function Layout() {
   useWpAssets();
   useWpGlobalAssets();
 
-
-  // asigna a currentLocation la ciudad selecionada, almacenada en el localStorage y por defecto es kelowna
+  // asigna a currentLocation la ciudad selecionada que estará almacenada en el localStorage y por defecto es kelowna
   const [currentLocation, setCurrentLocation] = useState(
     localStorage.getItem("currentLocation") || "kelowna"
   );
 
-  const [currentPhone, setCurrentPhone] = useState(localStorage.getItem("currentPhone") || "250.900.900");
+  const [currentPhone, setCurrentPhone] = useState(
+    localStorage.getItem("currentPhone") || "250.900.900"
+  );
+
+  // AGREGANDO IP LOCATION Y USEEFFECT
+  const { location, loadingLocation } = useIPLocation();
+
+  useEffect(() => {
+    // Si ya existe ciudad guardada, no tocar nada
+    if (localStorage.getItem("currentLocation")) return;
+
+    // Esperamos a que termine la llamada a la API
+    if (loadingLocation) return;
+
+    setCurrentLocation(location.ciudad);
+    localStorage.setItem("currentLocation", location.ciudad);
+  }, [loadingLocation, location]);
 
   const { data, loading } = useQuery(GET_HEADER, {
     fetchPolicy: "cache-first",
