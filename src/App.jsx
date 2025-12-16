@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import './milaniStyles.css';
 import { Layout } from './Layout';
-import { Home } from './Home';
 import { WpPage } from './WpPage';
 
 function App() {
@@ -9,7 +8,9 @@ function App() {
   return (
     <>
     <Routes>
-      <Route path='/' element={<Layout />}>
+      <Route path="/" element={<Navigate to="/okanagan" replace />} />
+
+      <Route path='/:region' element={<Layout />}>
         <Route index element={ <WpPage fixedSlug={"home"} />} />
 
         {/* Esta ruta captura /drainage /plumbing, /offers, /heating, etc */}

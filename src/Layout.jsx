@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useIPLocation } from "./hooks/useIPLocation";
 import { isCityInList } from "./helpers/isCityInList";
 import { getPhone } from "./helpers/getPhone";
+import { getRegionByCity } from "./helpers/getRegionByCity";
 
 // =========================================================
 // 🔹 Query del Header (logo + menús)
@@ -187,6 +188,11 @@ export function Layout() {
     localStorage.getItem("currentPhone") || "250.900.900"
   );
 
+  const [currentRegion, setCurrentRegion] = useState(
+    localStorage.getItem("currentRegion") || "okanagan"
+  )
+
+
   // AGREGANDO IP LOCATION Y USEEFFECT
   const { location, loadingLocation } = useIPLocation();
 
@@ -205,12 +211,18 @@ export function Layout() {
         const phone = getPhone(location.ciudad);
         setCurrentPhone(phone);
         localStorage.setItem("currentPhone", phone);
+
+        const region = getRegionByCity(location.ciudad);
+        setCurrentRegion(region);
+        localStorage.setItem("currentRegion", region);
     }
     else {
         setCurrentLocation("kelowna");
         localStorage.setItem("currentLocation", "kelowna");
         setCurrentPhone("250.900.900");
         localStorage.setItem("currentPhone", "250.900.900");
+        setCurrentRegion("Okanagan");
+        localStorage.setItem("currentRegion", "Okanagan");
     }
   }, [loadingLocation, location]);
 
@@ -246,6 +258,8 @@ export function Layout() {
         setCurrentLocation={setCurrentLocation}
         currentPhone={currentPhone}
         setCurrentPhone={setCurrentPhone}
+        currentRegion={currentRegion}
+        setCurrentRegion={setCurrentRegion}
       />
 
       {/* Estructura idéntica a Salient */}
@@ -255,7 +269,7 @@ export function Layout() {
             <div className="container-wrap">
               <div className="container main-content" role="main">
                 <div className="row">
-                  <Outlet context={{ homeData, currentLocation }} />{" "}
+                  <Outlet context={{ homeData, currentLocation, currentRegion }} />{" "}
                   {/* aquí entra <WpPage /> */}
                 </div>
               </div>

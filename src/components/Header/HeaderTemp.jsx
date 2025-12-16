@@ -2,12 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import lupa from "./../../assets/lupa.svg";
 import locationsvg from "./../../assets/location.svg";
-import location2svg from "./../../assets/location2.svg";
 import wassp from "./../../assets/Phone.svg";
-import arrow from "./../../assets/arrow.svg";
 import { wpUrlToClientPath } from "../../helpers/wpUrlToClientPath";
 import { ZipModal } from "./ZipModal";
-import { useIPLocation } from "../../hooks/useIPLocation";
 import { FormModal } from "./FormModal";
 import logo from "./../../assets/logoFooter.svg";
 import wsspIcon from "./../../assets/Phone.svg";
@@ -23,8 +20,9 @@ export function HeaderTemp({
   setCurrentLocation,
   currentPhone,
   setCurrentPhone,
+  currentRegion,
+  setCurrentRegion,
 }) {
-  // const { location } = useIPLocation();
   const [openDropdown, setOpenDropDown] = useState(null);
   const { hiddenInFooter, visible } = useStickyFooterBar();
 
@@ -32,9 +30,6 @@ export function HeaderTemp({
     !localStorage.getItem("currentLocation")
   );
   const [showZipModal, setShowZipModal] = useState(false);
-  // const [currentLocation, setCurrentLocation] = useState(
-  //   localStorage.getItem("currentLocation") || "Kelowna"
-  // );
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(
@@ -51,17 +46,6 @@ export function HeaderTemp({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // useEffect(() => {
-  //   if (location?.pais === "United States" && currentLocation !== "Seattle") {
-  //     setCurrentLocation("Seattle");
-  //   } else if (
-  //     location?.pais !== "United States" &&
-  //     currentLocation === "Seattle"
-  //   ) {
-  //     setCurrentLocation("Kelowna");
-  //   }
-  // }, [location]);
 
   useEffect(() => {
     localStorage.setItem("currentLocation", currentLocation);
@@ -82,6 +66,26 @@ export function HeaderTemp({
     };
   }, []);
 
+
+const regionToSlug = (region) => {
+  if (!region) return "";
+  return region.toLowerCase().replace(/\s+/g, "");
+};
+
+const withRegion = (path) => {
+  if (!currentRegion) return path;
+
+  const regionSlug = regionToSlug(currentRegion);
+
+  if (path.startsWith(`/${regionSlug}`)) {
+    return path;
+  }
+
+  return `/${regionSlug}${path}`;
+};
+
+
+
   // 🔹 Usa los menús jerárquicos ya preparados en WP
   const mainItems =
     location?.pais === "United States" ? data.menuUS : data.menuCA;
@@ -101,7 +105,7 @@ export function HeaderTemp({
               {data.topMenu.map((item) => (
                 <li className="menu-item-top" key={item.label}>
                   <NavLink
-                    to={wpUrlToClientPath(item.url)}
+                    to={withRegion(wpUrlToClientPath(item.url))}
                     className={({ isActive }) =>
                       `link ${isActive ? "active" : ""}`
                     }
@@ -147,7 +151,7 @@ export function HeaderTemp({
                     style={{ listStyle: "none" }}
                   >
                     <NavLink
-                      to={!isMobile ? wpUrlToClientPath(item.url) : "#"}
+                      to={!isMobile ? withRegion(wpUrlToClientPath(item.url)) : "#"}
                       className={({ isActive }) =>
                         `link ${isActive ? "active" : ""}`
                       }
@@ -178,7 +182,7 @@ export function HeaderTemp({
                         {children.map((child) => (
                           <li key={child.label} style={{ listStyle: "none" }}>
                             <NavLink
-                              to={wpUrlToClientPath(child.url)}
+                              to={withRegion(wpUrlToClientPath(child.url))}
                               className="dropdown-link"
                             >
                               {child.label}
@@ -342,6 +346,7 @@ export function HeaderTemp({
           showToolTip={showToolTip}
           setShowToolTip={setShowToolTip}
           setCurrentPhone={setCurrentPhone}
+          setCurrentRegion={setCurrentRegion}
         />
 
         {showFormModal ? <FormModal setShowFormModal={setShowFormModal} /> : ""}

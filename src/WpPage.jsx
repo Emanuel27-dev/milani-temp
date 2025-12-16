@@ -140,8 +140,22 @@ export function WpPage({ fixedUri, fixedSlug }) {
   const { pathname } = useLocation();
   const { homeData, currentLocation } = useOutletContext() || {}; // 🟩 viene desde Layout.jsx
 
-  const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
-  const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : autoUri);
+  const REGIONS = ["okanagan", "alberta", "lowermainland"];
+
+
+  // const autoUri = pathname.endsWith("/") ? pathname : pathname + "/";
+  const cleanPathname = (() => {
+  const parts = pathname.split("/").filter(Boolean);
+
+  // si el primer segmento es una región, la quitamos
+  if (REGIONS.includes(parts[0])) {
+    parts.shift();
+  }
+
+  return "/" + parts.join("/") + "/";
+})();
+
+  const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : cleanPathname);
 
   // 🟩 Detectar si estamos en la página de inicio
   const isHome =
@@ -179,7 +193,7 @@ export function WpPage({ fixedUri, fixedSlug }) {
 
   useEffect(() => {
     if (node?.seo) {
-      console.log("🧠 SEO data ready for Helmet:", node.seo.title);
+      // console.log("🧠 SEO data ready for Helmet:", node.seo.title);
     }
   }, [node?.seo]);
 
@@ -200,14 +214,14 @@ export function WpPage({ fixedUri, fixedSlug }) {
   if (error) return <p>Error cargando el contenido.</p>;
   if (!node) return <p></p>;
 
-  const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
+  // const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
 
-  console.log("SEO: ", node.seo);
-  console.log("🔍 Helmet test", {
-    loading,
-    hasSEO: !!node?.seo,
-    title: node?.seo?.title,
-  });
+  // console.log("SEO: ", node.seo);
+  // console.log("🔍 Helmet test", {
+  //   loading,
+  //   hasSEO: !!node?.seo,
+  //   title: node?.seo?.title,
+  // });
 
   return (
     <>
