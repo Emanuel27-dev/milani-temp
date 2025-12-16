@@ -9,6 +9,7 @@ import { HeaderTemp } from "./components/Header/HeaderTemp";
 import { useEffect, useState } from "react";
 import { useIPLocation } from "./hooks/useIPLocation";
 import { isCityInList } from "./helpers/isCityInList";
+import { getPhone } from "./helpers/getPhone";
 
 // =========================================================
 // 🔹 Query del Header (logo + menús)
@@ -200,10 +201,16 @@ export function Layout() {
     if(isCityInList(location.ciudad)) {
         setCurrentLocation(location.ciudad);
         localStorage.setItem("currentLocation", location.ciudad);
+
+        const phone = getPhone(location.ciudad);
+        setCurrentPhone(phone);
+        localStorage.setItem("currentPhone", phone);
     }
     else {
         setCurrentLocation("kelowna");
         localStorage.setItem("currentLocation", "kelowna");
+        setCurrentPhone("250.900.900");
+        localStorage.setItem("currentPhone", "250.900.900");
     }
   }, [loadingLocation, location]);
 

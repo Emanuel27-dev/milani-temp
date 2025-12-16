@@ -2,6 +2,7 @@ export const bd_location = [
   {
     asn: "AS812",
     city: "Vancouver",
+    phone: "604.800.801",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -32,6 +33,7 @@ export const bd_location = [
   {
     asn: "AS5769",
     city: "Montreal",
+    phone: "104.790.801",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -62,6 +64,7 @@ export const bd_location = [
   {
     asn: "AS1136",
     city: "Amsterdam",
+    phone: "201.200.501",
     continent_code: "EU",
     country: "NL",
     country_area: 41543,
@@ -92,6 +95,7 @@ export const bd_location = [
   {
     asn: "AS812",
     city: "Burnaby",
+    phone: "778.802.803",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -121,6 +125,7 @@ export const bd_location = [
   {
     asn: "AS812",
     city: "Richmond",
+    phone: "236.804.805",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -150,6 +155,7 @@ export const bd_location = [
   {
     asn: "AS812",
     city: "Surrey",
+    phone: "604.806.807",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -179,6 +185,7 @@ export const bd_location = [
   {
     asn: "AS812",
     city: "Coquitlam",
+    phone: "778.808.809",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -208,6 +215,7 @@ export const bd_location = [
   {
     asn: "AS812",
     city: "Grande Prairie",
+    phone: "780.700.701",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -237,6 +245,7 @@ export const bd_location = [
   {
     asn: "AS812",
     city: "Fort McMurray",
+    phone: "587.702.703",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -266,6 +275,7 @@ export const bd_location = [
   {
     asn: "AS812",
     city: "Peace River",
+    phone: "825.704.705",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -295,6 +305,7 @@ export const bd_location = [
   {
     asn: "AS812",
     city: "High Level",
+    phone: "780.706.707",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -324,6 +335,7 @@ export const bd_location = [
   {
     asn: "AS812",
     city: "Edmonton",
+    phone: "587.708.709",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -353,6 +365,7 @@ export const bd_location = [
   {
     asn: "AS812",
     city: "St. Albert",
+    phone: "825.710.711",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -382,6 +395,7 @@ export const bd_location = [
   {
     asn: "AS852",
     city: "Lake Country",
+    phone: "236.903.904",
     continent_code: "NA",
     country: "CA",
     country_area: 9984670,
@@ -408,4 +422,35 @@ export const bd_location = [
     utc_offset: "-0800",
     version: "IPv4",
   },
+  {
+  asn: "AS852",
+  city: "West Kelowna",
+  phone: "778.901.902",
+  continent_code: "NA",
+  country: "CA",
+  country_area: 9984670,
+  country_calling_code: "+1",
+  country_capital: "Ottawa",
+  country_code: "CA",
+  country_code_iso3: "CAN",
+  country_name: "Canada",
+  country_population: 38008005,
+  country_tld: ".ca",
+  currency: "CAD",
+  currency_name: "Canadian Dollar",
+  in_eu: false,
+  ip: "64.180.45.1",
+  languages: "en-CA",
+  latitude: 49.8625,
+  longitude: -119.5830,
+  network: "64.180.0.0/16",
+  org: "TELUS Communications",
+  postal: "V4T",
+  region: "British Columbia",
+  region_code: "BC",
+  timezone: "America/Vancouver",
+  utc_offset: "-0800",
+  version: "IPv4",
+}
+
 ];
