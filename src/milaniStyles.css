@@ -150,6 +150,7 @@
 .header-below__headline {
   color: var(--color-white);
   font-family: "Archivo SemiCondensed Medium";
+  line-height: 1 !important;
 }
 
 .header-below__headline span {
@@ -221,13 +222,13 @@
 .location-tooltip {
   background-color: var(--color-white);
   position: absolute;
-  padding: 10px;
-  top: 100%;
+  padding: 25px 20px;
+  top: calc(100% + 10px);
   left: 10px;
   margin-top: 23px;
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  width: 350px;
+  width: 450px;
   z-index: 50;
   /* opacity: 0;
   visibility: hidden; */
@@ -238,14 +239,14 @@
 /* Flecha del tooltip */
 .location-tooltip::before {
   content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 100px;
-  width: 0;
-  height: 0;
-  border-left: 17px solid transparent;
-  border-right: 17px solid transparent;
-  border-bottom: 17px solid var(--color-white);
+    position: absolute;
+    bottom: 100%;
+    left: 40px;
+    width: 0;
+    height: 0;
+    border-left: 0px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid var(--color-white);
 }
 
 .location-btn-wrapper:hover .location-tooltip {
@@ -258,21 +259,34 @@
   font-size: 22px;
   font-weight: 600;
   color: var(--color-black);
-  margin-bottom: 8px !important;
-  line-height: 1.3;
+  margin-bottom: 10px !important;
+  line-height: 1.2;
+  padding-bottom: 0;
 }
 
 .location-tooltip__description {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
   color: var(--color-black);
-  margin-bottom: 10px !important;
-  line-height: 1.4;
+  margin-bottom: 28px !important;
+    line-height: 1.2;
+    padding-bottom: 0;
 }
 
 .location-tooltip__buttons {
-  display: flex;
-  gap: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.location-tooltip__buttons > button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    flex: none;
+    min-width: 185px;
+    font-size: 15px;
 }
 
 .tooltip-btn {
@@ -293,6 +307,8 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
+  background: var(--color-red);
+  color: #fff;
 }
 
 .tooltip-btn--primary img {
@@ -309,12 +325,16 @@
 }
 
 .tooltip-btn--secondary {
-  /* background: transparent; */
+  background: #fff;
+    color: #000;
+    border-color: #000;
+
 }
 
 .tooltip-btn--secondary:hover {
   background: var(--color-red);
   color: var(--color-white);
+  border-color: var(--color-red);
 }
 
 .buttons-toggle {

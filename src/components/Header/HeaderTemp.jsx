@@ -310,7 +310,6 @@ export function HeaderTemp({
                       setShowToolTip(false);
                     }}
                   >
-                    <img src={location2svg} alt="location" />
                     CHANGE LOCATION
                   </button>
                   <button
