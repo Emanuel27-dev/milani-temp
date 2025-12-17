@@ -137,7 +137,12 @@ const NODE_BY_PATH = gql`
 // 🔹 COMPONENTE PRINCIPAL
 // =========================================================
 export function WpPage({ fixedUri, fixedSlug }) {
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
+  const location = useLocation();
+  const { pathname } = location;
+  const wasService = location.state?.wasService === true;
+
+
   const { homeData, currentLocation } = useOutletContext() || {}; // 🟩 viene desde Layout.jsx
 
   const REGIONS = ["okanagan", "alberta", "lowermainland"];
@@ -152,14 +157,38 @@ export function WpPage({ fixedUri, fixedSlug }) {
     parts.shift();
   }
 
+      if (parts[0] === "service") {
+      parts.shift();
+    }
+
+      // 👇 SI NO QUEDA NADA → HOME para que recargue el home si intento entrar desde la ruta diractamente por ejmplo http://localhost:5173/okanagan
+  if (parts.length === 0) {
+    return "/home/";
+  }
+
   return "/" + parts.join("/") + "/";
 })();
 
-  const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : cleanPathname);
+  // const uri = fixedUri ?? (fixedSlug ? `/${fixedSlug}/` : cleanPathname);
+
+  // ---------------------------------------------------------
+  // 2️⃣ URI FINAL PARA WP (reagrega /service si corresponde)
+  // ---------------------------------------------------------
+  const uri =
+    fixedUri ??
+    (fixedSlug
+      ? `/${fixedSlug}/`
+      : wasService
+      ? `/service${cleanPathname}`
+      : cleanPathname);
+
+  console.log("URI que se ve en react ==> ", pathname);
+  console.log("URI que va a WP ==> ", uri);
+  console.log("cleanpahname => ", cleanPathname)
 
   // 🟩 Detectar si estamos en la página de inicio
   const isHome =
-    pathname === "/" || pathname === "/home/" || pathname === "/home";
+    pathname === "/okanagan" || pathname === "/home/" || pathname === "/home" || pathname === "/alberta" || pathname === "/lowermainland";
 
   // 1️⃣ Primera consulta: contenido base
   const { data, loading, error } = useQuery(NODE_BY_PATH, {
@@ -213,15 +242,6 @@ export function WpPage({ fixedUri, fixedSlug }) {
   // 5️⃣ Renderizado
   if (error) return <p>Error cargando el contenido.</p>;
   if (!node) return <p></p>;
-
-  // const safeHtml = DOMPurify.sanitize(node.contentRendered || "");
-
-  // console.log("SEO: ", node.seo);
-  // console.log("🔍 Helmet test", {
-  //   loading,
-  //   hasSEO: !!node?.seo,
-  //   title: node?.seo?.title,
-  // });
 
   return (
     <>

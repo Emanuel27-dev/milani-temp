@@ -8,14 +8,12 @@ function App() {
   return (
     <>
     <Routes>
-      <Route path="/" element={<Navigate to="/okanagan" replace />} />
+      {/* HOME LIMPIO */}
+      <Route path="/" element={<Layout />}>
+        <Route index element={<WpPage fixedSlug="home" />} />
 
-      <Route path='/:region' element={<Layout />}>
-        <Route index element={ <WpPage fixedSlug={"home"} />} />
-
-        {/* Esta ruta captura /drainage /plumbing, /offers, /heating, etc */}
-        <Route path='*' element={<WpPage />} />
-        {/* <Route path='*' element={ <Navigate replace to={"/"} /> } /> */}
+        {/* TODAS LAS PAGES / SERVICES */}
+        <Route path="*" element={<WpPage />} />
       </Route>
     </Routes>
     </>

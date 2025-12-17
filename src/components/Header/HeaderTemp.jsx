@@ -11,6 +11,24 @@ import wsspIcon from "./../../assets/Phone.svg";
 import messageIcon from "./../../assets/chat.svg";
 import { useStickyFooterBar } from "../../hooks/useStickyFooterBar";
 
+
+function normalizeServicePath(url) {
+  const path = wpUrlToClientPath(url);
+
+  if (path.startsWith("/service/")) {
+    return {
+      path: path.replace("/service", ""),
+      wasService: true,
+    };
+  }
+
+  return {
+    path,
+    wasService: false,
+  };
+}
+
+
 export function HeaderTemp({
   data,
   switchFormModal,
@@ -102,19 +120,24 @@ const withRegion = (path) => {
 
           <nav className={`menus ${menuOpen ? "active" : ""}`}>
             <ul className="top-menu">
-              {data.topMenu.map((item) => (
-                <li className="menu-item-top" key={item.label}>
-                  <NavLink
-                    to={withRegion(wpUrlToClientPath(item.url))}
-                    className={({ isActive }) =>
-                      `link ${isActive ? "active" : ""}`
-                    }
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {item.label}
-                  </NavLink>
-                </li>
-              ))}
+              {data.topMenu.map((item) => {
+                const { path, wasService } = normalizeServicePath(item.url);
+
+                return (
+                  <li className="menu-item-top" key={item.label}>
+                    <NavLink
+                      to={withRegion(path)}
+                      state={{ wasService }}
+                      className={({ isActive }) =>
+                        `link ${isActive ? "active" : ""}`
+                      }
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {item.label}
+                    </NavLink>
+                  </li>
+                );
+              })}
               <button
                 className="search-btn searh-btn-hidden-top"
                 onClick={() => setOpenSearch(true)}
@@ -123,10 +146,11 @@ const withRegion = (path) => {
               </button>
             </ul>
 
-            {/* 🔹 Menú principal con hijos */}
+            {/* 🔹 MAIN MENU */}
             <ul className="main-menu" style={{ listStyle: "none" }}>
               {mainItems.map((item, index) => {
                 const children = item.children || [];
+                const { path, wasService } = normalizeServicePath(item.url);
 
                 return (
                   <li
@@ -151,44 +175,50 @@ const withRegion = (path) => {
                     style={{ listStyle: "none" }}
                   >
                     <NavLink
-                      to={!isMobile ? withRegion(wpUrlToClientPath(item.url)) : "#"}
+                      to={!isMobile ? withRegion(path) : "#"}
+                      state={{ wasService }}
                       className={({ isActive }) =>
                         `link ${isActive ? "active" : ""}`
                       }
                       onClick={(e) => {
                         if (isMobile) {
-                          e.preventDefault(); // 🚫 NO navegación en mobile
+                          e.preventDefault();
                           setOpenDropDown(
                             openDropdown === index ? null : index
-                          ); // 🔥 toggle accordion
+                          );
                           return;
                         }
-
-                        // Desktop → sí navegar
                         setMenuOpen(false);
                       }}
                     >
                       {item.label}
                     </NavLink>
 
-                    {/* 👇 Dropdown si tiene hijos */}
+                    {/* 🔹 DROPDOWN */}
                     {children.length > 0 && (
                       <ul
                         className={`dropdown ${
                           openDropdown === index ? "show" : ""
                         }`}
-                        style={{ listStyle: "none" }}
                       >
-                        {children.map((child) => (
-                          <li key={child.label} style={{ listStyle: "none" }}>
-                            <NavLink
-                              to={withRegion(wpUrlToClientPath(child.url))}
-                              className="dropdown-link"
-                            >
-                              {child.label}
-                            </NavLink>
-                          </li>
-                        ))}
+                        {children.map((child) => {
+                          const {
+                            path: childPath,
+                            wasService: childWasService,
+                          } = normalizeServicePath(child.url);
+
+                          return (
+                            <li key={child.label}>
+                              <NavLink
+                                to={withRegion(childPath)}
+                                state={{ wasService: childWasService }}
+                                className="dropdown-link"
+                              >
+                                {child.label}
+                              </NavLink>
+                            </li>
+                          );
+                        })}
                       </ul>
                     )}
                   </li>

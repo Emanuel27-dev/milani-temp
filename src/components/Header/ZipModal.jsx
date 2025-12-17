@@ -38,7 +38,9 @@ export function ZipModal({
     ""
   );
 
-  navigate(`/${regionSlug}${cleanPath}`);
+  navigate(`/${regionSlug}${cleanPath}`,{
+    state: location.state,
+  });
   onClose();
  }
 

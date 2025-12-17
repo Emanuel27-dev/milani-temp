@@ -1,7 +1,7 @@
 // Layout.jsx
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Footer } from "./components/Footer/Footer";
 import { useWpAssets } from "./hooks/useWpAssets";
 import { useWpGlobalAssets } from "./hooks/useWpGlobalAssets";
@@ -189,9 +189,12 @@ export function Layout() {
   );
 
   const [currentRegion, setCurrentRegion] = useState(
-    localStorage.getItem("currentRegion") || "okanagan"
+    localStorage.getItem("currentRegion") || ""
   )
 
+
+  const navigate = useNavigate();
+  const locationRouter = useLocation();
 
   // AGREGANDO IP LOCATION Y USEEFFECT
   const { location, loadingLocation } = useIPLocation();
@@ -205,6 +208,7 @@ export function Layout() {
 
     // verificar si esta ciudad se encuentra en la "base de datos", si esta mostramos si no, mostramos kelowna
     if(isCityInList(location.ciudad)) {
+      console.log('SE HA ENCONTRADO .. la ciudad')
         setCurrentLocation(location.ciudad);
         localStorage.setItem("currentLocation", location.ciudad);
 
@@ -217,14 +221,41 @@ export function Layout() {
         localStorage.setItem("currentRegion", region);
     }
     else {
+       console.log('NO SE HA ENCONTRADO .. la ciudad')
         setCurrentLocation("kelowna");
         localStorage.setItem("currentLocation", "kelowna");
         setCurrentPhone("250.900.900");
         localStorage.setItem("currentPhone", "250.900.900");
-        setCurrentRegion("Okanagan");
-        localStorage.setItem("currentRegion", "Okanagan");
+        // setCurrentRegion("Okanagan");
+        // localStorage.setItem("currentRegion", "Okanagan");
+
+        setCurrentRegion(null);
+        localStorage.removeItem("currentRegion");
     }
   }, [loadingLocation, location]);
+
+
+
+useEffect(() => {
+  if (!currentRegion) return;
+
+  const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, '');
+
+  // pathname actual
+  const pathname = locationRouter.pathname;
+
+  // si ya estamos en /alberta, /okanagan, etc → NO hacer nada
+  if (pathname === `/${regionSlug}` || pathname.startsWith(`/${regionSlug}/`)) {
+    return;
+  }
+
+  // SOLO si estamos en la raíz "/"
+  if (pathname === "/") {
+    navigate(`/${regionSlug}`, { replace: true });
+  }
+}, [currentRegion, locationRouter.pathname, navigate]);
+
+
 
   const { data, loading } = useQuery(GET_HEADER, {
     fetchPolicy: "cache-first",
