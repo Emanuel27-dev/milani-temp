@@ -5,7 +5,7 @@ import { locations } from "../locations";
 // Esta funcion solo recibe la ciudad y devulve la region para la cual pertenece, la estructura de region-ciudad esta en locations.js
 
 export function getRegionByCity(city) {
-  if (!city) return "okanagan"; // default
+  if (!city) return "okanagan"; // Si no hay ciudad retornamos okanagan
 
   const normalizedCity = city.toLowerCase();
 

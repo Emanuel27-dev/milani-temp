@@ -44,9 +44,13 @@ export function HeaderTemp({
   const [openDropdown, setOpenDropDown] = useState(null);
   const { hiddenInFooter, visible } = useStickyFooterBar();
 
-  const [showToolTip, setShowToolTip] = useState(
-    !localStorage.getItem("currentLocation")
-  );
+  // const [showToolTip, setShowToolTip] = useState(
+  //   !localStorage.getItem("currentLocation")
+  // );
+  const [showToolTip, setShowToolTip] = useState(() => {
+  return !localStorage.getItem("locationTooltipSeen");
+});
+
   const [showZipModal, setShowZipModal] = useState(false);
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -340,6 +344,7 @@ const withRegion = (path) => {
                   <button
                     className="tooltip-btn tooltip-btn--primary"
                     onClick={() => {
+                      localStorage.setItem("locationTooltipSeen", "true");
                       setShowZipModal(true);
                       setShowToolTip(false);
                     }}
@@ -348,7 +353,10 @@ const withRegion = (path) => {
                   </button>
                   <button
                     className="tooltip-btn tooltip-btn--secondary"
-                    onClick={() => setShowToolTip(false)}
+                    onClick={() => {
+                         localStorage.setItem("locationTooltipSeen", "true");
+                          setShowToolTip(false);
+                    }}
                   >
                     CANCEL
                   </button>
