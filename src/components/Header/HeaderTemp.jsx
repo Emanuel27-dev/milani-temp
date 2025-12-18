@@ -116,7 +116,7 @@ const withRegion = (path) => {
     <>
       <header className="header">
         <div className="header-container">
-          <Link to={"/"}>
+          <Link to={currentRegion ? `/${currentRegion.toLowerCase().replace(/\s+/g, "")}` : "/"} state={{skipRegionRedirect: true}}>
             <div className="logo-block">
               <img src={data.salientLogo} alt="Milani Logo" className="logo" />
             </div>

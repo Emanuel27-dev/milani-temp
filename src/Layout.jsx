@@ -238,6 +238,11 @@ export function Layout() {
 
 useEffect(() => {
   if (!currentRegion) return;
+    // 🚫 Si el usuario vino explícitamente al home (logo)
+  if (locationRouter.state?.skipRegionRedirect) {
+    return;
+  }
+
 
   const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, '');
 
@@ -253,7 +258,7 @@ useEffect(() => {
   if (pathname === "/") {
     navigate(`/${regionSlug}`, { replace: true });
   }
-}, [currentRegion, locationRouter.pathname, navigate]);
+}, [currentRegion, locationRouter.pathname, locationRouter.state ,navigate]);
 
 
 
