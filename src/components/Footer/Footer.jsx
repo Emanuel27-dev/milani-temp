@@ -20,9 +20,17 @@ export function Footer({ switchFormModal, currentPhone }) {
                   <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
                   <span>{currentPhone}</span>
                 </div>
-                <div className="button button-book" onClick={switchFormModal}>BOOK NOW</div>
+                <div
+                  className="button button-book"
+                  onClick={switchFormModal}
+                >
+                  BOOK NOW
+                </div>
               </div>
-              <div className="button button-chat" onClick={switchFormModal}>
+              <div
+                className="button button-chat"
+                onClick={switchFormModal}
+              >
                 <img src={messageIcon} alt="message" className="btn-icon" />
                 <span>CHAT WITH US</span>
               </div>
@@ -31,118 +39,66 @@ export function Footer({ switchFormModal, currentPhone }) {
         </div>
       </div>
 
-      <footer class="footer">
-        <div class="container-footer">
-          <div class="footer-header">
+      <footer className="footer">
+        <div className="container-footer">
+          <div className="footer-header">
             <h4>Fast, Fair and Reliable Service is our Promise</h4>
           </div>
 
-          <div class="services-grid">
-            <div class="service-column plumbing">
+          <div className="services-grid">
+            <div className="service-column plumbing">
               <p className="service-column-name">Plumbing</p>
               <ul>
-                <li>
-                  <a href="#">Maintenance and Repair</a>
-                </li>
-                <li>
-                  <a href="#">Hot Water Heater</a>
-                </li>
-                <li>
-                  <a href="#">Water Main Replacement</a>
-                </li>
-                <li>
-                  <a href="#">Installations</a>
-                </li>
-                <li>
-                  <a href="#">Trenchless Pipe Repair</a>
-                </li>
+                <li><a href="#">Maintenance and Repair</a></li>
+                <li><a href="#">Hot Water Heater</a></li>
+                <li><a href="#">Water Main Replacement</a></li>
+                <li><a href="#">Installations</a></li>
+                <li><a href="#">Trenchless Pipe Repair</a></li>
               </ul>
             </div>
 
-            <div class="service-column drainage">
+            <div className="service-column drainage">
               <p className="service-column-name">Drainage</p>
               <ul>
-                <li>
-                  <a href="#">Drain Tile Systems</a>
-                </li>
-                <li>
-                  <a href="#">Drainage and Sewer Maintenance</a>
-                </li>
-                <li>
-                  <a href="#">Draintile & Sewer Inspection</a>
-                </li>
-                <li>
-                  <a href="#">Pressure Jetting & Cleaning</a>
-                </li>
-                <li>
-                  <a href="#">Drainage Lines Repair & Service</a>
-                </li>
-                <li>
-                  <a href="#">Vacuum Truck Service</a>
-                </li>
-                <li>
-                  <a href="#">Drainage & Sewer Installation</a>
-                </li>
+                <li><a href="#">Drain Tile Systems</a></li>
+                <li><a href="#">Drainage and Sewer Maintenance</a></li>
+                <li><a href="#">Draintile & Sewer Inspection</a></li>
+                <li><a href="#">Pressure Jetting & Cleaning</a></li>
+                <li><a href="#">Drainage Lines Repair & Service</a></li>
+                <li><a href="#">Vacuum Truck Service</a></li>
+                <li><a href="#">Drainage & Sewer Installation</a></li>
               </ul>
             </div>
 
-            <div class="service-column heating">
+            <div className="service-column heating">
               <p className="service-column-name">Heating</p>
               <ul>
-                <li>
-                  <a href="#">Furnaces</a>
-                </li>
-                <li>
-                  <a href="#">Boilers</a>
-                </li>
-                <li>
-                  <a href="#">Heat Pumps</a>
-                </li>
-                <li>
-                  <a href="#">Green Heating Solutions</a>
-                </li>
-                <li>
-                  <a href="#">Air Filters</a>
-                </li>
+                <li><a href="#">Furnaces</a></li>
+                <li><a href="#">Boilers</a></li>
+                <li><a href="#">Heat Pumps</a></li>
+                <li><a href="#">Green Heating Solutions</a></li>
+                <li><a href="#">Air Filters</a></li>
               </ul>
             </div>
 
-            <div class="service-column airconditioning">
+            <div className="service-column airconditioning">
               <p className="service-column-name">Air Conditioning</p>
               <ul>
-                <li>
-                  <a href="#">Air Conditioning Units</a>
-                </li>
-                <li>
-                  <a href="#">Repair and Replacement</a>
-                </li>
-                <li>
-                  <a href="#">Ductless Mini Splits</a>
-                </li>
-                <li>
-                  <a href="#">Heat Pumps</a>
-                </li>
+                <li><a href="#">Air Conditioning Units</a></li>
+                <li><a href="#">Repair and Replacement</a></li>
+                <li><a href="#">Ductless Mini Splits</a></li>
+                <li><a href="#">Heat Pumps</a></li>
               </ul>
             </div>
 
-            <div class="service-column with-border">
+            <div className="service-column with-border">
               <div className="little-border">
                 <ul>
-                  <li>
-                    <a href="#">Promotions</a>
-                  </li>
-                  <li>
-                    <a href="#">Commercial Service</a>
-                  </li>
-                  <li>
-                    <a href="#">Rebate Information</a>
-                  </li>
-                  <li>
-                    <a href="#">Careers</a>
-                  </li>
-                  <li>
-                    <a href="#">Payments</a>
-                  </li>
+                  <li><a href="#">Promotions</a></li>
+                  <li><a href="#">Commercial Service</a></li>
+                  <li><a href="#">Rebate Information</a></li>
+                  <li><a href="#">Careers</a></li>
+                  <li><a href="#">Payments</a></li>
                 </ul>
               </div>
             </div>
@@ -150,21 +106,23 @@ export function Footer({ switchFormModal, currentPhone }) {
 
           <div className="contact-section">
             <div className="contact-box1">
-              <div class="contact-info">
+              <div className="contact-info">
                 <p>Okanagan Service</p>
-                <div class="phone">{currentPhone}</div>
-                <div class="email">customerservice@milani.ca</div>
+                <div className="phone">{currentPhone}</div>
+                <div className="email">customerservice@milani.ca</div>
               </div>
               <figure className="bbb-figure">
                 <img src={bbb} alt="bbb" />
               </figure>
             </div>
+
             <div className="badges2">
-              <div class="tsbc-info">
+              <div className="tsbc-info">
                 <img src={tuerca} alt="tuerca" />
                 <span>TSBC Licence: LEL0209964 / LGA0001985</span>
               </div>
             </div>
+
             <div className="canadian-business">
               <figure>
                 <img
@@ -177,7 +135,7 @@ export function Footer({ switchFormModal, currentPhone }) {
             </div>
           </div>
 
-          <div class="footer-bottom">
+          <div className="footer-bottom">
             <p>
               © 2008 - 2025 Milani Plumbing, Heating & Air Conditioning. All
               rights reserved. View our <span>Privacy</span> &{" "}

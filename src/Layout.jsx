@@ -179,7 +179,14 @@ export function Layout() {
   useWpAssets();
   useWpGlobalAssets();
 
-  // asigna a currentLocation la ciudad selecionada que estará almacenada en el localStorage y por defecto es kelowna
+  // =========================================================
+  // 🟢 NUEVO: FLAG PARA CONTROLAR CUÁNDO EL LAYOUT ESTÁ LISTO
+  // =========================================================
+  const [layoutReady, setLayoutReady] = useState(false);
+
+  // ---------------------------------------------------------
+  // Estados existentes (NO TOCAR)
+  // ---------------------------------------------------------
   const [currentLocation, setCurrentLocation] = useState(
     localStorage.getItem("currentLocation") || "kelowna"
   );
@@ -190,86 +197,79 @@ export function Layout() {
 
   const [currentRegion, setCurrentRegion] = useState(
     localStorage.getItem("currentRegion") || ""
-  )
-
+  );
 
   const navigate = useNavigate();
   const locationRouter = useLocation();
 
-  // AGREGANDO IP LOCATION Y USEEFFECT
+  // ---------------------------------------------------------
+  // IP LOCATION (NO TOCAR)
+  // ---------------------------------------------------------
   const { location, loadingLocation } = useIPLocation();
 
   useEffect(() => {
-    // Si ya existe ciudad guardada, no tocar nada
     if (localStorage.getItem("currentLocation")) return;
-
-    // Esperamos a que termine la llamada a la API
     if (loadingLocation) return;
 
-    // verificar si esta ciudad se encuentra en la "base de datos", si esta mostramos si no, mostramos kelowna
-    if(isCityInList(location.ciudad)) {
-      console.log('SE HA ENCONTRADO .. la ciudad')
-        setCurrentLocation(location.ciudad);
-        localStorage.setItem("currentLocation", location.ciudad);
+    if (isCityInList(location.ciudad)) {
+      setCurrentLocation(location.ciudad);
+      localStorage.setItem("currentLocation", location.ciudad);
 
-        const phone = getPhone(location.ciudad);
-        setCurrentPhone(phone);
-        localStorage.setItem("currentPhone", phone);
+      const phone = getPhone(location.ciudad);
+      setCurrentPhone(phone);
+      localStorage.setItem("currentPhone", phone);
 
-        const region = getRegionByCity(location.ciudad);
-        setCurrentRegion(region);
-        localStorage.setItem("currentRegion", region);
-    }
-    else {
-       console.log('NO SE HA ENCONTRADO .. la ciudad')
-        setCurrentLocation("kelowna");
-        localStorage.setItem("currentLocation", "kelowna");
-        setCurrentPhone("250.900.900");
-        localStorage.setItem("currentPhone", "250.900.900");
-        // setCurrentRegion("Okanagan");
-        // localStorage.setItem("currentRegion", "Okanagan");
+      const region = getRegionByCity(location.ciudad);
+      setCurrentRegion(region);
+      localStorage.setItem("currentRegion", region);
+    } else {
+      setCurrentLocation("kelowna");
+      localStorage.setItem("currentLocation", "kelowna");
 
-        setCurrentRegion(null);
-        localStorage.removeItem("currentRegion");
+      setCurrentPhone("250.900.900");
+      localStorage.setItem("currentPhone", "250.900.900");
+
+      setCurrentRegion(null);
+      localStorage.removeItem("currentRegion");
     }
   }, [loadingLocation, location]);
 
+  // ---------------------------------------------------------
+  // Redirección por región (NO TOCAR)
+  // ---------------------------------------------------------
+  useEffect(() => {
+    if (!currentRegion) return;
 
+    if (locationRouter.state?.skipRegionRedirect) return;
 
-useEffect(() => {
-  if (!currentRegion) return;
-    // 🚫 Si el usuario vino explícitamente al home (logo)
-  if (locationRouter.state?.skipRegionRedirect) {
-    return;
-  }
+    const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
+    const pathname = locationRouter.pathname;
 
+    if (
+      pathname === `/${regionSlug}` ||
+      pathname.startsWith(`/${regionSlug}/`)
+    ) {
+      return;
+    }
 
-  const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, '');
+    if (pathname === "/") {
+      navigate(`/${regionSlug}`, { replace: true });
+    }
+  }, [currentRegion, locationRouter.pathname, locationRouter.state, navigate]);
 
-  // pathname actual
-  const pathname = locationRouter.pathname;
+  // =========================================================
+  // 🟢 NUEVO: MARCAR LAYOUT COMO LISTO CUANDO LA RUTA FINAL YA EXISTE
+  // =========================================================
+  useEffect(() => {
+    setLayoutReady(true);
+  }, [locationRouter.pathname]);
 
-  // si ya estamos en /alberta, /okanagan, etc → NO hacer nada
-  if (pathname === `/${regionSlug}` || pathname.startsWith(`/${regionSlug}/`)) {
-    return;
-  }
-
-  // SOLO si estamos en la raíz "/"
-  if (pathname === "/") {
-    navigate(`/${regionSlug}`, { replace: true });
-  }
-}, [currentRegion, locationRouter.pathname, locationRouter.state ,navigate]);
-
-
-
+  // ---------------------------------------------------------
+  // Queries existentes (NO TOCAR)
+  // ---------------------------------------------------------
   const { data, loading } = useQuery(GET_HEADER, {
     fetchPolicy: "cache-first",
   });
-
-  // Precarga del Home (una sola vez)
-  // const { data: homeData } = useQuery(GET_HOME, {
-  //   fetchPolicy: "cache-first",
-  // })
 
   const { data: homeData } = useQuery(GET_HOME, {
     variables: { currentLocation },
@@ -277,11 +277,9 @@ useEffect(() => {
   });
 
   const [showFormModal, setShowFormModal] = useState(false);
-  const switchFormModal = () => {
-    setShowFormModal(!showFormModal);
-  };
+  const switchFormModal = () => setShowFormModal(!showFormModal);
 
-  if (loading || !data) return null; //evita mostrar el body sin Header
+  if (loading || !data) return null;
 
   return (
     <>
@@ -305,8 +303,14 @@ useEffect(() => {
             <div className="container-wrap">
               <div className="container main-content" role="main">
                 <div className="row">
-                  <Outlet context={{ homeData, currentLocation, currentRegion }} />{" "}
-                  {/* aquí entra <WpPage /> */}
+                  <Outlet
+                    context={{
+                      homeData,
+                      currentLocation,
+                      currentRegion,
+                      layoutReady, // 🟢 PASAMOS EL FLAG
+                    }}
+                  />
                 </div>
               </div>
             </div>
