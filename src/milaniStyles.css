@@ -493,8 +493,7 @@
 
 .locations-grid {
   display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(2, auto);
+  grid-template-columns: repeat(3, 1fr);
   column-gap: 40px;
   row-gap: 8px;
 }
@@ -1840,3 +1839,17 @@
         .submit-btn:active {
             transform: scale(0.98);
         }
+
+
+#footer-location{
+  padding-top: 20px;
+    padding-bottom: 360px;
+    background-position: left top; 
+    background-repeat: no-repeat;
+}
+#footer-location h3{
+   color: #000;
+   font-family: Archivo SemiCondensed Medium;
+   font-weight: 500;
+   font-size: 31px;
+}

@@ -34,7 +34,7 @@ export function ZipModal({
 
     // quitar región previa si ya existe
   const cleanPath = currentPath.replace(
-    /^\/(okanagan|alberta|lowermainland)/,
+    /^\/(okanagan|alberta|lowermainland|edmonton|vancouverisland)/,
     ""
   );
 

@@ -315,9 +315,20 @@ export function Layout() {
               </div>
             </div>
           </div>
+          
         </div>
       </div>
-
+      <div id="footer-location" className="full-width-section"
+      style={{
+        backgroundImage: "url(https://milani.xpress.ws/wp-content/uploads/2025/12/MILANI_lowermainland2.webp)",
+      }}
+      >
+        <div className="container">
+          <div class="nectar-responsive-text font_size_desktop_31px nectar-link-underline-effect">
+            <h3>Greater Vancouver, BC</h3>
+          </div>
+        </div>
+      </div>  
       <Footer switchFormModal={switchFormModal} currentPhone={currentPhone} />
     </>
   );
