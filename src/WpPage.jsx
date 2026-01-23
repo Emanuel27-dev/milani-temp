@@ -139,13 +139,41 @@ export function WpPage({ fixedUri, fixedSlug }) {
     return "/" + parts.join("/") + "/";
   }, [pathname]);
 
-  const uri =
-    fixedUri ??
-    (fixedSlug
-      ? `/${fixedSlug}/`
-      : wasService
-      ? `/service${cleanPathname}`
-      : cleanPathname);
+  const uri = useMemo(() => {
+  if (fixedUri) return fixedUri;
+
+  if (fixedSlug) {
+    return `/${fixedSlug}/`;
+  }
+
+  // HOME
+  if (cleanPathname === "/home/") {
+    return "/home/";
+  }
+
+  /**
+   * 🔹 SERVICE
+   * Si el path corresponde a un service (plumbing, heating, etc)
+   * WPGraphQL necesita /service/*
+   */
+  const SERVICE_ROOTS = ["plumbing", "heating", "air-conditioning"]; // ajusta si quieres
+
+  const firstSegment = cleanPathname.split("/").filter(Boolean)[0];
+
+  if (SERVICE_ROOTS.includes(firstSegment)) {
+    return `/service${cleanPathname}`;
+  }
+
+  /**
+   * 🔹 PAGE o POST
+   * Blog (/blog)
+   * Post (/how-to-add-...)
+   * Cualquier página normal
+   */
+  return cleanPathname;
+}, [fixedUri, fixedSlug, cleanPathname]);
+
+
 
   const isHome =
     pathname === "/okanagan" ||

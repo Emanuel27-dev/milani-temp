@@ -271,6 +271,37 @@ export function Layout() {
     setLayoutReady(true);
   }, [locationRouter.pathname]);
 
+
+useEffect(() => {
+  if (!currentRegion) return;
+
+  const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
+  let pathname = locationRouter.pathname;
+
+  // 1️⃣ Normalizar (quitar slash final)
+  pathname = pathname.replace(/\/+$/, "");
+
+  // 2️⃣ Si viene como /service/*
+  if (pathname.startsWith("/service/")) {
+    const cleanPath = pathname.replace("/service", "");
+    navigate(`/${regionSlug}${cleanPath}`, {
+      replace: true,
+      state: { fromServiceRedirect: true },
+    });
+    return;
+  }
+
+  // 3️⃣ Si viene como /{region}/service/*
+  if (pathname.startsWith(`/${regionSlug}/service/`)) {
+    const cleanPath = pathname.replace(`/${regionSlug}/service`, `/${regionSlug}`);
+    navigate(cleanPath, {
+      replace: true,
+      state: { fromServiceRedirect: true },
+    });
+  }
+}, [currentRegion, locationRouter.pathname, navigate]);
+
+
   // ---------------------------------------------------------
   // Queries existentes (NO TOCAR)
   // ---------------------------------------------------------
