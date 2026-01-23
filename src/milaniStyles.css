@@ -44,7 +44,7 @@
 .top-menu {
   display: flex;
   gap: 15px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .top-menu a {
@@ -53,10 +53,12 @@
   font-size: 17px;
 
 }
-
-.top-menu a:hover {
-  /* text-decoration: underline; */
+.top-menu .search-btn{
+  padding-top: 2px;
 }
+/* .top-menu a:hover {
+  text-decoration: underline; 
+}*/
 
 .link {
   color: var(--color-white);
