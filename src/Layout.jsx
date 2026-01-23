@@ -1,4 +1,4 @@
-// Layout.jsx
+// src/Layout.jsx
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -301,6 +301,41 @@ useEffect(() => {
   }
 }, [currentRegion, locationRouter.pathname, navigate]);
 
+useEffect(() => {
+  if (!currentRegion) return;
+
+  const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
+  let pathname = locationRouter.pathname.replace(/\/+$/, "");
+
+  // ignorar home
+  if (pathname === "" || pathname === "/") return;
+
+  // si ya tiene región → no tocar
+  if (
+    pathname === `/${regionSlug}` ||
+    pathname.startsWith(`/${regionSlug}/`)
+  ) {
+    return;
+  }
+
+  // ignorar rutas internas técnicas
+  if (
+    pathname.startsWith("/wp-") ||
+    pathname.startsWith("/graphql")
+  ) {
+    return;
+  }
+
+  // 🎯 caso: /blog, /contact, /about, /post-slug
+  const parts = pathname.split("/").filter(Boolean);
+
+  if (parts.length === 1) {
+    navigate(`/${regionSlug}/${parts[0]}`, {
+      replace: true,
+      state: { autoRegionRedirect: true },
+    });
+  }
+}, [currentRegion, locationRouter.pathname, navigate]);
 
   // ---------------------------------------------------------
   // Queries existentes (NO TOCAR)

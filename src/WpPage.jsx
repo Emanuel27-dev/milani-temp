@@ -1,4 +1,4 @@
-// src/pages/WpPage.jsx
+// src/WpPage.jsx
 import { Helmet } from "react-helmet-async";
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
@@ -13,9 +13,9 @@ import { usePageCss } from "./hooks/usePageCss";
 import { useWpReflow } from "./hooks/useWpReflow";
 import useIframeReflow from "./hooks/useIframeReflow";
 
-// =========================================================
-// 🔹 QUERY PRINCIPAL
-// =========================================================
+/* =========================================================
+ * GRAPHQL
+ * ========================================================= */
 const NODE_BY_PATH = gql`
   query NodeByPath($uri: ID!) {
     contentNode(id: $uri, idType: URI) {
@@ -36,17 +36,11 @@ const NODE_BY_PATH = gql`
           canonical
           opengraphTitle
           opengraphDescription
-          opengraphImage {
-            sourceUrl
-          }
+          opengraphImage { sourceUrl }
           twitterTitle
           twitterDescription
-          twitterImage {
-            sourceUrl
-          }
-          schema {
-            raw
-          }
+          twitterImage { sourceUrl }
+          schema { raw }
         }
         inlineDynamicCssGrouped {
           emoji
@@ -67,17 +61,11 @@ const NODE_BY_PATH = gql`
           canonical
           opengraphTitle
           opengraphDescription
-          opengraphImage {
-            sourceUrl
-          }
+          opengraphImage { sourceUrl }
           twitterTitle
           twitterDescription
-          twitterImage {
-            sourceUrl
-          }
-          schema {
-            raw
-          }
+          twitterImage { sourceUrl }
+          schema { raw }
         }
         inlineDynamicCssGrouped {
           emoji
@@ -98,17 +86,11 @@ const NODE_BY_PATH = gql`
           canonical
           opengraphTitle
           opengraphDescription
-          opengraphImage {
-            sourceUrl
-          }
+          opengraphImage { sourceUrl }
           twitterTitle
           twitterDescription
-          twitterImage {
-            sourceUrl
-          }
-          schema {
-            raw
-          }
+          twitterImage { sourceUrl }
+          schema { raw }
         }
         inlineDynamicCssGrouped {
           emoji
@@ -123,78 +105,138 @@ const NODE_BY_PATH = gql`
   }
 `;
 
+/* 🔹 BLOG (Posts Page) */
+const GET_POSTS_PAGE = gql`
+  query GetPostsPage {
+    pageForPosts {
+      id
+      databaseId
+      uri
+      title
+      contentRendered
+      wpbCss
+      vcCustomCss
+      seo {
+        title
+        metaDesc
+        canonical
+        opengraphTitle
+        opengraphDescription
+        opengraphImage { sourceUrl }
+        twitterTitle
+        twitterDescription
+        twitterImage { sourceUrl }
+        schema { raw }
+      }
+      inlineDynamicCssGrouped {
+        emoji
+        global
+        main
+        dynamic
+      }
+    }
+  }
+`;
+
 export function WpPage({ fixedUri, fixedSlug }) {
   const location = useLocation();
   const { pathname } = location;
-  const wasService = location.state?.wasService === true;
 
   const { homeData } = useOutletContext() || {};
-  const REGIONS = ["okanagan", "calgary", "lowermainland","edmonton","vancouverisland"];
+  const REGIONS = ["okanagan", "calgary", "lowermainland", "edmonton", "vancouverisland"];
 
+  /* =========================================================
+   * CLEAN PATH
+   * ========================================================= */
   const cleanPathname = useMemo(() => {
     const parts = pathname.split("/").filter(Boolean);
+
     if (REGIONS.includes(parts[0])) parts.shift();
     if (parts[0] === "service") parts.shift();
+
     if (parts.length === 0) return "/home/";
     return "/" + parts.join("/") + "/";
   }, [pathname]);
 
-  const uri = useMemo(() => {
-  if (fixedUri) return fixedUri;
+  /* =========================================================
+   * BLOG DETECTION
+   * ========================================================= */
+  const isBlogIndex = cleanPathname === "/blog/";
 
-  if (fixedSlug) {
-    return `/${fixedSlug}/`;
-  }
+  /* =========================================================
+   * URI CANDIDATES
+   * ========================================================= */
+  const uriCandidates = useMemo(() => {
+    if (fixedUri) return [fixedUri];
+    if (fixedSlug) return [`/${fixedSlug}/`];
 
-  // HOME
-  if (cleanPathname === "/home/") {
-    return "/home/";
-  }
+    if (cleanPathname === "/home/") return ["/home/"];
 
-  /**
-   * 🔹 SERVICE
-   * Si el path corresponde a un service (plumbing, heating, etc)
-   * WPGraphQL necesita /service/*
-   */
-  const SERVICE_ROOTS = ["plumbing", "heating", "air-conditioning"]; // ajusta si quieres
+    return [
+      cleanPathname,              // Page / Post
+      `/service${cleanPathname}`, // Service fallback
+    ];
+  }, [fixedUri, fixedSlug, cleanPathname]);
 
-  const firstSegment = cleanPathname.split("/").filter(Boolean)[0];
-
-  if (SERVICE_ROOTS.includes(firstSegment)) {
-    return `/service${cleanPathname}`;
-  }
-
-  /**
-   * 🔹 PAGE o POST
-   * Blog (/blog)
-   * Post (/how-to-add-...)
-   * Cualquier página normal
-   */
-  return cleanPathname;
-}, [fixedUri, fixedSlug, cleanPathname]);
-
-
-
-  const isHome =
-    pathname === "/okanagan" ||
-    pathname === "/home" ||
-    pathname === "/home/" ||
-    pathname === "/calgary" ||
-    pathname === "/edmonton" ||
-    pathname === "/lowermainland" ||
-    pathname === "/vancouverisland";
-
-  const { data, loading, error } = useQuery(NODE_BY_PATH, {
-    variables: { uri },
-    fetchPolicy: isHome ? "cache-first" : "cache-and-network",
-    nextFetchPolicy: "cache-first",
-    skip: isHome && homeData,
+  /* =========================================================
+   * QUERY: PAGE / POST
+   * ========================================================= */
+  const {
+    data: primaryData,
+    loading: loadingPrimary,
+  } = useQuery(NODE_BY_PATH, {
+    variables: { uri: uriCandidates[0] },
+    skip: isBlogIndex,
+    fetchPolicy: "cache-and-network",
   });
 
-  const node = isHome
-    ? homeData?.contentNode || data?.contentNode
-    : data?.contentNode;
+  const primaryNode = primaryData?.contentNode;
 
+  /* =========================================================
+   * QUERY: SERVICE
+   * ========================================================= */
+  const shouldTryService =
+    !isBlogIndex &&
+    !loadingPrimary &&
+    !primaryNode &&
+    uriCandidates.length > 1;
+
+  const {
+    data: serviceData,
+    loading: loadingService,
+  } = useQuery(NODE_BY_PATH, {
+    variables: { uri: uriCandidates[1] },
+    skip: !shouldTryService,
+    fetchPolicy: "cache-and-network",
+  });
+
+  /* =========================================================
+   * QUERY: BLOG PAGE
+   * ========================================================= */
+  const { data: blogData } = useQuery(GET_POSTS_PAGE, {
+    skip: !isBlogIndex,
+  });
+
+  /* =========================================================
+   * FINAL NODE RESOLUTION
+   * ========================================================= */
+  const node =
+    blogData?.pageForPosts ||
+    primaryNode ||
+    serviceData?.contentNode;
+
+  const loading = loadingPrimary || loadingService;
+
+  /* =========================================================
+   * HOME DETECTION
+   * ========================================================= */
+  const isHome =
+    ["/okanagan", "/calgary", "/edmonton", "/lowermainland", "/vancouverisland", "/home", "/home/"]
+      .includes(pathname);
+
+  /* =========================================================
+   * SIDE EFFECTS
+   * ========================================================= */
   useEffect(() => {
     if (isHome) {
       document.title = "Milani Plumbing Heating & Air Conditioning";
@@ -204,17 +246,16 @@ export function WpPage({ fixedUri, fixedSlug }) {
   }, [node?.title, isHome]);
 
   useWpGlobalAssets();
-  useWpBodyAttributesFromWp({ data });
+  useWpBodyAttributesFromWp({ data: primaryData || serviceData || blogData });
   usePageCss(node);
   useWpReflow([node?.id || null]);
   useIframeReflow(node?.contentRendered);
 
-  if (error) {
-    console.warn("GraphQL error (no bloqueante):", error);
-  }
-
   if (!node && !loading) return null;
 
+  /* =========================================================
+   * SANITIZE HTML
+   * ========================================================= */
   const safeHtml = DOMPurify.sanitize(node?.contentRendered || "", {
     ADD_TAGS: ["iframe"],
     ADD_ATTR: [
@@ -229,37 +270,26 @@ export function WpPage({ fixedUri, fixedSlug }) {
     ],
   });
 
+  /* =========================================================
+   * RENDER
+   * ========================================================= */
   return (
     <>
       {!loading && node?.seo && (
         <Helmet key={`${node?.id}-${node?.uri}`}>
-          {node.seo.metaDesc && (
-            <meta name="description" content={node.seo.metaDesc} />
-          )}
-          {node.seo.canonical && (
-            <link rel="canonical" href={node.seo.canonical} />
-          )}
-          {node.seo.opengraphTitle && (
-            <meta property="og:title" content={node.seo.opengraphTitle} />
-          )}
+          {node.seo.metaDesc && <meta name="description" content={node.seo.metaDesc} />}
+          {node.seo.canonical && <link rel="canonical" href={node.seo.canonical} />}
+          {node.seo.opengraphTitle && <meta property="og:title" content={node.seo.opengraphTitle} />}
           {node.seo.opengraphDescription && (
-            <meta
-              property="og:description"
-              content={node.seo.opengraphDescription}
-            />
+            <meta property="og:description" content={node.seo.opengraphDescription} />
           )}
           {node.seo.opengraphImage?.sourceUrl && (
-            <meta
-              property="og:image"
-              content={node.seo.opengraphImage.sourceUrl}
-            />
+            <meta property="og:image" content={node.seo.opengraphImage.sourceUrl} />
           )}
           <meta property="og:type" content="website" />
           <meta name="twitter:card" content="summary_large_image" />
           {node.seo.schema?.raw && (
-            <script type="application/ld+json">
-              {node.seo.schema.raw}
-            </script>
+            <script type="application/ld+json">{node.seo.schema.raw}</script>
           )}
         </Helmet>
       )}
