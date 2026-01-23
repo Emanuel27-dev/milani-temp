@@ -1,6 +1,12 @@
 export const locations = [
   {
     region: "Okanagan",
+    slug: "okanagan",
+    footer: {
+      background:
+        "https://milani.xpress.ws/wp-content/uploads/2026/01/MILANI_okanagan.webp",
+      label: "Okanagan, BC",
+    },
     cities: [
       { name: "Coldstream",       phone: "250.800.0000" },
       { name: "Garnet Valley",  phone: "250.800.0000" },
@@ -20,6 +26,12 @@ export const locations = [
   },
   {
     region: "Alberta",
+    slug: "alberta",
+    footer: {
+      background:
+        "https://milani.xpress.ws/wp-content/uploads/2026/01/MILANI_calgary.webp",
+      label: "Alberta",
+    },
     cities: [
       { name: "Airdrie",       phone: "403.399.9999" },
       { name: "Bearspaw",       phone: "403.399.9999" },
@@ -39,6 +51,12 @@ export const locations = [
   },
   {
     region: "Lower Mainland",
+    slug: "lowermainland",
+    footer: {
+      background:
+        "https://milani.xpress.ws/wp-content/uploads/2025/12/MILANI_lowermainland2.webp",
+      label: "Greater Vancouver, BC",
+    },
     cities: [
       { name: "Abbotsford ",  phone: "604.888.8888" },
       { name: "Aldergrove ",    phone: "604.888.8888" },
@@ -72,6 +90,12 @@ export const locations = [
   },
   {
     region: "Vancouver Island",
+    slug: "vancouverisland",
+    footer: {
+      background:
+        "https://milani.xpress.ws/wp-content/uploads/2026/01/MILANI_vancouver_island.webp",
+      label: "Vancouver Island, BC",
+    },
     cities: [
       { name: "Brentwood Bay ",  phone: "250.900.0000" },
       { name: "Central Saanich ",  phone: "250.900.0000" },
@@ -104,6 +128,12 @@ export const locations = [
   },
   {
     region: "Edmonton",
+    slug: "edmonton",
+    footer: {
+      background:
+        "https://milani.xpress.ws/wp-content/uploads/2026/01/MILANI_edmonton.webp",
+      label: "Edmonton, AB",
+    },
     cities: [
       { name: "Beaumont ",  phone: "780.999.3333" },
       { name: "Devon ",  phone: "780.999.3333" },

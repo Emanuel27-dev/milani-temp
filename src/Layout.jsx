@@ -11,6 +11,8 @@ import { useIPLocation } from "./hooks/useIPLocation";
 import { isCityInList } from "./helpers/isCityInList";
 import { getPhone } from "./helpers/getPhone";
 import { getRegionByCity } from "./helpers/getRegionByCity";
+import { getRegionConfig } from "./helpers/getRegionConfig";
+
 
 // =========================================================
 // 🔹 Query del Header (logo + menús)
@@ -202,6 +204,9 @@ export function Layout() {
   const navigate = useNavigate();
   const locationRouter = useLocation();
 
+  const regionConfig = getRegionConfig(currentRegion);
+
+
   // ---------------------------------------------------------
   // IP LOCATION (NO TOCAR)
   // ---------------------------------------------------------
@@ -318,17 +323,24 @@ export function Layout() {
           
         </div>
       </div>
-      <div id="footer-location" className="full-width-section"
-      style={{
-        backgroundImage: "url(https://milani.xpress.ws/wp-content/uploads/2025/12/MILANI_lowermainland2.webp)",
-      }}
-      >
-        <div className="container">
-          <div class="nectar-responsive-text font_size_desktop_31px nectar-link-underline-effect">
-            <h3>Greater Vancouver, BC</h3>
+      {regionConfig?.footer && (
+        <div
+          id="footer-location"
+          className="full-width-section"
+          style={{
+            backgroundImage: `url(${regionConfig.footer.background})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="container">
+            <div className="nectar-responsive-text font_size_desktop_31px nectar-link-underline-effect">
+              <h3>{regionConfig.footer.label}</h3>
+            </div>
           </div>
         </div>
-      </div>  
+      )}
+
       <Footer switchFormModal={switchFormModal} currentPhone={currentPhone} />
     </>
   );
