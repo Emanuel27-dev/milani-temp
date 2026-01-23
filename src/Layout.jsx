@@ -197,9 +197,11 @@ export function Layout() {
     localStorage.getItem("currentPhone") || "250.900.900"
   );
 
-  const [currentRegion, setCurrentRegion] = useState(
-    localStorage.getItem("currentRegion") || ""
-  );
+  const [currentRegion, setCurrentRegion] = useState(() => {
+  const saved = localStorage.getItem("currentRegion");
+  return saved && saved.length ? saved : "";
+});
+
 
   const navigate = useNavigate();
   const locationRouter = useLocation();

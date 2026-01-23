@@ -20,29 +20,31 @@ export function ZipModal({
   region.toLowerCase().replace(/\s+/g, "");
 
 
- const handleItem = (city, phone, region) => {
-
+const handleItem = (city, phone, region) => {
   const regionSlug = regionToSlug(region);
+
   setCurrentLocation(city);
   setCurrentPhone(phone);
   setCurrentRegion(region);
-  localStorage.setItem("currentPhone", phone);
-  localStorage.setItem("currentRegion", regionSlug);
 
-  // path actual (ej: /service/plumbing/installations)
+  localStorage.setItem("currentLocation", city);
+  localStorage.setItem("currentPhone", phone);
+  localStorage.setItem("currentRegion", region); // 👈 FIX
+
   const currentPath = location.pathname;
 
-    // quitar región previa si ya existe
   const cleanPath = currentPath.replace(
     /^\/(okanagan|alberta|lowermainland|edmonton|vancouverisland)/,
     ""
   );
 
-  navigate(`/${regionSlug}${cleanPath}`,{
+  navigate(`/${regionSlug}${cleanPath}`, {
     state: location.state,
   });
+
   onClose();
- }
+};
+
 
   return (
     <div className="modal-overlay" onClick={onClose}>
