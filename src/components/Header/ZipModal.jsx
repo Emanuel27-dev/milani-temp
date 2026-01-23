@@ -34,7 +34,7 @@ const handleItem = (city, phone, region) => {
   const currentPath = location.pathname;
 
   const cleanPath = currentPath.replace(
-    /^\/(okanagan|alberta|lowermainland|edmonton|vancouverisland)/,
+    /^\/(okanagan|calgary|lowermainland|edmonton|vancouverisland)/,
     ""
   );
 

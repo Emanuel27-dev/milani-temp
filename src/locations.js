@@ -1,55 +1,5 @@
 export const locations = [
   {
-    region: "Okanagan",
-    slug: "okanagan",
-    footer: {
-      background:
-        "https://milani.xpress.ws/wp-content/uploads/2026/01/MILANI_okanagan.webp",
-      label: "Okanagan, BC",
-    },
-    cities: [
-      { name: "Coldstream",       phone: "250.800.0000" },
-      { name: "Garnet Valley",  phone: "250.800.0000" },
-      { name: "Kelowna",  phone: "250.800.0000" },
-      { name: "Kelowna",       phone: "250.800.0000" },
-      { name: "Lake Country",  phone: "250.800.0000" },
-      { name: "Naramata",  phone: "250.800.0000" },
-      { name: "Okanagan Falls",       phone: "250.800.0000" },
-      { name: "Oliver",  phone: "250.800.0000" },
-      { name: "Peachland",  phone: "250.800.0000" },
-      { name: "Penticton",       phone: "250.800.0000" },
-      { name: "Summerland",  phone: "250.800.0000" },
-      { name: "Vernon",  phone: "250.800.0000" },
-      { name: "West Kelowna",  phone: "250.800.0000" },
-      { name: "Westbank",  phone: "250.800.0000" },
-    ],
-  },
-  {
-    region: "Alberta",
-    slug: "alberta",
-    footer: {
-      background:
-        "https://milani.xpress.ws/wp-content/uploads/2026/01/MILANI_calgary.webp",
-      label: "Alberta",
-    },
-    cities: [
-      { name: "Airdrie",       phone: "403.399.9999" },
-      { name: "Bearspaw",       phone: "403.399.9999" },
-      { name: "Bragg Creek",       phone: "403.399.9999" },
-      { name: "Calgary",       phone: "403.399.9999" },
-      { name: "Chestermere",       phone: "403.399.9999" },
-      { name: "Cochrane",       phone: "403.399.9999" },
-      { name: "Elbow Valley",       phone: "403.399.9999" },
-      { name: "Heritage Point",       phone: "403.399.9999" },
-      { name: "Langdon",       phone: "403.399.9999" },
-      { name: "Okotoks",       phone: "403.399.9999" },
-      { name: "Priddis",       phone: "403.399.9999" },
-      { name: "Redwood Meadows",       phone: "403.399.9999" },
-      { name: "Springbank",       phone: "403.399.9999" },
-      { name: "White Elk",       phone: "403.399.9999" },
-    ],
-  },
-  {
     region: "Lower Mainland",
     slug: "lowermainland",
     footer: {
@@ -124,6 +74,56 @@ export const locations = [
       { name: "Victoria Island ",  phone: "250.900.0000" },
       { name: "Victoria Royal ",  phone: "250.900.0000" },
       { name: "Shirley ",  phone: "250.900.0000" },
+    ],
+  },
+  {
+    region: "Okanagan",
+    slug: "okanagan",
+    footer: {
+      background:
+        "https://milani.xpress.ws/wp-content/uploads/2026/01/MILANI_okanagan.webp",
+      label: "Okanagan, BC",
+    },
+    cities: [
+      { name: "Coldstream",       phone: "250.800.0000" },
+      { name: "Garnet Valley",  phone: "250.800.0000" },
+      { name: "Kelowna",  phone: "250.800.0000" },
+      { name: "Kelowna",       phone: "250.800.0000" },
+      { name: "Lake Country",  phone: "250.800.0000" },
+      { name: "Naramata",  phone: "250.800.0000" },
+      { name: "Okanagan Falls",       phone: "250.800.0000" },
+      { name: "Oliver",  phone: "250.800.0000" },
+      { name: "Peachland",  phone: "250.800.0000" },
+      { name: "Penticton",       phone: "250.800.0000" },
+      { name: "Summerland",  phone: "250.800.0000" },
+      { name: "Vernon",  phone: "250.800.0000" },
+      { name: "West Kelowna",  phone: "250.800.0000" },
+      { name: "Westbank",  phone: "250.800.0000" },
+    ],
+  },
+  {
+    region: "Calgary",
+    slug: "calgary",
+    footer: {
+      background:
+        "https://milani.xpress.ws/wp-content/uploads/2026/01/MILANI_calgary.webp",
+      label: "Calgary - Alberta",
+    },
+    cities: [
+      { name: "Airdrie",       phone: "403.399.9999" },
+      { name: "Bearspaw",       phone: "403.399.9999" },
+      { name: "Bragg Creek",       phone: "403.399.9999" },
+      { name: "Calgary",       phone: "403.399.9999" },
+      { name: "Chestermere",       phone: "403.399.9999" },
+      { name: "Cochrane",       phone: "403.399.9999" },
+      { name: "Elbow Valley",       phone: "403.399.9999" },
+      { name: "Heritage Point",       phone: "403.399.9999" },
+      { name: "Langdon",       phone: "403.399.9999" },
+      { name: "Okotoks",       phone: "403.399.9999" },
+      { name: "Priddis",       phone: "403.399.9999" },
+      { name: "Redwood Meadows",       phone: "403.399.9999" },
+      { name: "Springbank",       phone: "403.399.9999" },
+      { name: "White Elk",       phone: "403.399.9999" },
     ],
   },
   {

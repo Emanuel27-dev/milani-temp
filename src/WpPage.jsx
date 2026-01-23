@@ -129,7 +129,7 @@ export function WpPage({ fixedUri, fixedSlug }) {
   const wasService = location.state?.wasService === true;
 
   const { homeData } = useOutletContext() || {};
-  const REGIONS = ["okanagan", "alberta", "lowermainland","edmonton","vancouverisland"];
+  const REGIONS = ["okanagan", "calgary", "lowermainland","edmonton","vancouverisland"];
 
   const cleanPathname = useMemo(() => {
     const parts = pathname.split("/").filter(Boolean);
@@ -151,7 +151,7 @@ export function WpPage({ fixedUri, fixedSlug }) {
     pathname === "/okanagan" ||
     pathname === "/home" ||
     pathname === "/home/" ||
-    pathname === "/alberta" ||
+    pathname === "/calgary" ||
     pathname === "/edmonton" ||
     pathname === "/lowermainland" ||
     pathname === "/vancouverisland";
