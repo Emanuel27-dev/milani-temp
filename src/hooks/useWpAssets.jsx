@@ -3,8 +3,8 @@ import { useEffect } from "react";
 
 export function useWpAssets() {
   useEffect(() => {
-    //const base = "https://milani.xpress.ws";
-    const base = "https://nmilani.local";
+    const base = "https://milani.xpress.ws";
+    //const base = "https://nmilani.local";
 
     const inject = (el) => {
       document.head.appendChild(el);
