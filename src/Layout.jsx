@@ -190,24 +190,22 @@ export function Layout() {
   // Estados existentes (NO TOCAR)
   // ---------------------------------------------------------
   const [currentLocation, setCurrentLocation] = useState(
-    localStorage.getItem("currentLocation") || "kelowna"
+    localStorage.getItem("currentLocation") || "Vancouver"
   );
 
   const [currentPhone, setCurrentPhone] = useState(
-    localStorage.getItem("currentPhone") || "250.900.900"
+    localStorage.getItem("currentPhone") || "604.888.8888"
   );
 
   const [currentRegion, setCurrentRegion] = useState(() => {
-  const saved = localStorage.getItem("currentRegion");
-  return saved && saved.length ? saved : "";
-});
-
+    const saved = localStorage.getItem("currentRegion");
+    return saved && saved.length ? saved : "lowermainland";
+  });
 
   const navigate = useNavigate();
   const locationRouter = useLocation();
 
   const regionConfig = getRegionConfig(currentRegion);
-
 
   // ---------------------------------------------------------
   // IP LOCATION (NO TOCAR)
@@ -217,27 +215,30 @@ export function Layout() {
   useEffect(() => {
     if (localStorage.getItem("currentLocation")) return;
     if (loadingLocation) return;
+    if (!location || !location.ciudad) return;
 
-    if (isCityInList(location.ciudad)) {
-      setCurrentLocation(location.ciudad);
-      localStorage.setItem("currentLocation", location.ciudad);
+    const detectedCity = location.ciudad.trim();
 
-      const phone = getPhone(location.ciudad);
+    if (isCityInList(detectedCity)) {
+      setCurrentLocation(detectedCity);
+      localStorage.setItem("currentLocation", detectedCity);
+
+      const phone = getPhone(detectedCity);
       setCurrentPhone(phone);
       localStorage.setItem("currentPhone", phone);
 
-      const region = getRegionByCity(location.ciudad);
+      const region = getRegionByCity(detectedCity);
       setCurrentRegion(region);
       localStorage.setItem("currentRegion", region);
     } else {
-      setCurrentLocation("kelowna");
-      localStorage.setItem("currentLocation", "kelowna");
+      setCurrentLocation("Vancouver");
+      localStorage.setItem("currentLocation", "Vancouver");
 
-      setCurrentPhone("250.900.900");
-      localStorage.setItem("currentPhone", "250.900.900");
+      setCurrentPhone("604.888.8888");
+      localStorage.setItem("currentPhone", "604.888.8888");
 
-      setCurrentRegion(null);
-      localStorage.removeItem("currentRegion");
+      setCurrentRegion("lowermainland");
+      localStorage.setItem("currentRegion", "lowermainland");
     }
   }, [loadingLocation, location]);
 
@@ -247,10 +248,15 @@ export function Layout() {
   useEffect(() => {
     if (!currentRegion) return;
 
+    const pathname = locationRouter.pathname;
+    const parts = pathname.split("/").filter(Boolean);
+
+    // 🛑 evitar doble región
+    if (parts.length > 1) return;
+
     if (locationRouter.state?.skipRegionRedirect) return;
 
     const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
-    const pathname = locationRouter.pathname;
 
     if (
       pathname === `/${regionSlug}` ||
@@ -271,71 +277,64 @@ export function Layout() {
     setLayoutReady(true);
   }, [locationRouter.pathname]);
 
+  useEffect(() => {
+    if (!currentRegion) return;
 
-useEffect(() => {
-  if (!currentRegion) return;
+    const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
+    let pathname = locationRouter.pathname.replace(/\/+$/, "");
 
-  const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
-  let pathname = locationRouter.pathname;
+    if (pathname.startsWith("/service/")) {
+      const cleanPath = pathname.replace("/service", "");
+      navigate(`/${regionSlug}${cleanPath}`, {
+        replace: true,
+        state: { fromServiceRedirect: true },
+      });
+      return;
+    }
 
-  // 1️⃣ Normalizar (quitar slash final)
-  pathname = pathname.replace(/\/+$/, "");
+    if (pathname.startsWith(`/${regionSlug}/service/`)) {
+      const cleanPath = pathname.replace(
+        `/${regionSlug}/service`,
+        `/${regionSlug}`
+      );
+      navigate(cleanPath, {
+        replace: true,
+        state: { fromServiceRedirect: true },
+      });
+    }
+  }, [currentRegion, locationRouter.pathname, navigate]);
 
-  // 2️⃣ Si viene como /service/*
-  if (pathname.startsWith("/service/")) {
-    const cleanPath = pathname.replace("/service", "");
-    navigate(`/${regionSlug}${cleanPath}`, {
-      replace: true,
-      state: { fromServiceRedirect: true },
-    });
-    return;
-  }
+  useEffect(() => {
+    if (!currentRegion) return;
 
-  // 3️⃣ Si viene como /{region}/service/*
-  if (pathname.startsWith(`/${regionSlug}/service/`)) {
-    const cleanPath = pathname.replace(`/${regionSlug}/service`, `/${regionSlug}`);
-    navigate(cleanPath, {
-      replace: true,
-      state: { fromServiceRedirect: true },
-    });
-  }
-}, [currentRegion, locationRouter.pathname, navigate]);
+    const pathname = locationRouter.pathname.replace(/\/+$/, "");
+    const parts = pathname.split("/").filter(Boolean);
 
-useEffect(() => {
-  if (!currentRegion) return;
+    // 🛑 evitar doble región
+    if (parts.length > 1) return;
 
-  const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
-  let pathname = locationRouter.pathname.replace(/\/+$/, "");
+    const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
 
-  // ignorar home
-  if (pathname === "" || pathname === "/") return;
+    if (
+      pathname === "" ||
+      pathname === "/" ||
+      pathname === `/${regionSlug}` ||
+      pathname.startsWith(`/${regionSlug}/`)
+    ) {
+      return;
+    }
 
-  // si ya tiene región → no tocar
-  if (
-    pathname === `/${regionSlug}` ||
-    pathname.startsWith(`/${regionSlug}/`)
-  ) {
-    return;
-  }
+    if (pathname.startsWith("/wp-") || pathname.startsWith("/graphql")) {
+      return;
+    }
 
-  // ignorar rutas internas técnicas
-  if (
-    pathname.startsWith("/wp-") ||
-    pathname.startsWith("/graphql")
-  ) {
-    return;
-  }
-
-  // 🎯 caso: /blog, /contact, /about, /post-slug
-  const parts = pathname.split("/").filter(Boolean);
-
-  if (parts.length === 1) {
-    navigate(`/${regionSlug}/${parts[0]}`, {
-      replace: true,
-      state: { autoRegionRedirect: true },
-    });
-  }
-}, [currentRegion, locationRouter.pathname, navigate]);
+    if (parts.length === 1) {
+      navigate(`/${regionSlug}/${parts[0]}`, {
+        replace: true,
+        state: { autoRegionRedirect: true },
+      });
+    }
+  }, [currentRegion, locationRouter.pathname, navigate]);
 
   // ---------------------------------------------------------
   // Queries existentes (NO TOCAR)
@@ -369,7 +368,6 @@ useEffect(() => {
         setCurrentRegion={setCurrentRegion}
       />
 
-      {/* Estructura idéntica a Salient */}
       <div className="ocm-effect-wrap">
         <div className="ocm-effect-wrap-inner">
           <div id="ajax-content-wrap">
@@ -381,16 +379,16 @@ useEffect(() => {
                       homeData,
                       currentLocation,
                       currentRegion,
-                      layoutReady, // 🟢 PASAMOS EL FLAG
+                      layoutReady,
                     }}
                   />
                 </div>
               </div>
             </div>
           </div>
-          
         </div>
       </div>
+
       {regionConfig?.footer && (
         <div
           id="footer-location"
