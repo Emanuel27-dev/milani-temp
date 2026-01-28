@@ -160,7 +160,7 @@ export const locations = [
       label: "Lima",
     },
     cities: [
-      { name: "San Isidro",  phone: "780.999.3333" }
+      { name: "Independencia",  phone: "780.999.3333" }
     ],
   },
 ];

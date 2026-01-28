@@ -186,6 +186,11 @@ export function Layout() {
   // =========================================================
   const [layoutReady, setLayoutReady] = useState(false);
 
+  // =========================================================
+  // 🟢 NUEVO: FLAG PARA CONTROLAR RESOLUCIÓN DE IP
+  // =========================================================
+  const [ipResolved, setIpResolved] = useState(false);
+
   // ---------------------------------------------------------
   // Estados existentes (NO TOCAR)
   // ---------------------------------------------------------
@@ -211,14 +216,14 @@ export function Layout() {
   // IP LOCATION (NO TOCAR)
   // ---------------------------------------------------------
   const { location, loadingLocation } = useIPLocation();
-useEffect(() => {
-  if (loadingLocation) return;
 
-  console.log("🌍 IP LOCATION – DATA COMPLETA ↓↓↓");
-  console.log(location);
-  console.log("🌍 IP LOCATION – DATA COMPLETA ↑↑↑");
+  useEffect(() => {
+    if (loadingLocation) return;
 
-}, [loadingLocation, location]);
+    console.log("🌍 IP LOCATION – DATA COMPLETA ↓↓↓");
+    console.log(location);
+    console.log("🌍 IP LOCATION – DATA COMPLETA ↑↑↑");
+  }, [loadingLocation, location]);
 
   // ---------------------------------------------------------
   // 🔍 VALIDACIÓN CON locations.js
@@ -235,9 +240,15 @@ useEffect(() => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("currentLocation")) return;
+    if (localStorage.getItem("currentLocation")) {
+      setIpResolved(true);
+      return;
+    }
     if (loadingLocation) return;
-    if (!location || !location.ciudad) return;
+    if (!location || !location.ciudad) {
+      setIpResolved(true);
+      return;
+    }
 
     const detectedCity = location.ciudad.trim();
     const regionMatch = findRegionByCity(detectedCity);
@@ -253,7 +264,6 @@ useEffect(() => {
       setCurrentRegion(regionMatch.slug);
       localStorage.setItem("currentRegion", regionMatch.slug);
     } else {
-      // ✅ DEFAULT OBLIGATORIO
       setCurrentLocation("Vancouver");
       localStorage.setItem("currentLocation", "Vancouver");
 
@@ -263,13 +273,15 @@ useEffect(() => {
       setCurrentRegion("lowermainland");
       localStorage.setItem("currentRegion", "lowermainland");
     }
+
+    setIpResolved(true);
   }, [loadingLocation, location]);
 
   // ---------------------------------------------------------
   // Redirección por región (NO TOCAR)
   // ---------------------------------------------------------
   useEffect(() => {
-    if (!currentRegion) return;
+    if (!currentRegion || !ipResolved) return;
     if (locationRouter.state?.skipRegionRedirect) return;
 
     const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
@@ -285,7 +297,13 @@ useEffect(() => {
     if (pathname === "/") {
       navigate(`/${regionSlug}`, { replace: true });
     }
-  }, [currentRegion, locationRouter.pathname, locationRouter.state, navigate]);
+  }, [
+    currentRegion,
+    ipResolved,
+    locationRouter.pathname,
+    locationRouter.state,
+    navigate,
+  ]);
 
   // =========================================================
   // 🟢 NUEVO: MARCAR LAYOUT COMO LISTO CUANDO LA RUTA FINAL YA EXISTE
