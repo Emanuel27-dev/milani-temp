@@ -1,4 +1,4 @@
-// src/Layout.jsx
+// Layout.jsx
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ import { isCityInList } from "./helpers/isCityInList";
 import { getPhone } from "./helpers/getPhone";
 import { getRegionByCity } from "./helpers/getRegionByCity";
 import { getRegionConfig } from "./helpers/getRegionConfig";
-
+import { locations } from "./locations";
 
 // =========================================================
 // 🔹 Query del Header (logo + menús)
@@ -211,6 +211,28 @@ export function Layout() {
   // IP LOCATION (NO TOCAR)
   // ---------------------------------------------------------
   const { location, loadingLocation } = useIPLocation();
+useEffect(() => {
+  if (loadingLocation) return;
+
+  console.log("🌍 IP LOCATION – DATA COMPLETA ↓↓↓");
+  console.log(location);
+  console.log("🌍 IP LOCATION – DATA COMPLETA ↑↑↑");
+
+}, [loadingLocation, location]);
+
+  // ---------------------------------------------------------
+  // 🔍 VALIDACIÓN CON locations.js
+  // ---------------------------------------------------------
+  const findRegionByCity = (city) => {
+    if (!city) return null;
+    const normalized = city.trim().toLowerCase();
+
+    return locations.find((region) =>
+      region.cities.some(
+        (c) => c.name.trim().toLowerCase() === normalized
+      )
+    );
+  };
 
   useEffect(() => {
     if (localStorage.getItem("currentLocation")) return;
@@ -218,8 +240,9 @@ export function Layout() {
     if (!location || !location.ciudad) return;
 
     const detectedCity = location.ciudad.trim();
+    const regionMatch = findRegionByCity(detectedCity);
 
-    if (isCityInList(detectedCity)) {
+    if (regionMatch) {
       setCurrentLocation(detectedCity);
       localStorage.setItem("currentLocation", detectedCity);
 
@@ -227,10 +250,10 @@ export function Layout() {
       setCurrentPhone(phone);
       localStorage.setItem("currentPhone", phone);
 
-      const region = getRegionByCity(detectedCity);
-      setCurrentRegion(region);
-      localStorage.setItem("currentRegion", region);
+      setCurrentRegion(regionMatch.slug);
+      localStorage.setItem("currentRegion", regionMatch.slug);
     } else {
+      // ✅ DEFAULT OBLIGATORIO
       setCurrentLocation("Vancouver");
       localStorage.setItem("currentLocation", "Vancouver");
 
@@ -247,16 +270,10 @@ export function Layout() {
   // ---------------------------------------------------------
   useEffect(() => {
     if (!currentRegion) return;
-
-    const pathname = locationRouter.pathname;
-    const parts = pathname.split("/").filter(Boolean);
-
-    // 🛑 evitar doble región
-    if (parts.length > 1) return;
-
     if (locationRouter.state?.skipRegionRedirect) return;
 
     const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
+    const pathname = locationRouter.pathname;
 
     if (
       pathname === `/${regionSlug}` ||
@@ -300,38 +317,6 @@ export function Layout() {
       navigate(cleanPath, {
         replace: true,
         state: { fromServiceRedirect: true },
-      });
-    }
-  }, [currentRegion, locationRouter.pathname, navigate]);
-
-  useEffect(() => {
-    if (!currentRegion) return;
-
-    const pathname = locationRouter.pathname.replace(/\/+$/, "");
-    const parts = pathname.split("/").filter(Boolean);
-
-    // 🛑 evitar doble región
-    if (parts.length > 1) return;
-
-    const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
-
-    if (
-      pathname === "" ||
-      pathname === "/" ||
-      pathname === `/${regionSlug}` ||
-      pathname.startsWith(`/${regionSlug}/`)
-    ) {
-      return;
-    }
-
-    if (pathname.startsWith("/wp-") || pathname.startsWith("/graphql")) {
-      return;
-    }
-
-    if (parts.length === 1) {
-      navigate(`/${regionSlug}/${parts[0]}`, {
-        replace: true,
-        state: { autoRegionRedirect: true },
       });
     }
   }, [currentRegion, locationRouter.pathname, navigate]);

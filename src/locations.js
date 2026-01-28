@@ -151,4 +151,16 @@ export const locations = [
       { name: "Sturgeon County  ",  phone: "780.999.3333" },
     ],
   },
+  {
+    region: "Lima",
+    slug: "lima",
+    footer: {
+      background:
+        "https://milani.xpress.ws/wp-content/uploads/2026/01/MILANI_edmonton.webp",
+      label: "Lima",
+    },
+    cities: [
+      { name: "San Isidro",  phone: "780.999.3333" }
+    ],
+  },
 ];
