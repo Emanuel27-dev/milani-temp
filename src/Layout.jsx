@@ -410,7 +410,12 @@ export function Layout() {
         </div>
       )}
 
-      <Footer switchFormModal={switchFormModal} currentPhone={currentPhone} />
+      <Footer
+  switchFormModal={switchFormModal}
+  currentPhone={currentPhone}
+  currentLocation={currentLocation}
+/>
+
     </>
   );
 }

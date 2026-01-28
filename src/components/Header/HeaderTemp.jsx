@@ -366,14 +366,15 @@ const withRegion = (path) => {
           </div>
 
           <div className="buttons-header">
-            <button className="button" onClick={switchFormModal}>
-              <img src={wassp} alt="phone" className="btn-icon" />
-              <div>{currentPhone}</div>
-            </button>
-            <button className="button" onClick={switchFormModal}>
-              BOOK NOW
-            </button>
-          </div>
+  <button className="button" onClick={switchFormModal}>
+    <img src={wassp} alt="phone" className="btn-icon" />
+    <div>{currentPhone || "604.888.8888"}</div>
+  </button>
+  <button className="button" onClick={switchFormModal}>
+    BOOK NOW
+  </button>
+</div>
+
         </div>
 
         <ZipModal
