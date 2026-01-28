@@ -5,7 +5,13 @@ import tuerca from "./../../assets/tuerca.svg";
 import bbb from "./../../assets/bbb.svg";
 import hoja from "./../../assets/hoja.svg";
 
-export function Footer({ switchFormModal, currentPhone }) {
+export function Footer({ switchFormModal, currentPhone, currentLocation }) {
+  // ---------------------------------------------------------
+  // 🟢 FALLBACK DEFAULT (PRIMER LOAD)
+  // ---------------------------------------------------------
+  const phone = currentPhone || "604.888.8888";
+  const city = currentLocation || "Vancouver";
+
   return (
     <>
       <div className="headFooter">
@@ -14,12 +20,14 @@ export function Footer({ switchFormModal, currentPhone }) {
             <figure className="figureFooter">
               <img src={logo} alt="logo footer" className="imgFooter" />
             </figure>
+
             <div className="buttons">
               <div className="buttons-block">
                 <div className="button" onClick={switchFormModal}>
                   <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
-                  <span>{currentPhone}</span>
+                  <span>{phone}</span>
                 </div>
+
                 <div
                   className="button button-book"
                   onClick={switchFormModal}
@@ -27,6 +35,7 @@ export function Footer({ switchFormModal, currentPhone }) {
                   BOOK NOW
                 </div>
               </div>
+
               <div
                 className="button button-chat"
                 onClick={switchFormModal}
@@ -49,56 +58,56 @@ export function Footer({ switchFormModal, currentPhone }) {
             <div className="service-column plumbing">
               <p className="service-column-name">Plumbing</p>
               <ul>
-                <li><a href="#">Maintenance and Repair</a></li>
-                <li><a href="#">Hot Water Heater</a></li>
-                <li><a href="#">Water Main Replacement</a></li>
-                <li><a href="#">Installations</a></li>
-                <li><a href="#">Trenchless Pipe Repair</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/plumbing/maintenace-and-repair/">Maintenance and Repair</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/plumbing/hot-water-heater/">Hot Water Heater</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/plumbing/water-main-replacement/">Water Main Replacement</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/plumbing/installations/">Installations</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/plumbing/trenchless-pipe-repair/">Trenchless Pipe Repair</a></li>
               </ul>
             </div>
 
             <div className="service-column drainage">
               <p className="service-column-name">Drainage</p>
               <ul>
-                <li><a href="#">Drain Tile Systems</a></li>
-                <li><a href="#">Drainage and Sewer Maintenance</a></li>
-                <li><a href="#">Draintile & Sewer Inspection</a></li>
-                <li><a href="#">Pressure Jetting & Cleaning</a></li>
-                <li><a href="#">Drainage Lines Repair & Service</a></li>
-                <li><a href="#">Vacuum Truck Service</a></li>
-                <li><a href="#">Drainage & Sewer Installation</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/drainage-ca/maintenance-and-repair/">Drain Tile Systems</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/drainage-ca/drainage-sewer-installation/">Drainage and Sewer Maintenance</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/drainage-ca/draintile-sewer-inspection/#">Draintile & Sewer Inspection</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/drainage-ca/pressure-jetting-cleaning/">Pressure Jetting & Cleaning</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/drainage-ca/drainage-lines-repair-service/">Drainage Lines Repair & Service</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/drainage-ca/vacuum-truck-service/">Vacuum Truck Service</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/drainage-ca/drainage-sewer-installation/">Drainage & Sewer Installation</a></li>
               </ul>
             </div>
 
             <div className="service-column heating">
               <p className="service-column-name">Heating</p>
               <ul>
-                <li><a href="#">Furnaces</a></li>
-                <li><a href="#">Boilers</a></li>
-                <li><a href="#">Heat Pumps</a></li>
-                <li><a href="#">Green Heating Solutions</a></li>
-                <li><a href="#">Air Filters</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/heating/furnaces/">Furnaces</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/heating/boilers/">Boilers</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/heating/heat-pumps/">Heat Pumps</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/heating/green-heating-solutions/">Green Heating Solutions</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/heating/air-filters/">Air Filters</a></li>
               </ul>
             </div>
 
             <div className="service-column airconditioning">
               <p className="service-column-name">Air Conditioning</p>
               <ul>
-                <li><a href="#">Air Conditioning Units</a></li>
-                <li><a href="#">Repair and Replacement</a></li>
-                <li><a href="#">Ductless Mini Splits</a></li>
-                <li><a href="#">Heat Pumps</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/air-conditioning/air-conditioning-units/">Air Conditioning Units</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/air-conditioning/repair-merrit/">Repair and Replacement</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/air-conditioning/ductless-mini-splits/">Ductless Mini Splits</a></li>
+                <li><a href="https://milani-temp.vercel.app/service/air-conditioning/heat-pumps/">Heat Pumps</a></li>
               </ul>
             </div>
 
             <div className="service-column with-border">
               <div className="little-border">
                 <ul>
-                  <li><a href="#">Promotions</a></li>
-                  <li><a href="#">Commercial Service</a></li>
-                  <li><a href="#">Rebate Information</a></li>
-                  <li><a href="#">Careers</a></li>
-                  <li><a href="#">Payments</a></li>
+                  <li><a href="https://milani-temp.vercel.app/offers">Promotions</a></li>
+                  <li><a href="https://milani-temp.vercel.app/commercial-services">Commercial Service</a></li>
+                  <li><a href="https://milani-temp.vercel.app/rebates-bc">Rebate Information</a></li>
+                  <li><a href="https://milani-temp.vercel.app/careers">Careers</a></li>
+                  <li><a href="https://milani-temp.vercel.app/online-payments">Payments</a></li>
                 </ul>
               </div>
             </div>
@@ -107,10 +116,11 @@ export function Footer({ switchFormModal, currentPhone }) {
           <div className="contact-section">
             <div className="contact-box1">
               <div className="contact-info">
-                <p>Okanagan Service</p>
-                <div className="phone">{currentPhone}</div>
+                <p>{city} Service</p>
+                <div className="phone">{phone}</div>
                 <div className="email">customerservice@milani.ca</div>
               </div>
+
               <figure className="bbb-figure">
                 <img src={bbb} alt="bbb" />
               </figure>
