@@ -210,7 +210,7 @@
 .buttons-header button {
   white-space: nowrap;
   height: 40px;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .buttons-header button:nth-child(1) {
@@ -1043,7 +1043,7 @@
   max-width: 174px;
   height: 40px;
   font-family: "Archivo SemiCondensed Bold";
-  font-size: 20px;
+  font-size: 18px;
   gap: 6px;
 }
 
@@ -1058,7 +1058,7 @@
   height: 40px;
   max-width: 137px;
   font-family: "Archivo SemiCondensed Bold";
-  font-size: 20px !important;
+  font-size: 18px !important;
   padding-left: 5px;
   padding-right: 5px;
 }
@@ -1085,7 +1085,7 @@
   height: 40px;
   max-width: 197px;
   font-family: "Archivo SemiCondensed Bold";
-  font-size: 20px;
+  font-size: 18px;
 
 }
 
@@ -1394,7 +1394,7 @@
 
   .button {
     min-width: max-content;
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .services-grid {
@@ -1867,7 +1867,7 @@
             border: none;
             padding: 15px;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 18px !important;
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;

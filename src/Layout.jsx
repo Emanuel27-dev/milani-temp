@@ -239,6 +239,24 @@ export function Layout() {
     );
   };
 
+  // ---------------------------------------------------------
+  // 🟢 NUEVO: OBTENER TELÉFONO DESDE locations.js
+  // ---------------------------------------------------------
+  const getPhoneFromLocations = (city, regionSlug) => {
+    if (!city || !regionSlug) return null;
+
+    const region = locations.find((r) => r.slug === regionSlug);
+    if (!region) return null;
+
+    const cityMatch = region.cities.find(
+      (c) =>
+        c.name.trim().toLowerCase() ===
+        city.trim().toLowerCase()
+    );
+
+    return cityMatch?.phone || null;
+  };
+
   useEffect(() => {
     if (localStorage.getItem("currentLocation")) {
       setIpResolved(true);
@@ -276,6 +294,25 @@ export function Layout() {
 
     setIpResolved(true);
   }, [loadingLocation, location]);
+
+  // ---------------------------------------------------------
+  // 🟢 NUEVO: REHIDRATACIÓN DE TELÉFONO (ANTI-NULL)
+  // ---------------------------------------------------------
+  useEffect(() => {
+    if (!ipResolved) return;
+    if (currentPhone) return;
+    if (!currentLocation || !currentRegion) return;
+
+    const phoneFromLocations = getPhoneFromLocations(
+      currentLocation,
+      currentRegion
+    );
+
+    if (phoneFromLocations) {
+      setCurrentPhone(phoneFromLocations);
+      localStorage.setItem("currentPhone", phoneFromLocations);
+    }
+  }, [ipResolved, currentLocation, currentRegion, currentPhone]);
 
   // ---------------------------------------------------------
   // Redirección por región (NO TOCAR)
@@ -411,11 +448,10 @@ export function Layout() {
       )}
 
       <Footer
-  switchFormModal={switchFormModal}
-  currentPhone={currentPhone}
-  currentLocation={currentLocation}
-/>
-
+        switchFormModal={switchFormModal}
+        currentPhone={currentPhone}
+        currentLocation={currentLocation}
+      />
     </>
   );
 }

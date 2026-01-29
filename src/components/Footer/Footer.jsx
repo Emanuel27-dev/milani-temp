@@ -9,8 +9,22 @@ export function Footer({ switchFormModal, currentPhone, currentLocation }) {
   // ---------------------------------------------------------
   // 🟢 FALLBACK DEFAULT (PRIMER LOAD)
   // ---------------------------------------------------------
-  const phone = currentPhone || "604.888.8888";
-  const city = currentLocation || "Vancouver";
+  const safePhone =
+    currentPhone && currentPhone !== "null"
+      ? currentPhone
+      : localStorage.getItem("currentPhone") && localStorage.getItem("currentPhone") !== "null"
+      ? localStorage.getItem("currentPhone")
+      : "604.888.8888";
+
+  const safeCity =
+    currentLocation && currentLocation !== "null"
+      ? currentLocation
+      : localStorage.getItem("currentLocation") && localStorage.getItem("currentLocation") !== "null"
+      ? localStorage.getItem("currentLocation")
+      : "Vancouver";
+
+  const phone = safePhone;
+  const city = safeCity;
 
   return (
     <>
@@ -103,7 +117,7 @@ export function Footer({ switchFormModal, currentPhone, currentLocation }) {
             <div className="service-column with-border">
               <div className="little-border">
                 <ul>
-                  <li><a href="https://milani-temp.vercel.app/offers">Promotions</a></li>
+                  <li><a href="https://milani-temp.vercel.app/okanagan/offers">Promotions</a></li>
                   <li><a href="https://milani-temp.vercel.app/commercial-services">Commercial Service</a></li>
                   <li><a href="https://milani-temp.vercel.app/rebates-bc">Rebate Information</a></li>
                   <li><a href="https://milani-temp.vercel.app/careers">Careers</a></li>
