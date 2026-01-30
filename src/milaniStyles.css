@@ -347,8 +347,18 @@
   gap: 6px;
 }
 
+.buttons-header button.button:hover{
+   color: #fff;
+    background: #ce2329;
+   
+}
+.buttons-header button.button:hover img{
+  filter: invert(1);
+}
 
-
+.headFooter .button:hover{
+  background: #fff;
+}
 
 @media (width < 600px) {
   .header-below__details button{
