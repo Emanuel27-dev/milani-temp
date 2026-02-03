@@ -1,3 +1,4 @@
+// src/hooks/useWpGlobalAssets.jsx
 import { useEffect } from "react";
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";

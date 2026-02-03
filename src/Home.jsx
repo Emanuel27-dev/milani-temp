@@ -1,4 +1,4 @@
-// Home.jsx
+// src/Home.jsx
 import { WpPage } from "./WpPage";
 
 // usa el slug real de tu Home: 'home' o 'inicio'

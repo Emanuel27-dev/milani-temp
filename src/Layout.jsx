@@ -1,4 +1,4 @@
-// Layout.jsx
+// src/Layout.jsx
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -74,7 +74,6 @@ const GET_HOME = gql`
       databaseId
       uri
       slug
-
       ... on Page {
         title
         contentRendered
@@ -87,17 +86,11 @@ const GET_HOME = gql`
           canonical
           opengraphTitle
           opengraphDescription
-          opengraphImage {
-            sourceUrl
-          }
+          opengraphImage { sourceUrl }
           twitterTitle
           twitterDescription
-          twitterImage {
-            sourceUrl
-          }
-          schema {
-            raw
-          }
+          twitterImage { sourceUrl }
+          schema { raw }
         }
         inlineDynamicCssGrouped {
           emoji
@@ -107,7 +100,6 @@ const GET_HOME = gql`
           file
         }
       }
-
       ... on Post {
         title
         contentRendered
@@ -120,17 +112,11 @@ const GET_HOME = gql`
           canonical
           opengraphTitle
           opengraphDescription
-          opengraphImage {
-            sourceUrl
-          }
+          opengraphImage { sourceUrl }
           twitterTitle
           twitterDescription
-          twitterImage {
-            sourceUrl
-          }
-          schema {
-            raw
-          }
+          twitterImage { sourceUrl }
+          schema { raw }
         }
         inlineDynamicCssGrouped {
           emoji
@@ -140,7 +126,6 @@ const GET_HOME = gql`
           file
         }
       }
-
       ... on Service {
         title
         contentRendered
@@ -153,17 +138,11 @@ const GET_HOME = gql`
           canonical
           opengraphTitle
           opengraphDescription
-          opengraphImage {
-            sourceUrl
-          }
+          opengraphImage { sourceUrl }
           twitterTitle
           twitterDescription
-          twitterImage {
-            sourceUrl
-          }
-          schema {
-            raw
-          }
+          twitterImage { sourceUrl }
+          schema { raw }
         }
         inlineDynamicCssGrouped {
           emoji
@@ -209,7 +188,6 @@ export function Layout() {
 
   const navigate = useNavigate();
   const locationRouter = useLocation();
-
   const regionConfig = getRegionConfig(currentRegion);
 
   // ---------------------------------------------------------
@@ -219,7 +197,6 @@ export function Layout() {
 
   useEffect(() => {
     if (loadingLocation) return;
-
     console.log("🌍 IP LOCATION – DATA COMPLETA ↓↓↓");
     console.log(location);
     console.log("🌍 IP LOCATION – DATA COMPLETA ↑↑↑");
@@ -231,7 +208,6 @@ export function Layout() {
   const findRegionByCity = (city) => {
     if (!city) return null;
     const normalized = city.trim().toLowerCase();
-
     return locations.find((region) =>
       region.cities.some(
         (c) => c.name.trim().toLowerCase() === normalized
@@ -240,21 +216,16 @@ export function Layout() {
   };
 
   // ---------------------------------------------------------
-  // 🟢 NUEVO: OBTENER TELÉFONO DESDE locations.js
+  // 🟢 NUEVO: RESOLVER REGIÓN (slug o nombre)
   // ---------------------------------------------------------
-  const getPhoneFromLocations = (city, regionSlug) => {
-    if (!city || !regionSlug) return null;
-
-    const region = locations.find((r) => r.slug === regionSlug);
-    if (!region) return null;
-
-    const cityMatch = region.cities.find(
-      (c) =>
-        c.name.trim().toLowerCase() ===
-        city.trim().toLowerCase()
+  const getRegionFromLocations = (regionValue) => {
+    if (!regionValue) return null;
+    const normalized = regionValue.trim().toLowerCase();
+    return locations.find(
+      (r) =>
+        r.slug === normalized ||
+        r.region?.toLowerCase() === normalized
     );
-
-    return cityMatch?.phone || null;
   };
 
   useEffect(() => {
@@ -274,45 +245,22 @@ export function Layout() {
     if (regionMatch) {
       setCurrentLocation(detectedCity);
       localStorage.setItem("currentLocation", detectedCity);
-
       const phone = getPhone(detectedCity);
       setCurrentPhone(phone);
       localStorage.setItem("currentPhone", phone);
-
       setCurrentRegion(regionMatch.slug);
       localStorage.setItem("currentRegion", regionMatch.slug);
     } else {
       setCurrentLocation("Vancouver");
       localStorage.setItem("currentLocation", "Vancouver");
-
       setCurrentPhone("604.888.8888");
       localStorage.setItem("currentPhone", "604.888.8888");
-
       setCurrentRegion("lowermainland");
       localStorage.setItem("currentRegion", "lowermainland");
     }
 
     setIpResolved(true);
   }, [loadingLocation, location]);
-
-  // ---------------------------------------------------------
-  // 🟢 NUEVO: REHIDRATACIÓN DE TELÉFONO (ANTI-NULL)
-  // ---------------------------------------------------------
-  useEffect(() => {
-    if (!ipResolved) return;
-    if (currentPhone) return;
-    if (!currentLocation || !currentRegion) return;
-
-    const phoneFromLocations = getPhoneFromLocations(
-      currentLocation,
-      currentRegion
-    );
-
-    if (phoneFromLocations) {
-      setCurrentPhone(phoneFromLocations);
-      localStorage.setItem("currentPhone", phoneFromLocations);
-    }
-  }, [ipResolved, currentLocation, currentRegion, currentPhone]);
 
   // ---------------------------------------------------------
   // Redirección por región (NO TOCAR)
@@ -327,9 +275,7 @@ export function Layout() {
     if (
       pathname === `/${regionSlug}` ||
       pathname.startsWith(`/${regionSlug}/`)
-    ) {
-      return;
-    }
+    ) return;
 
     if (pathname === "/") {
       navigate(`/${regionSlug}`, { replace: true });
@@ -343,46 +289,96 @@ export function Layout() {
   ]);
 
   // =========================================================
-  // 🟢 NUEVO: MARCAR LAYOUT COMO LISTO CUANDO LA RUTA FINAL YA EXISTE
+  // 🟢 NUEVO: MARCAR LAYOUT COMO LISTO
   // =========================================================
   useEffect(() => {
     setLayoutReady(true);
   }, [locationRouter.pathname]);
 
+  // =========================================================
+  // 🟢 NUEVO: PINTAR CIUDADES + SUBTÍTULO + TELÉFONO + DIRECCIÓN
+  // =========================================================
   useEffect(() => {
-    if (!currentRegion) return;
+    if (!layoutReady || !currentRegion) return;
 
-    const regionSlug = currentRegion.toLowerCase().replace(/\s+/g, "");
-    let pathname = locationRouter.pathname.replace(/\/+$/, "");
+    console.log("🟡 [Cities] Esperando HTML de WP…");
 
-    if (pathname.startsWith("/service/")) {
-      const cleanPath = pathname.replace("/service", "");
-      navigate(`/${regionSlug}${cleanPath}`, {
-        replace: true,
-        state: { fromServiceRedirect: true },
+    let attempts = 0;
+    const maxAttempts = 40;
+
+    const interval = setInterval(() => {
+      attempts++;
+
+      const serviceRoot = document.querySelector("#service-locations");
+
+      if (!serviceRoot) {
+        if (attempts >= maxAttempts) {
+          console.warn("🔴 [Cities] No se encontró #service-locations");
+          clearInterval(interval);
+        }
+        return;
+      }
+
+      console.log("🟢 [Cities] #service-locations encontrado");
+
+      const region = getRegionFromLocations(currentRegion);
+
+      if (!region || !region.cities?.length) {
+        console.warn("🔴 [Cities] Región sin ciudades:", currentRegion);
+        clearInterval(interval);
+        return;
+      }
+
+      // Subtítulo
+      const subtitle = serviceRoot.querySelector(".text-subtitle-locations h3");
+      if (subtitle) {
+        subtitle.textContent = `Greater ${region.region} Locations`;
+        console.log("✅ [Cities] Subtítulo actualizado:", subtitle.textContent);
+      }
+
+      // Teléfono
+      const phoneEl = serviceRoot.querySelector(".section-location-number h3");
+      if (phoneEl && currentPhone) {
+        phoneEl.textContent = currentPhone;
+        console.log("✅ [Cities] Teléfono actualizado:", currentPhone);
+      }
+
+      // Dirección
+      const addressEl = serviceRoot.querySelector("p");
+      if (addressEl && region.address) {
+        addressEl.textContent = region.address;
+        console.log("✅ [Cities] Dirección actualizada:", region.address);
+      }
+
+      // Ciudades
+      const ul = serviceRoot.querySelector("ul");
+      if (!ul) {
+        console.warn("🔴 [Cities] No se encontró UL de ciudades");
+        return;
+      }
+
+      ul.innerHTML = "";
+      region.cities.forEach((city) => {
+        const li = document.createElement("li");
+        li.textContent = city.name;
+        ul.appendChild(li);
       });
-      return;
-    }
 
-    if (pathname.startsWith(`/${regionSlug}/service/`)) {
-      const cleanPath = pathname.replace(
-        `/${regionSlug}/service`,
-        `/${regionSlug}`
+      console.log(
+        "✅ [Cities] Ciudades pintadas:",
+        region.cities.map((c) => c.name)
       );
-      navigate(cleanPath, {
-        replace: true,
-        state: { fromServiceRedirect: true },
-      });
-    }
-  }, [currentRegion, locationRouter.pathname, navigate]);
+
+      clearInterval(interval);
+    }, 200);
+
+    return () => clearInterval(interval);
+  }, [layoutReady, currentRegion, currentPhone, locationRouter.pathname]);
 
   // ---------------------------------------------------------
   // Queries existentes (NO TOCAR)
   // ---------------------------------------------------------
-  const { data, loading } = useQuery(GET_HEADER, {
-    fetchPolicy: "cache-first",
-  });
-
+  const { data, loading } = useQuery(GET_HEADER, { fetchPolicy: "cache-first" });
   const { data: homeData } = useQuery(GET_HOME, {
     variables: { currentLocation },
     fetchPolicy: "cache-first",
@@ -414,14 +410,7 @@ export function Layout() {
             <div className="container-wrap">
               <div className="container main-content" role="main">
                 <div className="row">
-                  <Outlet
-                    context={{
-                      homeData,
-                      currentLocation,
-                      currentRegion,
-                      layoutReady,
-                    }}
-                  />
+                  <Outlet context={{ homeData, currentLocation, currentRegion, layoutReady }} />
                 </div>
               </div>
             </div>

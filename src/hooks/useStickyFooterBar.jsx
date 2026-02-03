@@ -1,3 +1,4 @@
+// src/hooks/useStickyFooterBar.jsx
 import { useEffect, useState } from "react";
 
 export function useStickyFooterBar() {
@@ -9,24 +10,23 @@ export function useStickyFooterBar() {
     const headerBelow = document.querySelector(".header-below");
     const footer = document.querySelector("footer");
 
-    function onScroll() {
-      const headerHeight = header.offsetHeight + headerBelow.offsetHeight;
+    if (!header || !headerBelow || !footer) {
+      console.warn("ℹ️ StickyFooter: nodos no disponibles aún");
+      return;
+    }
 
-      // 🔥 Cuando la página baja más allá del header completo → mostrar sticky
+    function onScroll() {
+      const headerHeight =
+        header.offsetHeight + headerBelow.offsetHeight;
+
       if (window.scrollY > headerHeight) {
         setVisible(true);
       } else {
         setVisible(false);
       }
 
-      // 🔥 Si ya entra al área del footer → ocultar sticky
       const footerTop = footer.getBoundingClientRect().top;
-
-      if (footerTop <= window.innerHeight) {
-        setHiddenInFooter(true);
-      } else {
-        setHiddenInFooter(false);
-      }
+      setHiddenInFooter(footerTop <= window.innerHeight);
     }
 
     window.addEventListener("scroll", onScroll);
@@ -35,3 +35,4 @@ export function useStickyFooterBar() {
 
   return { visible, hiddenInFooter };
 }
+

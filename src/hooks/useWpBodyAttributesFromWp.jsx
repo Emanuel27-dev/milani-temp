@@ -3,13 +3,23 @@ import { useEffect } from "react";
 
 /**
  * ✅ Sincroniza las clases y data-* del <body> obtenidas desde GraphQL (bodyAttributes)
- * - Limpia solo los atributos previos relacionados con WordPress/Salient
- * - Aplica los nuevos valores (clases + data-*)
- * - No ejecuta scripts (eso lo hace useWpReflow)
+ *
+ * ⚠️ IMPORTANTE (Salient + SPA):
+ * - El <body> SOLO debe sincronizarse UNA VEZ
+ * - Salient guarda referencias internas al body en init.js
+ * - Volver a limpiar/reaplicar clases rompe sliders y animaciones
  */
 export function useWpBodyAttributesFromWp({ data }) {
   useEffect(() => {
     if (!data?.bodyAttributes) return;
+
+    // 🛡️ Evitar re-sincronización en SPA / reload
+    if (window.__WP_BODY_SYNC_DONE__) {
+      console.log("ℹ️ Body ya sincronizado, skip");
+      return;
+    }
+
+    window.__WP_BODY_SYNC_DONE__ = true;
 
     try {
       // --- 1️⃣ Normalizar la cadena HTML ---
@@ -20,14 +30,18 @@ export function useWpBodyAttributesFromWp({ data }) {
 
       // --- 2️⃣ Parsear atributos del body remoto ---
       const parser = new DOMParser();
-      const temp = parser.parseFromString(`<body ${attrs}></body>`, "text/html");
+      const temp = parser.parseFromString(
+        `<body ${attrs}></body>`,
+        "text/html"
+      );
       const newBody = temp.body;
 
       if (!newBody) return;
 
-      // --- 3️⃣ Limpiar solo los atributos relevantes ---
+      // --- 3️⃣ Limpiar SOLO en la primera carga ---
+      // (después de init.js NO se debe tocar el body)
       [...document.body.attributes].forEach((attr) => {
-        if (attr.name.startsWith("data-") || attr.name === "class") {
+        if (attr.name === "class" || attr.name.startsWith("data-")) {
           document.body.removeAttribute(attr.name);
         }
       });
@@ -38,14 +52,13 @@ export function useWpBodyAttributesFromWp({ data }) {
       }
 
       console.log(
-        "✅ Body actualizado desde WordPress:",
+        "✅ Body sincronizado desde WordPress:",
         newBody.getAttribute("class") || ""
       );
 
-      // --- 5️⃣ Disparar reflow visual básico ---
-      ["resize", "scroll", "load"].forEach((evt) =>
-        window.dispatchEvent(new Event(evt))
-      );
+      // --- 5️⃣ Disparar reflow visual mínimo (seguro) ---
+      window.dispatchEvent(new Event("resize"));
+      window.dispatchEvent(new Event("scroll"));
     } catch (err) {
       console.warn("⚠️ Error aplicando bodyAttributes:", err);
     }

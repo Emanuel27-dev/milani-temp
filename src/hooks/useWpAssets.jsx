@@ -1,14 +1,30 @@
-// src/hooks/useWpAssets.js
+// src/hooks/useWpAssets.jsx
 import { useEffect } from "react";
+
+/**
+ * Guard global (persistente en SPA)
+ */
+if (typeof window !== "undefined") {
+  window.__WP_ASSETS_LOADED__ = window.__WP_ASSETS_LOADED__ || false;
+  window.__SALIENT_INIT__ = window.__SALIENT_INIT__ || false;
+}
 
 export function useWpAssets() {
   useEffect(() => {
+    // ⛔️ Evitar doble / triple ejecución (StrictMode + SPA)
+    if (window.__WP_ASSETS_LOADED__) {
+      console.log("ℹ️ WP assets ya cargados, skip");
+      return;
+    }
+
+    window.__WP_ASSETS_LOADED__ = true;
+
     const base = "https://milani.xpress.ws";
     //const base = "https://nmilani.local";
 
     const inject = (el) => {
       document.head.appendChild(el);
-      return () => el.remove();
+      return el;
     };
 
     const mkLink = (href) =>
@@ -19,6 +35,12 @@ export function useWpAssets() {
 
     const loadScript = (src, opts = {}) =>
       new Promise((resolve, reject) => {
+        // ⛔️ Evitar scripts duplicados
+        if (document.querySelector(`script[src="${src}"]`)) {
+          resolve();
+          return;
+        }
+
         const s = document.createElement("script");
         s.src = src;
         s.async = false;
@@ -29,8 +51,54 @@ export function useWpAssets() {
         document.head.appendChild(s);
       });
 
+    /* =====================================================
+     * 🛡️ FIX CONTROLADO
+     * Ignorar error conocido de Salient init.js en SPA reload
+     * (fallback defensivo, NO soluciona el root cause)
+     * ===================================================== */
+    window.addEventListener("error", (e) => {
+      if (
+        typeof e.message === "string" &&
+        e.message.includes("classList") &&
+        e.filename &&
+        e.filename.includes("init.js")
+      ) {
+        console.warn(
+          "⚠️ Salient init.js classList error ignorado (SPA reload)"
+        );
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    /* =====================================================
+     * 🛡️ FIX REAL
+     * Crear nodos mínimos que Salient espera ANTES de init.js
+     * ===================================================== */
+    const ensureSalientDom = () => {
+      // Header bg (parallax / sticky)
+      if (!document.querySelector("#page-header-bg")) {
+        const el = document.createElement("div");
+        el.id = "page-header-bg";
+        el.setAttribute("data-parallax", "1");
+        el.style.display = "none";
+        document.body.appendChild(el);
+      }
+
+      // Header wrapper
+      if (!document.querySelector("#header-outer")) {
+        const el = document.createElement("div");
+        el.id = "header-outer";
+        el.style.display = "none";
+        document.body.appendChild(el);
+      }
+
+      // Clase base usada por Salient
+      document.body.classList.add("material");
+    };
+
     /* ===============================
-     * CSS (igual que WP)
+     * CSS (igual que WordPress)
      * =============================== */
     const cssFiles = [
       `${base}/wp-content/themes/salient/style.css`,
@@ -47,31 +115,38 @@ export function useWpAssets() {
       "https://fonts.googleapis.com/css?family=Archivo:400,700",
     ];
 
-    const cssRemovers = cssFiles.map((href) => inject(mkLink(href)));
+    // ⛔️ NO se remueven estilos en SPA
+    cssFiles.forEach((href) => {
+      if (!document.querySelector(`link[href="${href}"]`)) {
+        inject(mkLink(href));
+      }
+    });
 
     (async () => {
       try {
         /* ===============================
-         * jQuery
+         * jQuery (solo una vez)
          * =============================== */
-        await loadScript(`${base}/wp-includes/js/jquery/jquery.min.js`);
-        await loadScript(`${base}/wp-includes/js/jquery/jquery-migrate.min.js`);
-        window.$ = window.jQuery;
+        if (!window.jQuery) {
+          await loadScript(`${base}/wp-includes/js/jquery/jquery.min.js`);
+          await loadScript(`${base}/wp-includes/js/jquery/jquery-migrate.min.js`);
+          window.$ = window.jQuery;
+        }
 
         /* ===============================
          * Globals EXACTOS de WordPress
          * =============================== */
-        window.nectarLove = {
+        window.nectarLove = window.nectarLove || {
           ajaxurl: `${base}/wp-admin/admin-ajax.php`,
           rooturl: base,
         };
 
-        window.nectarOptions = {
+        window.nectarOptions = window.nectarOptions || {
           smooth_scroll: "false",
           delay_js: "false",
         };
 
-        window.nectar_front_i18n = {
+        window.nectar_front_i18n = window.nectar_front_i18n || {
           next: "Next",
           previous: "Previous",
           close: "Close",
@@ -92,13 +167,13 @@ export function useWpAssets() {
         await loadScript(`${base}/wp-content/themes/salient/js/build/third-party/superfish.js`);
 
         /* ===============================
-         * Esperar DOM REAL
+         * Esperar DOM REAL (WPBakery markup)
          * =============================== */
         await new Promise((resolve) => {
           const wait = () => {
             if (
-              document.querySelector("#ajax-content-wrap") &&
-              document.querySelector(".wpb-content-wrapper")
+              document.querySelector(".wpb-content-wrapper") ||
+              document.querySelector("#ajax-content-wrap")
             ) {
               resolve();
             } else {
@@ -109,10 +184,31 @@ export function useWpAssets() {
         });
 
         /* ===============================
-         * Salient core
+         * Salient core (solo una vez)
          * =============================== */
         await loadScript(`${base}/wp-content/themes/salient/js/build/priority.js`);
-        await loadScript(`${base}/wp-content/themes/salient/js/build/init.js`);
+
+        if (!window.__SALIENT_INIT__) {
+          window.__SALIENT_INIT__ = true;
+
+          // 🛡️ Esperar body listo antes de init.js
+          await new Promise((resolve) => {
+            const wait = () => {
+              if (document.body && document.body.classList) {
+                resolve();
+              } else {
+                requestAnimationFrame(wait);
+              }
+            };
+            wait();
+          });
+
+          // 🛡️ FIX REAL: preparar DOM que Salient espera
+          ensureSalientDom();
+
+          // 🚀 Ahora sí es seguro ejecutar init.js
+          await loadScript(`${base}/wp-content/themes/salient/js/build/init.js`);
+        }
 
         /* ===============================
          * WPBakery
@@ -127,11 +223,15 @@ export function useWpAssets() {
       }
     })();
 
-    document.body.classList.add("material", "wpb-js-composer", "vc_responsive");
+    /* ===============================
+     * Body classes (una sola vez)
+     * =============================== */
+    document.body.classList.add(
+      "material",
+      "wpb-js-composer",
+      "vc_responsive"
+    );
 
-    return () => {
-      cssRemovers.forEach((r) => r());
-      document.body.classList.remove("material", "wpb-js-composer", "vc_responsive");
-    };
+    // ❌ NO cleanup: SPA no desmonta assets
   }, []);
 }

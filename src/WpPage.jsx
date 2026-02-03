@@ -13,9 +13,9 @@ import { usePageCss } from "./hooks/usePageCss";
 import { useWpReflow } from "./hooks/useWpReflow";
 import useIframeReflow from "./hooks/useIframeReflow";
 
-/* =========================================================
- * GRAPHQL
- * ========================================================= */
+// =========================================================
+// 🔹 QUERY PRINCIPAL
+// =========================================================
 const NODE_BY_PATH = gql`
   query NodeByPath($uri: ID!) {
     contentNode(id: $uri, idType: URI) {
@@ -36,11 +36,17 @@ const NODE_BY_PATH = gql`
           canonical
           opengraphTitle
           opengraphDescription
-          opengraphImage { sourceUrl }
+          opengraphImage {
+            sourceUrl
+          }
           twitterTitle
           twitterDescription
-          twitterImage { sourceUrl }
-          schema { raw }
+          twitterImage {
+            sourceUrl
+          }
+          schema {
+            raw
+          }
         }
         inlineDynamicCssGrouped {
           emoji
@@ -61,11 +67,48 @@ const NODE_BY_PATH = gql`
           canonical
           opengraphTitle
           opengraphDescription
-          opengraphImage { sourceUrl }
+          opengraphImage {
+            sourceUrl
+          }
           twitterTitle
           twitterDescription
-          twitterImage { sourceUrl }
-          schema { raw }
+          twitterImage {
+            sourceUrl
+          }
+          schema {
+            raw
+          }
+        }
+        inlineDynamicCssGrouped {
+          emoji
+          global
+          main
+          dynamic
+        }
+      }
+
+      ... on Career {
+        title
+        contentRendered
+        wpbCss
+        vcCustomCss
+        seo {
+          title
+          metaDesc
+          canonical
+          opengraphTitle
+          opengraphDescription
+          opengraphImage {
+            sourceUrl
+          }
+          twitterTitle
+          twitterDescription
+          twitterImage {
+            sourceUrl
+          }
+          schema {
+            raw
+          }
         }
         inlineDynamicCssGrouped {
           emoji
@@ -86,11 +129,17 @@ const NODE_BY_PATH = gql`
           canonical
           opengraphTitle
           opengraphDescription
-          opengraphImage { sourceUrl }
+          opengraphImage {
+            sourceUrl
+          }
           twitterTitle
           twitterDescription
-          twitterImage { sourceUrl }
-          schema { raw }
+          twitterImage {
+            sourceUrl
+          }
+          schema {
+            raw
+          }
         }
         inlineDynamicCssGrouped {
           emoji
@@ -105,39 +154,6 @@ const NODE_BY_PATH = gql`
   }
 `;
 
-/* 🔹 BLOG (Posts Page) */
-const GET_POSTS_PAGE = gql`
-  query GetPostsPage {
-    pageForPosts {
-      id
-      databaseId
-      uri
-      title
-      contentRendered
-      wpbCss
-      vcCustomCss
-      seo {
-        title
-        metaDesc
-        canonical
-        opengraphTitle
-        opengraphDescription
-        opengraphImage { sourceUrl }
-        twitterTitle
-        twitterDescription
-        twitterImage { sourceUrl }
-        schema { raw }
-      }
-      inlineDynamicCssGrouped {
-        emoji
-        global
-        main
-        dynamic
-      }
-    }
-  }
-`;
-
 export function WpPage({ fixedUri, fixedSlug }) {
   const location = useLocation();
   const { pathname } = location;
@@ -145,9 +161,9 @@ export function WpPage({ fixedUri, fixedSlug }) {
   const { homeData } = useOutletContext() || {};
   const REGIONS = ["okanagan", "calgary", "lowermainland", "edmonton", "vancouverisland"];
 
-  /* =========================================================
-   * CLEAN PATH
-   * ========================================================= */
+  // =========================================================
+  // 🔹 LIMPIAR PATH (quitar región y /service)
+  // =========================================================
   const cleanPathname = useMemo(() => {
     const parts = pathname.split("/").filter(Boolean);
 
@@ -158,45 +174,41 @@ export function WpPage({ fixedUri, fixedSlug }) {
     return "/" + parts.join("/") + "/";
   }, [pathname]);
 
-  /* =========================================================
-   * BLOG DETECTION
-   * ========================================================= */
-  const isBlogIndex = cleanPathname === "/blog/";
-
-  /* =========================================================
-   * URI CANDIDATES
-   * ========================================================= */
+  // =========================================================
+  // 🔹 URIs CANDIDATAS (PAGE/POST → SERVICE)
+  // =========================================================
   const uriCandidates = useMemo(() => {
     if (fixedUri) return [fixedUri];
     if (fixedSlug) return [`/${fixedSlug}/`];
 
-    if (cleanPathname === "/home/") return ["/home/"];
+    if (cleanPathname === "/home/") {
+      return ["/home/"];
+    }
 
+    // 🔑 orden importa
     return [
-      cleanPathname,              // Page / Post
-      `/service${cleanPathname}`, // Service fallback
+      cleanPathname,               // Page o Post
+      `/service${cleanPathname}`,  // Service (fallback)
     ];
   }, [fixedUri, fixedSlug, cleanPathname]);
 
-  /* =========================================================
-   * QUERY: PAGE / POST
-   * ========================================================= */
+  // =========================================================
+  // 🔹 QUERY 1: PAGE / POST
+  // =========================================================
   const {
     data: primaryData,
     loading: loadingPrimary,
   } = useQuery(NODE_BY_PATH, {
     variables: { uri: uriCandidates[0] },
-    skip: isBlogIndex,
     fetchPolicy: "cache-and-network",
   });
 
   const primaryNode = primaryData?.contentNode;
 
-  /* =========================================================
-   * QUERY: SERVICE
-   * ========================================================= */
+  // =========================================================
+  // 🔹 QUERY 2: SERVICE (SOLO SI NO EXISTE EL PRIMERO)
+  // =========================================================
   const shouldTryService =
-    !isBlogIndex &&
     !loadingPrimary &&
     !primaryNode &&
     uriCandidates.length > 1;
@@ -210,33 +222,24 @@ export function WpPage({ fixedUri, fixedSlug }) {
     fetchPolicy: "cache-and-network",
   });
 
-  /* =========================================================
-   * QUERY: BLOG PAGE
-   * ========================================================= */
-  const { data: blogData } = useQuery(GET_POSTS_PAGE, {
-    skip: !isBlogIndex,
-  });
-
-  /* =========================================================
-   * FINAL NODE RESOLUTION
-   * ========================================================= */
-  const node =
-    blogData?.pageForPosts ||
-    primaryNode ||
-    serviceData?.contentNode;
-
+  const node = primaryNode || serviceData?.contentNode;
   const loading = loadingPrimary || loadingService;
 
-  /* =========================================================
-   * HOME DETECTION
-   * ========================================================= */
+  // =========================================================
+  // 🔹 HOME DETECTION
+  // =========================================================
   const isHome =
-    ["/okanagan", "/calgary", "/edmonton", "/lowermainland", "/vancouverisland", "/home", "/home/"]
-      .includes(pathname);
+    pathname === "/okanagan" ||
+    pathname === "/calgary" ||
+    pathname === "/edmonton" ||
+    pathname === "/lowermainland" ||
+    pathname === "/vancouverisland" ||
+    pathname === "/home" ||
+    pathname === "/home/";
 
-  /* =========================================================
-   * SIDE EFFECTS
-   * ========================================================= */
+  // =========================================================
+  // 🔹 SIDE EFFECTS
+  // =========================================================
   useEffect(() => {
     if (isHome) {
       document.title = "Milani Plumbing Heating & Air Conditioning";
@@ -245,17 +248,23 @@ export function WpPage({ fixedUri, fixedSlug }) {
     }
   }, [node?.title, isHome]);
 
+  // hooks
   useWpGlobalAssets();
-  useWpBodyAttributesFromWp({ data: primaryData || serviceData || blogData });
+  useWpBodyAttributesFromWp({ data: primaryData || serviceData });
   usePageCss(node);
-  useWpReflow([node?.id || null]);
+
+  // 🔑 CLAVE DEL REFLOW
+  const reflowKey = node?.uri || cleanPathname;
+  useWpReflow([reflowKey]);
+
   useIframeReflow(node?.contentRendered);
+
 
   if (!node && !loading) return null;
 
-  /* =========================================================
-   * SANITIZE HTML
-   * ========================================================= */
+  // =========================================================
+  // 🔹 SANITIZE HTML
+  // =========================================================
   const safeHtml = DOMPurify.sanitize(node?.contentRendered || "", {
     ADD_TAGS: ["iframe"],
     ADD_ATTR: [
@@ -270,26 +279,40 @@ export function WpPage({ fixedUri, fixedSlug }) {
     ],
   });
 
-  /* =========================================================
-   * RENDER
-   * ========================================================= */
+  // =========================================================
+  // 🔹 RENDER
+  // =========================================================
   return (
     <>
       {!loading && node?.seo && (
         <Helmet key={`${node?.id}-${node?.uri}`}>
-          {node.seo.metaDesc && <meta name="description" content={node.seo.metaDesc} />}
-          {node.seo.canonical && <link rel="canonical" href={node.seo.canonical} />}
-          {node.seo.opengraphTitle && <meta property="og:title" content={node.seo.opengraphTitle} />}
+          {node.seo.metaDesc && (
+            <meta name="description" content={node.seo.metaDesc} />
+          )}
+          {node.seo.canonical && (
+            <link rel="canonical" href={node.seo.canonical} />
+          )}
+          {node.seo.opengraphTitle && (
+            <meta property="og:title" content={node.seo.opengraphTitle} />
+          )}
           {node.seo.opengraphDescription && (
-            <meta property="og:description" content={node.seo.opengraphDescription} />
+            <meta
+              property="og:description"
+              content={node.seo.opengraphDescription}
+            />
           )}
           {node.seo.opengraphImage?.sourceUrl && (
-            <meta property="og:image" content={node.seo.opengraphImage.sourceUrl} />
+            <meta
+              property="og:image"
+              content={node.seo.opengraphImage.sourceUrl}
+            />
           )}
           <meta property="og:type" content="website" />
           <meta name="twitter:card" content="summary_large_image" />
           {node.seo.schema?.raw && (
-            <script type="application/ld+json">{node.seo.schema.raw}</script>
+            <script type="application/ld+json">
+              {node.seo.schema.raw}
+            </script>
           )}
         </Helmet>
       )}

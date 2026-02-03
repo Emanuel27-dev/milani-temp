@@ -1,4 +1,4 @@
-// hooks/useIPLocation.js
+// src/hooks/useIPLocation.js
 import { useEffect, useState } from "react";
 import axios from "axios";
 

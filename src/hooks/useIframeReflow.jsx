@@ -1,20 +1,13 @@
+// src/hooks/useIframeReflow.jsx
 import { useEffect } from "react";
 
 export default function useIframeReflow(html) {
   useEffect(() => {
     if (!html) return;
 
-    // Esperar a que el DOM esté realmente pintado
-    requestAnimationFrame(() => {
-      const iframes = document.querySelectorAll("iframe");
+    // ❌ NO forzar reload de iframe en Salient
+    // Salient maneja internamente iframes y sliders
 
-      iframes.forEach((iframe) => {
-        const src = iframe.getAttribute("src");
-        if (!src) return;
-
-        // 🔁 Fuerza re-creación del iframe
-        iframe.setAttribute("src", src);
-      });
-    });
+    console.log("ℹ️ useIframeReflow: omitido para compatibilidad Salient");
   }, [html]);
 }
