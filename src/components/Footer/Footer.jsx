@@ -165,11 +165,6 @@ export function Footer({ switchFormModal, currentPhone, currentLocation }) {
               rights reserved. View our <span>Privacy</span> &{" "}
               <span>Security Policy</span>
             </p>
-            <p>
-              ® ™ Trademarks of AM Royalties Limited Partnership used under
-              license by LoyaltyOne, Co. and Milani Plumbing, Heating & Air
-              Conditioning.
-            </p>
           </div>
         </div>
       </footer>

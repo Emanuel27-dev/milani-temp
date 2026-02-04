@@ -360,9 +360,12 @@
 }
 
 .headFooter .button:hover{
-  background: #fff;
+      background: #000;
+    color: #fff;
 }
-
+.headFooter .button:hover img{
+  filter: invert(1);
+}
 @media (width < 600px) {
   .header-below__details button{
    width: 100%;
@@ -393,7 +396,6 @@
 
   .location-tooltip {
     width: 95%;
-    /* max-width: 400px; */
   }
 
   .tooltip-btn {
