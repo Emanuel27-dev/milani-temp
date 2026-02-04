@@ -295,85 +295,166 @@ export function Layout() {
     setLayoutReady(true);
   }, [locationRouter.pathname]);
 
-  // =========================================================
-  // 🟢 NUEVO: PINTAR CIUDADES + SUBTÍTULO + TELÉFONO + DIRECCIÓN
-  // =========================================================
-  useEffect(() => {
-    if (!layoutReady || !currentRegion) return;
+// =========================================================
+// 🟢 PINTAR REGION / CIUDAD / TELÉFONO + SERVICE LOCATIONS
+// (SPA + RELOAD SAFE)
+// =========================================================
+useEffect(() => {
+  if (!layoutReady) return;
 
-    console.log("🟡 [Cities] Esperando HTML de WP…");
+  console.log("🟡 [Milani] Preparando pintado de datos…");
 
-    let attempts = 0;
-    const maxAttempts = 40;
+  let attempts = 0;
+  const maxAttempts = 60;
+  let raf1, raf2;
 
-    const interval = setInterval(() => {
-      attempts++;
+  const paint = () => {
+    let didUpdate = false;
 
-      const serviceRoot = document.querySelector("#service-locations");
+    const regionData = currentRegion
+      ? getRegionFromLocations(currentRegion)
+      : null;
 
-      if (!serviceRoot) {
-        if (attempts >= maxAttempts) {
-          console.warn("🔴 [Cities] No se encontró #service-locations");
-          clearInterval(interval);
-        }
-        return;
+    /* =====================================================
+     * 1️⃣ SPANS: region / city / phone
+     * ===================================================== */
+    const regionEl = document.getElementById("region-milani");
+    const cityEl = document.getElementById("city-milani");
+    const phoneEl = document.getElementById("phone-milani");
+
+    // REGION
+    if (regionEl && regionData?.region) {
+      if (regionEl.textContent !== regionData.region) {
+        regionEl.textContent = regionData.region;
+        didUpdate = true;
+        console.log("✅ [Milani] Región (span):", regionData.region);
       }
+    }
 
-      console.log("🟢 [Cities] #service-locations encontrado");
-
-      const region = getRegionFromLocations(currentRegion);
-
-      if (!region || !region.cities?.length) {
-        console.warn("🔴 [Cities] Región sin ciudades:", currentRegion);
-        clearInterval(interval);
-        return;
+    // CIUDAD
+    if (cityEl && currentLocation) {
+      if (cityEl.textContent !== currentLocation) {
+        cityEl.textContent = currentLocation;
+        didUpdate = true;
+        console.log("✅ [Milani] Ciudad (span):", currentLocation);
       }
+    }
 
-      // Subtítulo
-      const subtitle = serviceRoot.querySelector(".text-subtitle-locations h3");
-      if (subtitle) {
-        subtitle.textContent = `Greater ${region.region} Locations`;
-        console.log("✅ [Cities] Subtítulo actualizado:", subtitle.textContent);
-      }
-
-      // Teléfono
-      const phoneEl = serviceRoot.querySelector(".section-location-number h3");
-      if (phoneEl && currentPhone) {
+    // TELÉFONO
+    if (phoneEl && currentPhone) {
+      if (phoneEl.textContent !== currentPhone) {
         phoneEl.textContent = currentPhone;
-        console.log("✅ [Cities] Teléfono actualizado:", currentPhone);
+        didUpdate = true;
+        console.log("✅ [Milani] Teléfono (span):", currentPhone);
       }
+    }
 
-      // Dirección
-      const addressEl = serviceRoot.querySelector("p");
-      if (addressEl && region.address) {
-        addressEl.textContent = region.address;
-        console.log("✅ [Cities] Dirección actualizada:", region.address);
-      }
+    /* =====================================================
+     * 2️⃣ SERVICE LOCATIONS (si existe)
+     * ===================================================== */
+    const serviceRoot = document.getElementById("service-locations");
 
-      // Ciudades
-      const ul = serviceRoot.querySelector("ul");
-      if (!ul) {
-        console.warn("🔴 [Cities] No se encontró UL de ciudades");
-        return;
-      }
-
-      ul.innerHTML = "";
-      region.cities.forEach((city) => {
-        const li = document.createElement("li");
-        li.textContent = city.name;
-        ul.appendChild(li);
-      });
-
-      console.log(
-        "✅ [Cities] Ciudades pintadas:",
-        region.cities.map((c) => c.name)
+    if (serviceRoot && regionData) {
+      // TELÉFONO
+      const phoneH3 = serviceRoot.querySelector(
+        ".section-location-number h3"
       );
+      if (phoneH3 && currentPhone) {
+        if (phoneH3.textContent !== currentPhone) {
+          phoneH3.textContent = currentPhone;
+          didUpdate = true;
+          console.log("✅ [Milani] Teléfono (service):", currentPhone);
+        }
+      }
 
+      // DIRECCIÓN / LABEL
+      const phoneP = serviceRoot.querySelector(
+        ".section-location-number p"
+      );
+      const addressText =
+        regionData.address || regionData.label || "";
+
+      if (phoneP && addressText) {
+        if (phoneP.textContent !== addressText) {
+          phoneP.textContent = addressText;
+          didUpdate = true;
+          console.log("✅ [Milani] Dirección (service):", addressText);
+        }
+      }
+
+      // SUBTÍTULO
+      const subtitle = serviceRoot.querySelector(
+        ".text-subtitle-locations h3"
+      );
+      const subtitleText = `${regionData.region} Locations`;
+
+      if (subtitle && subtitle.textContent !== subtitleText) {
+        subtitle.textContent = subtitleText;
+        didUpdate = true;
+        console.log("✅ [Milani] Subtítulo:", subtitleText);
+      }
+
+      // CIUDADES
+      const ul = serviceRoot.querySelector("ul");
+      if (ul && Array.isArray(regionData.cities)) {
+        const existing = ul.querySelectorAll("li").length;
+        if (existing !== regionData.cities.length) {
+          ul.innerHTML = "";
+          regionData.cities.forEach((city) => {
+            const li = document.createElement("li");
+            li.textContent = city.name;
+            ul.appendChild(li);
+          });
+          didUpdate = true;
+          console.log(
+            "✅ [Milani] Ciudades:",
+            regionData.cities.map((c) => c.name)
+          );
+        }
+      }
+    }
+
+    return didUpdate;
+  };
+
+  const interval = setInterval(() => {
+    attempts++;
+
+    const updated = paint();
+
+    if (updated) {
+      console.log("🟢 [Milani] Datos pintados correctamente");
       clearInterval(interval);
-    }, 200);
+      return;
+    }
 
-    return () => clearInterval(interval);
-  }, [layoutReady, currentRegion, currentPhone, locationRouter.pathname]);
+    if (attempts >= maxAttempts) {
+      console.log("ℹ️ [Milani] No hay elementos a pintar (skip)");
+      clearInterval(interval);
+    }
+  }, 150);
+
+  // ⏱️ doble RAF → DOM real (WP + Salient)
+  raf1 = requestAnimationFrame(() => {
+    raf2 = requestAnimationFrame(() => {
+      paint();
+    });
+  });
+
+  return () => {
+    clearInterval(interval);
+    cancelAnimationFrame(raf1);
+    cancelAnimationFrame(raf2);
+  };
+
+}, [
+  layoutReady,
+  locationRouter.pathname,
+]);
+
+
+
+
 
   // ---------------------------------------------------------
   // Queries existentes (NO TOCAR)

@@ -12,6 +12,7 @@ import { useWpBodyAttributesFromWp } from "./hooks/useWpBodyAttributesFromWp";
 import { usePageCss } from "./hooks/usePageCss";
 import { useWpReflow } from "./hooks/useWpReflow";
 import useIframeReflow from "./hooks/useIframeReflow";
+import { PostHeaderUnderImage } from "./components/Post/PostHeaderUnderImage";
 
 // =========================================================
 // 🔹 QUERY PRINCIPAL
@@ -61,6 +62,8 @@ const NODE_BY_PATH = gql`
         contentRendered
         wpbCss
         vcCustomCss
+        date
+        modified
         seo {
           title
           metaDesc
@@ -77,6 +80,21 @@ const NODE_BY_PATH = gql`
           }
           schema {
             raw
+          }
+        }
+        categories {
+          nodes {
+            name
+            slug
+            uri
+          }
+        }
+        featuredImage {
+          node {
+            sourceUrl
+            srcSet
+            sizes
+            altText
           }
         }
         inlineDynamicCssGrouped {
@@ -317,11 +335,17 @@ export function WpPage({ fixedUri, fixedSlug }) {
         </Helmet>
       )}
 
+      {/* HEADER DE POST (layout, no contenido) */}
+      {node?.__typename === "Post" && (
+        <PostHeaderUnderImage post={node} />
+      )}
+
       <article
         key={node?.id}
         className="wpb-content-wrapper"
         dangerouslySetInnerHTML={{ __html: safeHtml }}
       />
+
     </>
   );
 }
