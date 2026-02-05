@@ -367,6 +367,9 @@
   filter: invert(1);
 }
 @media (width < 600px) {
+  .location-tooltip__buttons .tooltip-btn--primary{
+    color: #fff;
+  }
   .header-below__details button{
    width: 100%;
     max-width: 100%;
@@ -592,6 +595,10 @@
 
 /* Opcional: ocultar pipes en móvil */
 @media (max-width: 640px) {
+  .location-tooltip__buttons{
+    justify-content: center;
+  }
+  
   .header {
     height: auto;
   }
@@ -1794,7 +1801,12 @@
             align-items: center;
             z-index: 400;
         }
-
+        @media only screen and (max-width: 660px) {
+          .modal-overlay-form {
+            
+            z-index: 40000;
+        }
+        }
         .form-container {
             background-color: var(--color-white);
             border-radius: 12px;
