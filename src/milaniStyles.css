@@ -1051,13 +1051,13 @@
 .buttons {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
 }
 
 .buttons-block {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
   flex-grow: 1;
 }
 
@@ -1123,7 +1123,10 @@
   transition: transform 0.35s ease;
   box-shadow: 0 -2px 10px rgba(0,0,0,0.25);
 }
-
+.sticky-headFooter .buttons,
+.sticky-headFooter .buttons-block{
+  gap: 20px; 
+}
 .sticky-headFooter.visible {
   transform: translateY(0); /* 🔥 MUESTRA */
 }

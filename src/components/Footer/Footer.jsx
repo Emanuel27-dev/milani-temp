@@ -37,10 +37,14 @@ export function Footer({ switchFormModal, currentPhone, currentLocation }) {
 
             <div className="buttons">
               <div className="buttons-block">
-                <div className="button" onClick={switchFormModal}>
+                <a
+  href={`tel:+1${phone.replace(/\D/g, "")}`}
+>
+                  <div className="button">
                   <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
                   <span>{phone}</span>
                 </div>
+                </a>
 
                 <div
                   className="button button-book"
@@ -50,10 +54,7 @@ export function Footer({ switchFormModal, currentPhone, currentLocation }) {
                 </div>
               </div>
 
-              <div
-                className="button button-chat"
-                onClick={switchFormModal}
-              >
+              <div className="button button-chat">
                 <img src={messageIcon} alt="message" className="btn-icon" />
                 <span>CHAT WITH US</span>
               </div>

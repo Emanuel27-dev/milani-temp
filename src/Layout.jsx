@@ -394,13 +394,17 @@ useEffect(() => {
         console.log("✅ [Milani] Subtítulo:", subtitleText);
       }
 
-      // CIUDADES
+      // CIUDADES (ORDEN ALFABÉTICO)
       const ul = serviceRoot.querySelector("ul");
       if (ul && Array.isArray(regionData.cities)) {
+        const sortedCities = [...regionData.cities].sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+
         const existing = ul.querySelectorAll("li").length;
-        if (existing !== regionData.cities.length) {
+        if (existing !== sortedCities.length) {
           ul.innerHTML = "";
-          regionData.cities.forEach((city) => {
+          sortedCities.forEach((city) => {
             const li = document.createElement("li");
             li.textContent = city.name;
             ul.appendChild(li);
@@ -408,7 +412,7 @@ useEffect(() => {
           didUpdate = true;
           console.log(
             "✅ [Milani] Ciudades:",
-            regionData.cities.map((c) => c.name)
+            sortedCities.map((c) => c.name)
           );
         }
       }
@@ -452,10 +456,6 @@ useEffect(() => {
   locationRouter.pathname,
 ]);
 
-
-
-
-
   // ---------------------------------------------------------
   // Queries existentes (NO TOCAR)
   // ---------------------------------------------------------
@@ -467,6 +467,31 @@ useEffect(() => {
 
   const [showFormModal, setShowFormModal] = useState(false);
   const switchFormModal = () => setShowFormModal(!showFormModal);
+  
+
+  // =========================================================
+// 🟢 NUEVO: ACTIVAR FORM MODAL DESDE ELEMENTOS .nectar-cta
+// (SPA + RELOAD SAFE + HTML WP)
+// =========================================================
+useEffect(() => {
+  const handleNectarCTA = (e) => {
+    const cta = e.target.closest(".nectar-cta .link_wrap");
+    if (!cta) return;
+
+    e.preventDefault();
+    console.log("🟣 [Milani] CTA detectado (.nectar-cta) → abrir formulario");
+
+    switchFormModal();
+  };
+
+  document.addEventListener("click", handleNectarCTA);
+
+  return () => {
+    document.removeEventListener("click", handleNectarCTA);
+  };
+}, [locationRouter.pathname]);
+
+
 
   if (loading || !data) return null;
 

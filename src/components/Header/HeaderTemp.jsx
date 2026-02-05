@@ -1,3 +1,4 @@
+// src/components/Header/HeaderTemp.jsx
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import lupa from "./../../assets/lupa.svg";
@@ -10,7 +11,6 @@ import logo from "./../../assets/logoFooter.svg";
 import wsspIcon from "./../../assets/Phone.svg";
 import messageIcon from "./../../assets/chat.svg";
 import { useStickyFooterBar } from "../../hooks/useStickyFooterBar";
-
 
 function normalizeServicePath(url) {
   const path = wpUrlToClientPath(url);
@@ -27,7 +27,6 @@ function normalizeServicePath(url) {
     wasService: false,
   };
 }
-
 
 export function HeaderTemp({
   data,
@@ -48,8 +47,8 @@ export function HeaderTemp({
   //   !localStorage.getItem("currentLocation")
   // );
   const [showToolTip, setShowToolTip] = useState(() => {
-  return !localStorage.getItem("locationTooltipSeen");
-});
+    return !localStorage.getItem("locationTooltipSeen");
+  });
 
   const [showZipModal, setShowZipModal] = useState(false);
 
@@ -73,6 +72,21 @@ export function HeaderTemp({
     localStorage.setItem("currentLocation", currentLocation);
   }, [currentLocation]);
 
+  // =========================================================
+  // 🟢 NUEVO: AUTO-CERRAR TOOLTIP A LOS 6s (SIN ROMPER LÓGICA)
+  // =========================================================
+  useEffect(() => {
+    if (!showToolTip) return;
+    if (localStorage.getItem("locationTooltipSeen")) return;
+
+    const timer = setTimeout(() => {
+      localStorage.setItem("locationTooltipSeen", "true");
+      setShowToolTip(false);
+    }, 6000);
+
+    return () => clearTimeout(timer);
+  }, [showToolTip]);
+
   // Codigo para que el boton GetFreeEstimate funcione
   useEffect(() => {
     const handleClick = (e) => {
@@ -88,25 +102,22 @@ export function HeaderTemp({
     };
   }, []);
 
+  const regionToSlug = (region) => {
+    if (!region) return "";
+    return region.toLowerCase().replace(/\s+/g, "");
+  };
 
-const regionToSlug = (region) => {
-  if (!region) return "";
-  return region.toLowerCase().replace(/\s+/g, "");
-};
+  const withRegion = (path) => {
+    if (!currentRegion) return path;
 
-const withRegion = (path) => {
-  if (!currentRegion) return path;
+    const regionSlug = regionToSlug(currentRegion);
 
-  const regionSlug = regionToSlug(currentRegion);
+    if (path.startsWith(`/${regionSlug}`)) {
+      return path;
+    }
 
-  if (path.startsWith(`/${regionSlug}`)) {
-    return path;
-  }
-
-  return `/${regionSlug}${path}`;
-};
-
-
+    return `/${regionSlug}${path}`;
+  };
 
   // 🔹 Usa los menús jerárquicos ya preparados en WP
   const mainItems =
@@ -116,7 +127,14 @@ const withRegion = (path) => {
     <>
       <header className="header">
         <div className="header-container">
-          <Link to={currentRegion ? `/${currentRegion.toLowerCase().replace(/\s+/g, "")}` : "/"} state={{skipRegionRedirect: true}}>
+          <Link
+            to={
+              currentRegion
+                ? `/${currentRegion.toLowerCase().replace(/\s+/g, "")}`
+                : "/"
+            }
+            state={{ skipRegionRedirect: true }}
+          >
             <div className="logo-block">
               <img src={data.salientLogo} alt="Milani Logo" className="logo" />
             </div>
@@ -291,15 +309,19 @@ const withRegion = (path) => {
             </figure>
             <div className="buttons">
               <div className="buttons-block">
-                <div className="button" onClick={switchFormModal}>
+                <a
+  href={`tel:+1${currentPhone.replace(/\D/g, "")}`}
+>
+                  <div className="button">
                   <img src={wsspIcon} alt="whatsapp" className="btn-icon" />
                   <span>{currentPhone}</span>
                 </div>
+                </a>
                 <div className="button button-book" onClick={switchFormModal}>
                   BOOK NOW
                 </div>
               </div>
-              <div className="button button-chat" onClick={switchFormModal}>
+              <div className="button button-chat">
                 <img src={messageIcon} alt="message" className="btn-icon" />
                 <span>CHAT WITH US</span>
               </div>
@@ -312,8 +334,8 @@ const withRegion = (path) => {
         <div className="header-container header-container--below">
           <div className="header-below__info">
             <h4 className="header-below__headline">
-              Fast, Fair and Reliable Service in <span>{currentLocation}.</span>{" "}
-              100% Guarantee
+              Fast, Fair and Reliable Service in{" "}
+              <span>{currentLocation}.</span> 100% Guarantee
             </h4>
             <div className="header-below__details">
               <button
@@ -354,8 +376,8 @@ const withRegion = (path) => {
                   <button
                     className="tooltip-btn tooltip-btn--secondary"
                     onClick={() => {
-                         localStorage.setItem("locationTooltipSeen", "true");
-                          setShowToolTip(false);
+                      localStorage.setItem("locationTooltipSeen", "true");
+                      setShowToolTip(false);
                     }}
                   >
                     CANCEL
@@ -366,15 +388,18 @@ const withRegion = (path) => {
           </div>
 
           <div className="buttons-header">
-  <button className="button" onClick={switchFormModal}>
-    <img src={wassp} alt="phone" className="btn-icon" />
-    <div>{currentPhone || "604.888.8888"}</div>
-  </button>
-  <button className="button" onClick={switchFormModal}>
-    BOOK NOW
-  </button>
-</div>
-
+            <a
+  href={`tel:+1${currentPhone.replace(/\D/g, "")}`}
+>
+              <button className="button">
+              <img src={wassp} alt="phone" className="btn-icon" />
+              <div>{currentPhone || "604.888.8888"}</div>
+            </button>
+            </a>
+            <button className="button" onClick={switchFormModal}>
+              BOOK NOW
+            </button>
+          </div>
         </div>
 
         <ZipModal
@@ -388,7 +413,11 @@ const withRegion = (path) => {
           setCurrentRegion={setCurrentRegion}
         />
 
-        {showFormModal ? <FormModal setShowFormModal={setShowFormModal} /> : ""}
+        {showFormModal ? (
+          <FormModal setShowFormModal={setShowFormModal} />
+        ) : (
+          ""
+        )}
       </div>
     </>
   );
