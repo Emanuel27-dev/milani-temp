@@ -1061,7 +1061,7 @@
   }
   .header-below__info{
     width: 100%;
-    text-align: center;
+    text-align: left;
   }
 }
 
@@ -1420,8 +1420,8 @@
   .header-below__info {
     gap: 8px;
     margin-bottom: 10px;
-    text-align: center;
-        align-items: center;
+    text-align: left;
+        align-items: flex-start;
         width: 100%;
   }
   .location-btn__city {
@@ -1429,8 +1429,8 @@
   }
 
   .buttons-header{
-            align-items: center;
-        justify-content: center;
+    align-items: center;
+    justify-content: flex-start;
   }
  
   button.location-btn {
@@ -1844,6 +1844,10 @@
             z-index: 400;
         }
         @media only screen and (max-width: 660px) {
+          .headFooter .head{
+            flex-direction: column-reverse;
+                gap: 10px;
+          }
           .modal-overlay-form {
             
             z-index: 40000;

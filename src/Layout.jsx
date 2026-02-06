@@ -470,7 +470,7 @@ useEffect(() => {
   
 
   // =========================================================
-// 🟢 NUEVO: ACTIVAR FORM MODAL DESDE ELEMENTOS .nectar-cta
+// 🟢 NUEVO: ACTIVAR FORM MODAL DESDE ELEMENTOS .btn_showmodal
 // (SPA + RELOAD SAFE + HTML WP)
 // =========================================================
 useEffect(() => {
