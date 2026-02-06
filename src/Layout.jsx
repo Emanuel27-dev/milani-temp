@@ -475,11 +475,11 @@ useEffect(() => {
 // =========================================================
 useEffect(() => {
   const handleNectarCTA = (e) => {
-    const cta = e.target.closest(".nectar-cta .link_wrap");
+    const cta = e.target.closest(".btn_showmodal .link_wrap");
     if (!cta) return;
 
     e.preventDefault();
-    console.log("🟣 [Milani] CTA detectado (.nectar-cta) → abrir formulario");
+    console.log("🟣 [Milani] CTA detectado (.btn_showmodal) → abrir formulario");
 
     switchFormModal();
   };
