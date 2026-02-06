@@ -1411,9 +1411,13 @@
     justify-content: center;
     gap: 10px;
   }
+  .header-below{
+    padding: 22px 0 17px 0;
+  }
   .header-below .header-container .header-below__headline {
     font-size: 24px;
-    line-height: 30px !important;
+        line-height: 30px !important;
+        margin-bottom: -4px;
   }
   .header-below .header-container .header-below__subtitle {
     font-size: 16px;
