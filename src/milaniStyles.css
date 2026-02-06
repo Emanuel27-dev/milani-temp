@@ -1412,7 +1412,8 @@
     gap: 10px;
   }
   .header-below .header-container .header-below__headline {
-    font-size: 26px;
+    font-size: 24px;
+    line-height: 30px !important;
   }
   .header-below .header-container .header-below__subtitle {
     font-size: 16px;
