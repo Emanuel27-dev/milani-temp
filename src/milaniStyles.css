@@ -1101,6 +1101,7 @@
 }
 
 .footer-header h4 {
+  font-family: 'Archivo Condensed ExtraBold';
   color: var(--color-white);
 }
 
@@ -1891,6 +1892,13 @@ display: flex;
 
 
 @media (max-width: 660px) {
+  .contact-section .badges2{
+    order: 3;
+  }
+  .footer-header h4 {
+    font-size:28px;
+        line-height:30px
+  }
   .headFooter .head{
     padding-bottom: 0px!important;
   }
@@ -1907,19 +1915,21 @@ display: flex;
     margin-bottom: 5px;
   }
   .contact-section .contact-info .email {
-    font-size: 13px;
+    font-size: 15px;
   }
   .contact-section .tsbc-info{
-    font-size: 10px;
+    font-size: 12px;
     align-items: anchor-center;
   }
   .contact-section .contact-box1{
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   }
   .contact-section .bbb-figure img{
     width: 80%;
   }
-     .contact-section  .canadian-business span,
+  .contact-section  .canadian-business span{
+    font-size: 15px;
+  }
      .container-footer .footer-bottom  p {
         font-size: 12px;
     }
