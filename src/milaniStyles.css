@@ -1889,7 +1889,9 @@ display: flex;
    font-size: 31px;
 }
 
-
+.contact-section .contact-info .email a:hover{
+    color: #ffc527;
+  }
 
 @media (max-width: 660px) {
   .contact-section .badges2{
@@ -1917,6 +1919,7 @@ display: flex;
   .contact-section .contact-info .email {
     font-size: 15px;
   }
+  
   .contact-section .tsbc-info{
     font-size: 12px;
     align-items: anchor-center;
