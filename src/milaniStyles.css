@@ -367,9 +367,15 @@
   filter: invert(1);
 }
 @media (width < 600px) {
+  .headFooter .head{
+    padding-bottom: 0px!important;
+  }
+  .buttons-header button{
+    font-size: 16px;
+  }
   .sticky-headFooter .buttons, .sticky-headFooter .buttons-block ,
   .headFooter .buttons{
-    gap: 10px!important;
+    gap: 15px!important;
 }
       .footer {
         padding: 40px 0 40px 0!important;
@@ -388,7 +394,10 @@
  }
  .buttons .button-book,
  .buttons .button{
-  font-size: 14px!important;
+  font-size: 16px!important;
+ }
+ .headFooter img.imgFooter {
+        max-width: 240px !important;
  }
   .location-tooltip::before{
         left: 50%;
