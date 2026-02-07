@@ -135,13 +135,12 @@ export function Footer({ switchFormModal, currentPhone, currentLocation }) {
                 <div className="phone">{phone}</div>
                 <div className="email">customerservice@milani.ca</div>
               </div>
-
-              <figure className="bbb-figure">
-                <img src={bbb} alt="bbb" />
-              </figure>
             </div>
 
             <div className="badges2">
+              <figure className="bbb-figure">
+                <img src={bbb} alt="bbb" />
+              </figure>
               <div className="tsbc-info">
                 <img src={tuerca} alt="tuerca" />
                 <span>TSBC Licence: LEL0209964 / LGA0001985</span>

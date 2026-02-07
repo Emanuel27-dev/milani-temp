@@ -366,108 +366,7 @@
 .headFooter .button:hover img{
   filter: invert(1);
 }
-@media (width < 600px) {
-  .headFooter .head{
-    padding-bottom: 0px!important;
-  }
-  .buttons-header button{
-    font-size: 16px;
-  }
-  .sticky-headFooter .buttons, .sticky-headFooter .buttons-block ,
-  .headFooter .buttons{
-    gap: 15px!important;
-}
-      .footer {
-        padding: 40px 0 40px 0!important;
-    }
-    .contact-section{
-          margin-bottom: 20px !important;
-    }
-  .location-tooltip{
-        top: calc(70% + 10px) !important;
-  }
-  #service-locations ul{
-    grid-template-columns: repeat(3, 1fr)!important;
-  }
- #service-locations ul li{
-  font-size: 12px!important;
- }
- .buttons .button-book,
- .buttons .button{
-  font-size: 16px!important;
- }
- .headFooter img.imgFooter {
-        max-width: 240px !important;
- }
-  .location-tooltip::before{
-        left: 50%;
-  }
-  .location-tooltip__buttons .tooltip-btn--primary{
-    color: #fff;
-  }
-  .header-below__details button{
-   width: 100%;
-    max-width: 100%;
-  }
-  .header-below__details{
-    gap: 10px;
-    flex-wrap: wrap;
-    flex-direction: column-reverse;
-  }
-  .header-container--below {
-    gap: 10px;
-    flex-direction: column-reverse;
-  }
 
-  .header-below__info {
-    order: 1;
-    gap: 10px !important;
-  }
-
-  
-
-  .location-btn {
-    flex: 1;
-  }
-
-  .buttons-header {
-    width: 100%;
-    gap: 20px !important;
-  }
-
-
-  .location-tooltip {
-    width: 95%;
-  }
-
-  .tooltip-btn {
-  flex: 1;
-  padding: 6px 10px;
-  border: 1px solid var(--color-red);
-  color: var(--color-red);
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.tooltip-btn--primary {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-
-}
-
-@media (width <= 375px) {
-  .buttons-header {
-    flex-wrap: wrap;
-    gap: 10px !important;
-  }
-}
 
 
 
@@ -578,7 +477,7 @@
   margin-bottom: 0;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 660px) {
   .modal-dialog {
     max-width: 94%;
   }
@@ -1274,7 +1173,11 @@
   gap: 30px;
   margin-bottom: 78px;
   max-width: 1184px;
-  /* border: 1px solid white; */
+}
+.contact-section .badges2{
+display: flex;
+    align-items: end;
+    gap: 10px;  
 }
 
 .contact-info {
@@ -1983,4 +1886,149 @@
    font-family: Archivo SemiCondensed Medium;
    font-weight: 500;
    font-size: 31px;
+}
+
+
+
+@media (max-width: 660px) {
+  .headFooter .head{
+    padding-bottom: 0px!important;
+  }
+  .contact-section .canadian-business figure{
+        justify-content: flex-start;
+    width: 48px;
+    height: 65px;
+  }
+  .contact-section .contact-info p {
+    font-size: 18px;
+    margin-bottom: -20px !important;
+  }
+  .contact-section .contact-info .phone{
+    margin-bottom: 5px;
+  }
+  .contact-section .contact-info .email {
+    font-size: 13px;
+  }
+  .contact-section .tsbc-info{
+    font-size: 10px;
+    align-items: anchor-center;
+  }
+  .contact-section .contact-box1{
+  margin-bottom: 30px;
+  }
+  .contact-section .bbb-figure img{
+    width: 80%;
+  }
+     .contact-section  .canadian-business span,
+     .container-footer .footer-bottom  p {
+        font-size: 12px;
+    }
+   
+  .buttons-header button{
+    font-size: 16px;
+  }
+  .sticky-headFooter .buttons, .sticky-headFooter .buttons-block ,
+  .headFooter .buttons{
+    gap: 15px!important;
+}
+      .footer {
+        padding: 40px 0 40px 0!important;
+    }
+    .contact-section{
+          margin-bottom: 20px !important;
+    }
+  .location-tooltip{
+        top: calc(70% + 10px) !important;
+  }
+  #service-locations ul{
+    grid-template-columns: repeat(3, 1fr)!important;
+  }
+ #service-locations ul li{
+  font-size: 12px!important;
+ }
+ .buttons .button-book,
+ .buttons .button{
+  font-size: 16px!important;
+ }
+ .headFooter img.imgFooter {
+        max-width: 240px !important;
+ }
+  .location-tooltip::before{
+        left: 50%;
+  }
+  .location-tooltip__buttons .tooltip-btn--primary{
+    color: #fff;
+  }
+  .header-below__details button{
+   width: 100%;
+    max-width: 100%;
+  }
+  .header-below__details{
+    gap: 10px;
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
+  }
+  .header-container--below {
+    gap: 10px;
+    flex-direction: column-reverse;
+  }
+
+  .header-below__info {
+    order: 1;
+    gap: 10px !important;
+  }
+
+  
+
+  .location-btn {
+    flex: 1;
+  }
+
+  .buttons-header {
+    width: 100%;
+    gap: 20px !important;
+  }
+
+
+  .location-tooltip {
+    width: 95%;
+  }
+
+  .tooltip-btn {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--color-red);
+  color: var(--color-red);
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tooltip-btn--primary {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+#footer-location {
+    padding-top: 20px;
+    padding-bottom: 160px;
+}
+#footer-location h3{
+  font-size: 20px;
+}
+.contact-section{
+  gap: 5px;
+}
+}
+
+@media (width <= 375px) {
+  .buttons-header {
+    flex-wrap: wrap;
+    gap: 10px !important;
+  }
 }
