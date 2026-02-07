@@ -13,6 +13,14 @@ import messageIcon from "./../../assets/chat.svg";
 import { useStickyFooterBar } from "../../hooks/useStickyFooterBar";
 
 function normalizeServicePath(url) {
+  // 🛡️ FIX: WP a veces devuelve url null en primera carga
+  if (!url || typeof url !== "string") {
+    return {
+      path: "/",
+      wasService: false,
+    };
+  }
+
   const path = wpUrlToClientPath(url);
 
   if (path.startsWith("/service/")) {
@@ -27,6 +35,7 @@ function normalizeServicePath(url) {
     wasService: false,
   };
 }
+
 
 export function HeaderTemp({
   data,
