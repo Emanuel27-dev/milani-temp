@@ -133,7 +133,7 @@ export function Footer({ switchFormModal, currentPhone, currentLocation }) {
               <div className="contact-info">
                 <p>{city} Service</p>
                 <div className="phone">{phone}</div>
-                <div className="email">customerservice@milani.ca</div>
+                <div className="email"><a href="mailto:customerservice@milani.ca">customerservice@milani.ca</a></div>
               </div>
             </div>
 
@@ -162,8 +162,7 @@ export function Footer({ switchFormModal, currentPhone, currentLocation }) {
           <div className="footer-bottom">
             <p>
               © 2008 - 2025 Milani Plumbing, Heating & Air Conditioning. All
-              rights reserved. View our <span>Privacy</span> &{" "}
-              <span>Security Policy</span>
+              rights reserved. View our <span><a href="https://milani-temp.vercel.app/privacy-security-policy/">Privacy & Security Policy</a></span>
             </p>
           </div>
         </div>
