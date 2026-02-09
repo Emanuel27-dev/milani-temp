@@ -5,7 +5,7 @@ export const locations = [
     footer: {
       background:
         "https://milani.xpress.ws/wp-content/uploads/2025/12/MILANI_lowermainland2.webp",
-      label: "Greater Vancouver, BC",
+      label: "Lower Mainland, BC",
     },
     cities: [
       { name: "Abbotsford",  phone: "604.888.8888" },
@@ -121,7 +121,7 @@ export const locations = [
       { name: "Langdon",       phone: "403.399.9999" },
       { name: "Okotoks",       phone: "403.399.9999" },
       { name: "Priddis",       phone: "403.399.9999" },
-      { name: "Redwood Meadows",       phone: "403.399.9999" },
+      { name: "Redwood Mdws",       phone: "403.399.9999" },
       { name: "Springbank",       phone: "403.399.9999" },
       { name: "White Elk",       phone: "403.399.9999" },
     ],
