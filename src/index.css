@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
 
 
+
 @font-face {
     font-family: 'Archivo SemiCondensed Bold';
     src: url('../public/fonts2/ArchivoSemiCondensed-Bold.eot');
@@ -38,7 +39,7 @@
 
 @font-face {
     font-family: 'Archivo SemiCondensed ExtraBold';
-    src: url('../public/fonts2/ArchivoCondensed-ExtraBold.eot');
+    src: url('../public/fonts2/ArchivoSemiCondensed-ExtraBold.eot');
     src: url('../public/fonts2/ArchivoSemiCondensed-ExtraBold.eot?#iefix') format('embedded-opentype'),
         url('../public/fonts2/ArchivoSemiCondensed-ExtraBold.woff2') format('woff2'),
         url('../public/fonts2/ArchivoSemiCondensed-ExtraBold.woff') format('woff');
@@ -48,12 +49,27 @@
 }
 
 @font-face {
-    font-family: 'Archivo Condensed ExtraBold';
-    src: url('../public/fonts2/ArchivoCondensed-ExtraBold.eot');
-    src: url('../public/fonts2/ArchivoCondensed-ExtraBold.eot?#iefix') format('embedded-opentype'),
-        url('../public/fonts2/ArchivoCondensed-ExtraBold.woff2') format('woff2'),
-        url('../public/fonts2/ArchivoCondensed-ExtraBold.woff') format('woff');
+    font-family: 'Archivo Condensed Bold';
+    src: url('../public/fonts2/ArchivoCondensed-Bold.eot');
+    src: url('../public/fonts2/ArchivoCondensed-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../public/fonts2/ArchivoCondensed-Bold.woff2') format('woff2'),
+        url('../public/fonts2/ArchivoCondensed-Bold.woff') format('woff'),
+        url('../public/fonts2/ArchivoCondensed-Bold.ttf') format('truetype'),
+        url('../public/fonts2/ArchivoCondensed-Bold.svg#ArchivoCondensed-Bold') format('svg');
     font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Archivo SemiCondensed';
+    src: url('../public/fonts2/ArchivoSemiCondensed-Regular.eot');
+    src: url('../public/fonts2/ArchivoSemiCondensed-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../public/fonts2/ArchivoSemiCondensed-Regular.woff2') format('woff2'),
+        url('../public/fonts2/ArchivoSemiCondensed-Regular.woff') format('woff'),
+        url('../public/fonts2/ArchivoSemiCondensed-Regular.ttf') format('truetype'),
+        url('../public/fonts2/ArchivoSemiCondensed-Regular.svg#ArchivoSemiCondensed-Regular') format('svg');
+    font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
